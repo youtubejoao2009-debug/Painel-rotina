@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Rotina do Criador</title>
+
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Rotina Criador">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0f172a',
+                        darkCard: '#1e293b',
+                        lightBg: '#f1f5f9',
+                        lightCard: '#ffffff',
+                        accentBlue: '#3b82f6',
+                        accentGreen: '#22c55e',
+                        accentOrange: '#f59e0b',
+                        accentWater: '#0ea5e9'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind Scrollbar / Utilities -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        /* Custom Checkbox */
+        .custom-checkbox {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #64748b;
+            border-radius: 6px;
+            outline: none;
+            cursor: pointer;
+            display: grid;
+            place-content: center;
+            transition: all 0.2s ease-in-out;
+        }
+        .custom-checkbox:checked {
+            background-color: #22c55e;
+            border-color: #22c55e;
+        }
+        .custom-checkbox:checked::before {
+            content: "✔";
+            font-size: 14px;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="bg-lightBg dark:bg-darkBg text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
+
+    <!-- Cabeçalho Fixo (Sticky) -->
+    <header class="sticky top-0 z-40 bg-white/80 dark:bg-darkCard/80 glass border-b border-slate-200 dark:border-slate-800 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-3 sm:px-6 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div>
+                <h1 class="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent flex items-center gap-2">
+                    ⚡ Painel de Rotina do Criador
+                </h1>
+                <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Minha rotina diária sem datas — Foco e consistência</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <!-- Contador de Dias Perfeitos -->
+                <div class="flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 px-3 py-1.5 rounded-xl text-amber-600 dark:text-amber-400 font-semibold text-sm">
+                    <span>🏆</span>
+                    <span id="perfectDaysCount">0</span>
+                    <span class="text-xs font-normal opacity-80">Dias Perfeitos</span>
+                </div>
+                <!-- Botão Tema -->
+                <button id="themeToggleBtn" aria-label="Alternar Tema" class="p-2.5 rounded-xl bg-slate-200 dark:bg-slate-700 hover:scale-105 transition-all shadow-sm">
+                    <span id="themeIcon" class="text-lg">🌙</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6 sm:px-6 flex flex-col gap-6">
+
+        <!-- Seletor de Dias da Semana -->
+        <nav aria-label="Dias da Semana" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 sm:gap-3">
+            <!-- Gerado via JS para incluir badges X/7 -->
+            <div id="daysNavContainer" class="contents"></div>
+        </nav>
+
+        <!-- Card Principal do Dia Selecionado -->
+        <section aria-labelledby="selectedDayTitle" class="bg-white dark:bg-darkCard rounded-2xl p-5 sm:p-6 shadow-lg border border-slate-200 dark:border-slate-800 relative overflow-hidden">
+            <!-- Banner Parabéns (Oculto por padrão) -->
+            <div id="congratsBanner" class="hidden mb-4 p-4 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 text-white font-medium flex items-center justify-between shadow-md animate-pulse">
+                <span class="flex items-center gap-2 text-sm sm:text-base">🎉 Parabéns! Você concluiu 100% das tarefas deste dia! Continue assim!</span>
+                <span class="text-2xl">🔥</span>
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+                <div>
+                    <h2 id="selectedDayTitle" class="text-xl sm:text-2xl font-bold capitalize text-slate-900 dark:text-white">Domingo</h2>
+                    <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400" id="selectedDaySubtitle">Gerencie suas 7 tarefas diárias</p>
+                </div>
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <button id="resetDayBtn" class="flex-1 sm:flex-none px-4 py-2 text-xs sm:text-sm font-medium rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 hover:bg-rose-500/20 transition-all border border-rose-500/20">
+                        🔄 Resetar Dia
+                    </button>
+                    <button id="resetWeekBtn" class="flex-1 sm:flex-none px-4 py-2 text-xs sm:text-sm font-medium rounded-xl bg-slate-500/10 text-slate-600 dark:text-slate-300 hover:bg-slate-500/20 transition-all border border-slate-300 dark:border-slate-700">
+                        🗑️ Resetar Semana
+                    </button>
+                </div>
+            </div>
+
+            <!-- Barra de Progresso Animada -->
+            <div class="w-full bg-slate-200 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
+                <div id="progressBar" class="bg-gradient-to-r from-blue-500 to-emerald-500 h-full w-0 transition-all duration-500 ease-out"></div>
+            </div>
+            <div class="flex justify-between items-center mt-2 text-xs text-slate-500 dark:text-slate-400 font-medium">
+                <span id="progressText">0 de 7 tarefas concluídas</span>
+                <span id="progressPercent">0%</span>
+            </div>
+        </section>
+
+        <!-- Grid de Cards de Tarefas (1 col mobile, 2 tablet, 3 desktop) -->
+        <section aria-label="Lista de Tarefas" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+            <!-- Card 1: Minerar vídeos bons -->
+            <div class="bg-white dark:bg-darkCard rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col justify-between hover:shadow-md transition-shadow">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-3xl">🎬</span>
+                        <input type="checkbox" id="task-0" class="custom-checkbox task-checkbox" data-index="0">
+                    </div>
+                    <h3 class="font-bold text-base text-slate-900 dark:text-white mb-1">Minerar vídeos bons</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Busque referências, ideias e conteúdos virais para inspirar suas próximas produções.</p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                    <span>Prioridade Alta</span>
+                    <span class="task-status-badge font-medium text-slate-500 dark:text-slate-400">Pendente</span>
+                </div>
+            </div>
+
+            <!-- Card 2: Fazer pelo menos 3 vídeos -->
+            <div class="bg-white dark:bg-darkCard rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col justify-between hover:shadow-md transition-shadow">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-3xl">📹</span>
+                        <input type="checkbox" id="task-1" class="custom-checkbox task-checkbox" data-index="1" disabled title="Conclua as 3 sub-tarefas abaixo">
+                    </div>
+                    <h3 class="font-bold text-base text-slate-900 dark:text-white mb-1">Fazer pelo menos 3 vídeos</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Grave e produza 3 vídeos curtos. Marque os sub-itens abaixo para concluir:</p>
+                    
+                    <!-- Sub-checkboxes -->
+                    <div class="space-y-2 bg-slate-50 dark:bg-slate-900/40 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
+                        <label class="flex items-center gap-2.5 text-xs font-medium cursor-pointer">
+                            <input type="checkbox" id="subvideo-0" class="subvideo-checkbox custom-checkbox !w-5 !h-5" data-sub="0">
+                            <span>Vídeo 1</span>
+                        </label>
+                        <label class="flex items-center gap-2.5 text-xs font-medium cursor-pointer">
+                            <input type="checkbox" id="subvideo-1" class="subvideo-checkbox custom-checkbox !w-5 !h-5" data-sub="1">
+                            <span>Vídeo 2</span>
+                        </label>
+                        <label class="flex items-center gap-2.5 text-xs font-medium cursor-pointer">
+                            <input type="checkbox" id="subvideo-2" class="subvideo-checkbox custom-checkbox !w-5 !h-5" data-sub="2">
+                            <span>Vídeo 3</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                    <span>Meta diária</span>
+                    <span id="subvideosCountText" class="font-medium text-blue-500">0/3 concluídos</span>
+                </div>
+            </div>
+
+            <!-- Card 3: Fazer 1 vídeo longo -->
+            <div class="bg-white dark:bg-darkCard rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col justify-between hover:shadow-md transition-shadow">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-3xl">🎥</span>
+                        <input type="checkbox" id="task-2" class="custom-checkbox task-checkbox" data-index="2">
+                    </div>
+                    <h3 class="font-bold text-base text-slate-900 dark:text-white mb-1">Fazer 1 vídeo longo</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Desenvolva um conteúdo aprofundado para reter a audiência e gerar autoridade.</p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                    <span>Conteúdo Master</span>
+                    <span class="task-status-badge font-medium text-slate-500 dark:text-slate-400">Pendente</span>
+                </div>
+            </div>
+
+            <!-- Card 4: Focar na conta do Instagram -->
+            <div class="bg-white dark:bg-darkCard rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col justify-between hover:shadow-md transition-shadow">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-3xl">📱</span>
+                        <input type="checkbox" id="task-3" class="custom-checkbox task-checkbox" data-index="3">
+                    </div>
+                    <h3 class="font-bold text-base text-slate-900 dark:text-white mb-1">Focar no Instagram</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Melhore as probabilidades, interaja nos stories e otimize seu perfil.</p>
+                    
+                    <textarea id="instagramNotes" rows="2" placeholder="Anotações do Instagram (estratégias, ideias, métricas)..." class="w-full text-xs p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                    <span>Engajamento</span>
+                    <span class="task-status-badge font-medium text-slate-500 dark:text-slate-400">Pendente</span>
+                </div>
+            </div>
+
+            <!-- Card 5: Estudar durante 30 minutos (Timer) -->
+            <div class="bg-white dark:bg-darkCard rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col justify-between hover:shadow-md transition-shadow">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-3xl">📚</span>
+                        <input type="checkbox" id="task-4" class="custom-checkbox task-checkbox" data-index="4">
+                    </div>
+                    <h3 class="font-bold text-base text-slate-900 dark:text-white mb-1">Estudar 30 minutos</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Foque em aprendizado contínuo. Use o timer funcional abaixo:</p>
+
+                    <!-- Timer Widget -->
+                    <div class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-center">
+                        <div id="timerDisplay" class="text-2xl font-mono font-bold text-blue-500 mb-2">30:00</div>
+                        <div class="flex justify-center gap-2">
+                            <button id="timerStartBtn" class="px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-xs font-semibold transition-all">Iniciar</button>
+                            <button id="timerPauseBtn" class="px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-xs font-semibold transition-all">Pausar</button>
+                            <button id="timerResetBtn" class="px-3 py-1 bg-slate-300 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 rounded-lg text-xs font-semibold transition-all">Zerar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                    <span>Desenvolvimento</span>
+                    <span class="task-status-badge font-medium text-slate-500 dark:text-slate-400">Pendente</span>
+                </div>
+            </div>
+
+            <!-- Card 6: Ler um pouco -->
+            <div class="bg-white dark:bg-darkCard rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col justify-between hover:shadow-md transition-shadow">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-3xl">📖</span>
+                        <input type="checkbox" id="task-5" class="custom-checkbox task-checkbox" data-index="5">
+                    </div>
+                    <h3 class="font-bold text-base text-slate-900 dark:text-white mb-1">Ler um pouco</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Expanda sua mente com leitura diária.</p>
+
+                    <input type="text" id="readingInput" placeholder="Nome do livro e páginas lidas..." class="w-full text-xs p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                    <span>Conhecimento</span>
+                    <span class="task-status-badge font-medium text-slate-500 dark:text-slate-400">Pendente</span>
+                </div>
+            </div>
+
+            <!-- Card 7: Beber muita água -->
+            <div class="bg-white dark:bg-darkCard rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col justify-between hover:shadow-md transition-shadow md:col-span-2 lg:col-span-1">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-3xl">💧</span>
+                        <input type="checkbox" id="task-6" class="custom-checkbox task-checkbox" data-index="6" disabled title="Atinga 2000ml para marcar automaticamente">
+                    </div>
+                    <h3 class="font-bold text-base text-slate-900 dark:text-white mb-1">Beber muita água (Meta: 2L)</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Hidrate-se para manter o foco e a energia.</p>
+
+                    <!-- Contador de Água -->
+                    <div class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-semibold text-slate-600 dark:text-slate-300">Progresso</span>
+                            <span id="waterMlText" class="text-xs font-bold text-cyan-500">0 ml / 2000 ml</span>
+                        </div>
+                        <div class="w-full bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden mb-3">
+                            <div id="waterProgressBar" class="bg-cyan-500 h-full w-0 transition-all duration-300"></div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button id="waterMinusBtn" class="flex-1 py-1.5 bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 text-xs font-bold rounded-lg transition-all border border-rose-500/20">-250 ml</button>
+                            <button id="waterPlusBtn" class="flex-1 py-1.5 bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-bold rounded-lg transition-all shadow-sm">+250 ml</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                    <span>Saúde e Foco</span>
+                    <span class="task-status-badge font-medium text-slate-500 dark:text-slate-400">Pendente</span>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Rodapé Motivacional -->
+    <footer class="mt-auto bg-white/50 dark:bg-darkCard/50 border-t border-slate-200 dark:border-slate-800 py-6 px-4">
+        <div class="max-w-4xl mx-auto text-center flex flex-col items-center gap-3">
+            <blockquote id="quoteText" class="text-sm sm:text-base italic text-slate-600 dark:text-slate-300 font-medium">
+                "A consistência supera o talento quando o talento não é consistente."
+            </blockquote>
+            <button id="newQuoteBtn" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 hover:bg-blue-500/20 transition-all flex items-center gap-1.5">
+                ✨ Nova Frase Motivacional
+            </button>
+            <p class="text-xs text-slate-400 mt-2">Painel de Rotina do Criador &copy; 2026 — Todos os dados salvos localmente.</p>
+        </div>
+    </footer>
+
+    <!-- Botão Flutuante de Instalação PWA -->
+    <button id="installAppBtn" class="hidden fixed bottom-6 right-6 z-50 bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-5 py-3 rounded-2xl shadow-xl font-bold text-sm flex items-center gap-2 hover:scale-105 active:scale-95 transition-all">
+        <span>⬇️ Instalar App</span>
+    </button>
+
+    <!-- Script da Aplicação -->
+    <script>
+        // Dias da Semana
+        const DAYS = [
+            { id: 0, name: 'Domingo', short: 'Dom' },
+            { id: 1, name: 'Segunda', short: 'Seg' },
+            { id: 2, name: 'Terça', short: 'Ter' },
+            { id: 3, name: 'Quarta', short: 'Qua' },
+            { id: 4, name: 'Quinta', short: 'Qui' },
+            { id: 5, name: 'Sexta', short: 'Sex' },
+            { id: 6, name: 'Sábado', short: 'Sáb' }
+        ];
+
+        // Frases Motivacionais
+        const QUOTES = [
+            "A consistência supera o talento quando o talento não é consistente.",
+            "Feito é melhor do que perfeito quando feito com excelência.",
+            "O sucesso é a soma de pequenos esforços repetidos dia após dia.",
+            "Crie com paixão, entregue com propósito e mantenha a constância.",
+            "Sua audiência não quer perfeição, quer autenticidade e evolução.",
+            "O melhor momento para começar foi há anos. O segundo melhor é agora.",
+            "Disciplina é escolher entre o que você quer agora e o que você mais quer."
+        ];
+
+        // Estado Global da Aplicação
+        let currentDayIndex = new Date().getDay(); // 0 a 6
+        let appData = loadAppData();
+
+        // Elementos DOM
+        const daysNavContainer = document.getElementById('daysNavContainer');
+        const selectedDayTitle = document.getElementById('selectedDayTitle');
+        const selectedDaySubtitle = document.getElementById('selectedDaySubtitle');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const progressPercent = document.getElementById('progressPercent');
+        const congratsBanner = document.getElementById('congratsBanner');
+        const perfectDaysCount = document.getElementById('perfectDaysCount');
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeIcon = document.getElementById('themeIcon');
+        
+        // Elementos Interativos
+        const taskCheckboxes = document.querySelectorAll('.task-checkbox');
+        const subvideoCheckboxes = document.querySelectorAll('.subvideo-checkbox');
+        const subvideosCountText = document.getElementById('subvideosCountText');
+        const instagramNotes = document.getElementById('instagramNotes');
+        const readingInput = document.getElementById('readingInput');
+        
+        // Timer Elements
+        const timerDisplay = document.getElementById('timerDisplay');
+        const timerStartBtn = document.getElementById('timerStartBtn');
+        const timerPauseBtn = document.getElementById('timerPauseBtn');
+        const timerResetBtn = document.getElementById('timerResetBtn');
+
+        // Water Elements
+        const waterMlText = document.getElementById('waterMlText');
+        const waterProgressBar = document.getElementById('waterProgressBar');
+        const waterPlusBtn = document.getElementById('waterPlusBtn');
+        const waterMinusBtn = document.getElementById('waterMinusBtn');
+
+        // Reset Buttons
+        const resetDayBtn = document.getElementById('resetDayBtn');
+        const resetWeekBtn = document.getElementById('resetWeekBtn');
+
+        // Quote Elements
+        const quoteText = document.getElementById('quoteText');
+        const newQuoteBtn = document.getElementById('newQuoteBtn');
+
+        // Inicialização
+        function init() {
+            initTheme();
+            renderDaysNav();
+            loadDayData(currentDayIndex);
+            updatePerfectDaysCount();
+            setupEventListeners();
+        }
+
+        // Carregar / Salvar localStorage
+        function loadAppData() {
+            const defaultData = {
+                theme: 'dark',
+                quoteIndex: 0,
+                days: {}
+            };
+            DAYS.forEach(d => {
+                defaultData.days[d.id] = {
+                    tasks: [false, false, false, false, false, false, false], // 7 tarefas
+                    subvideos: [false, false, false],
+                    water: 0, // em ml
+                    instagramNotes: '',
+                    readingText: '',
+                    timerSeconds: 1800, // 30 minutos
+                    timerRunning: false
+                };
+            });
+
+            try {
+                const saved = localStorage.getItem('rotina_criador_data');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    // Garantir integridade de estruturas caso haja atualizações
+                    DAYS.forEach(d => {
+                        if (!parsed.days[d.id]) {
+                            parsed.days[d.id] = defaultData.days[d.id];
+                        }
+                    });
+                    return parsed;
+                }
+            } catch (e) {
+                console.error("Erro ao carregar localStorage", e);
+            }
+            return defaultData;
+        }
+
+        function saveAppData() {
+            try {
+                localStorage.setItem('rotina_criador_data', JSON.stringify(appData));
+            } catch (e) {
+                console.error("Erro ao salvar localStorage", e);
+            }
+        }
+
+        // Gerenciamento de Tema
+        function initTheme() {
+            if (appData.theme === 'light') {
+                document.documentElement.classList.remove('dark');
+                themeIcon.textContent = '☀️';
+            } else {
+                document.documentElement.classList.add('dark');
+                themeIcon.textContent = '🌙';
+            }
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                appData.theme = 'light';
+                themeIcon.textContent = '☀️';
+            } else {
+                document.documentElement.classList.add('dark');
+                appData.theme = 'dark';
+                themeIcon.textContent = '🌙';
+            }
+            saveAppData();
+        });
+
+        // Renderizar Navegação de Dias
+        function renderDaysNav() {
+            daysNavContainer.innerHTML = '';
+            DAYS.forEach(day => {
+                const dayData = appData.days[day.id];
+                const completedCount = dayData.tasks.filter(Boolean).length;
+                const isCurrent = day.id === currentDayIndex;
+                const isRealToday = day.id === new Date().getDay();
+
+                const btn = document.createElement('button');
+                btn.className = `flex flex-col items-center justify-center p-3 rounded-2xl border transition-all relative ${
+                    isCurrent 
+                        ? 'bg-blue-500 text-white border-blue-500 shadow-md shadow-blue-500/20 font-bold' 
+                        : 'bg-white dark:bg-darkCard text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-800 hover:border-blue-400'
+                }`;
+
+                btn.innerHTML = `
+                    ${isRealToday ? '<span class="absolute -top-1 -right-1 w-3 h-3 bg-cyan-400 rounded-full border-2 border-white dark:border-darkCard" title="Hoje"></span>' : ''}
+                    <span class="text-xs uppercase tracking-wider opacity-80">${day.short}</span>
+                    <span class="text-sm font-bold mt-0.5">${day.name}</span>
+                    <span class="text-[10px] mt-1 px-2 py-0.5 rounded-full ${isCurrent ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'}">${completedCount}/7</span>
+                `;
+
+                btn.addEventListener('click', () => {
+                    saveCurrentTimerState(); // Salvar timer do dia anterior se rodando
+                    currentDayIndex = day.id;
+                    renderDaysNav();
+                    loadDayData(currentDayIndex);
+                });
+
+                daysNavContainer.appendChild(btn);
+            });
+        }
+
+        // Carregar Dados do Dia Selecionado
+        function loadDayData(dayId) {
+            const dayData = appData.days[dayId];
+            const dayObj = DAYS.find(d => d.id === dayId);
+
+            selectedDayTitle.textContent = dayObj.name;
+            selectedDaySubtitle.textContent = `Gerencie suas 7 tarefas diárias — ${dayObj.name}`;
+
+            // 1. Tarefas principais
+            taskCheckboxes.forEach((cb, idx) => {
+                cb.checked = dayData.tasks[idx];
+                updateCardStatusStyle(idx, dayData.tasks[idx]);
+            });
+
+            // 2. Sub-vídeos
+            subvideoCheckboxes.forEach((cb, idx) => {
+                cb.checked = dayData.subvideos[idx];
+            });
+            updateSubvideosUI();
+
+            // 3. Instagram Notes
+            instagramNotes.value = dayData.instagramNotes || '';
+
+            // 4. Reading Input
+            readingInput.value = dayData.readingText || '';
+
+            // 5. Water
+            updateWaterUI();
+
+            // 6. Timer
+            updateTimerDisplay();
+
+            // 7. Progresso
+            updateProgress();
+        }
+
+        function updateCardStatusStyle(index, isChecked) {
+            const badge = document.querySelectorAll('.task-status-badge')[index];
+            if (badge) {
+                if (isChecked) {
+                    badge.textContent = 'Concluído';
+                    badge.className = 'task-status-badge font-medium text-emerald-500';
+                } else {
+                    badge.textContent = 'Pendente';
+                    badge.className = 'task-status-badge font-medium text-slate-500 dark:text-slate-400';
+                }
+            }
+        }
+
+        // Atualizar Progresso
+        function updateProgress() {
+            const dayData = appData.days[currentDayIndex];
+            const completedCount = dayData.tasks.filter(Boolean).length;
+            const percent = Math.round((completedCount / 7) * 100);
+
+            progressBar.style.width = `${percent}%`;
+            progressText.textContent = `${completedCount} de 7 tarefas concluídas`;
+            progressPercent.textContent = `${percent}%`;
+
+            if (percent === 100) {
+                congratsBanner.classList.remove('hidden');
+            } else {
+                congratsBanner.classList.add('hidden');
+            }
+
+            updatePerfectDaysCount();
+            renderDaysNav(); // Atualizar badge na nav
+        }
+
+        // Dias Perfeitos (7/7 concluidas)
+        function updatePerfectDaysCount() {
+            let count = 0;
+            DAYS.forEach(d => {
+                const completed = appData.days[d.id].tasks.filter(Boolean).length;
+                if (completed === 7) count++;
+            });
+            perfectDaysCount.textContent = count;
+        }
+
+        // Manipulação de Eventos e Inputs
+        function setupEventListeners() {
+            // Checkboxes principais (exceto 1 e 6 que são automáticos)
+            taskCheckboxes.forEach((cb, idx) => {
+                cb.addEventListener('change', (e) => {
+                    // Se for tarefa 1 (3 vídeos) ou tarefa 6 (água), impedir clique manual direto se regras automáticas aplicarem, mas permitir caso o usuário queira forçar
+                    appData.days[currentDayIndex].tasks[idx] = e.target.checked;
+                    updateCardStatusStyle(idx, e.target.checked);
+                    saveAppData();
+                    updateProgress();
+                });
+            });
+
+            // Sub-checkboxes de vídeos
+            subvideoCheckboxes.forEach((cb, idx) => {
+                cb.addEventListener('change', (e) => {
+                    appData.days[currentDayIndex].subvideos[idx] = e.target.checked;
+                    updateSubvideosUI();
+                    saveAppData();
+                });
+            });
+
+            // Instagram Notes
+            instagramNotes.addEventListener('input', (e) => {
+                appData.days[currentDayIndex].instagramNotes = e.target.value;
+                saveAppData();
+            });
+
+            // Reading Input
+            readingInput.addEventListener('input', (e) => {
+                appData.days[currentDayIndex].readingText = e.target.value;
+                saveAppData();
+            });
+
+            // Water buttons
+            waterPlusBtn.addEventListener('click', () => {
+                let currentWater = appData.days[currentDayIndex].water || 0;
+                currentWater = Math.min(5000, currentWater + 250);
+                appData.days[currentDayIndex].water = currentWater;
+                
+                // Regra automática: atingiu 2000ml -> marca tarefa 6
+                if (currentWater >= 2000) {
+                    appData.days[currentDayIndex].tasks[6] = true;
+                    document.getElementById('task-6').checked = true;
+                    updateCardStatusStyle(6, true);
+                }
+                
+                updateWaterUI();
+                saveAppData();
+                updateProgress();
+            });
+
+            waterMinusBtn.addEventListener('click', () => {
+                let currentWater = appData.days[currentDayIndex].water || 0;
+                currentWater = Math.max(0, currentWater - 250);
+                appData.days[currentDayIndex].water = currentWater;
+                
+                if (currentWater < 2000) {
+                    appData.days[currentDayIndex].tasks[6] = false;
+                    document.getElementById('task-6').checked = false;
+                    updateCardStatusStyle(6, false);
+                }
+
+                updateWaterUI();
+                saveAppData();
+                updateProgress();
+            });
+
+            // Timer Buttons
+            timerStartBtn.addEventListener('click', startTimer);
+            timerPauseBtn.addEventListener('click', pauseTimer);
+            timerResetBtn.addEventListener('click', resetTimer);
+
+            // Reset Day / Week
+            resetDayBtn.addEventListener('click', () => {
+                if (confirm("Tem certeza que deseja resetar todas as tarefas e dados deste dia?")) {
+                    appData.days[currentDayIndex] = {
+                        tasks: [false, false, false, false, false, false, false],
+                        subvideos: [false, false, false],
+                        water: 0,
+                        instagramNotes: '',
+                        readingText: '',
+                        timerSeconds: 1800,
+                        timerRunning: false
+                    };
+                    saveAppData();
+                    loadDayData(currentDayIndex);
+                }
+            });
+
+            resetWeekBtn.addEventListener('click', () => {
+                if (confirm("ATENÇÃO: Deseja resetar TODA A SEMANA? Todo o progresso será apagado.")) {
+                    DAYS.forEach(d => {
+                        appData.days[d.id] = {
+                            tasks: [false, false, false, false, false, false, false],
+                            subvideos: [false, false, false],
+                            water: 0,
+                            instagramNotes: '',
+                            readingText: '',
+                            timerSeconds: 1800,
+                            timerRunning: false
+                        };
+                    });
+                    saveAppData();
+                    loadDayData(currentDayIndex);
+                }
+            });
+
+            // Quotes
+            newQuoteBtn.addEventListener('click', () => {
+                appData.quoteIndex = (appData.quoteIndex + 1) % QUOTES.length;
+                quoteText.textContent = `"${QUOTES[appData.quoteIndex]}"`;
+                saveAppData();
+            });
+
+            // Inicializar quote salva
+            if (QUOTES[appData.quoteIndex]) {
+                quoteText.textContent = `"${QUOTES[appData.quoteIndex]}"`;
+            }
+        }
+
+        // Lógica dos Sub-vídeos
+        function updateSubvideosUI() {
+            const sub = appData.days[currentDayIndex].subvideos;
+            const completedSubs = sub.filter(Boolean).length;
+            subvideosCountText.textContent = `${completedSubs}/3 concluídos`;
+
+            // Se 3 sub-vídeos concluídos -> marca tarefa principal 1 automaticamente
+            if (completedSubs === 3) {
+                appData.days[currentDayIndex].tasks[1] = true;
+                document.getElementById('task-1').checked = true;
+                updateCardStatusStyle(1, true);
+            } else {
+                appData.days[currentDayIndex].tasks[1] = false;
+                document.getElementById('task-1').checked = false;
+                updateCardStatusStyle(1, false);
+            }
+            updateProgress();
+        }
+
+        // Lógica da Água
+        function updateWaterUI() {
+            const water = appData.days[currentDayIndex].water || 0;
+            waterMlText.textContent = `${water} ml / 2000 ml`;
+            const percent = Math.min(100, Math.round((water / 2000) * 100));
+            waterProgressBar.style.width = `${percent}%`;
+        }
+
+        // Lógica do Timer de Estudo (30 min = 1800s)
+        let timerInterval = null;
+
+        function updateTimerDisplay() {
+            const secs = appData.days[currentDayIndex].timerSeconds ?? 1800;
+            const mins = Math.floor(secs / 60);
+            const remainderSecs = secs % 60;
+            timerDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(remainderSecs).padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            if (timerInterval) return; // Já rodando
+            appData.days[currentDayIndex].timerRunning = true;
+            saveAppData();
+
+            timerInterval = setInterval(() => {
+                let secs = appData.days[currentDayIndex].timerSeconds;
+                if (secs > 0) {
+                    secs--;
+                    appData.days[currentDayIndex].timerSeconds = secs;
+                    updateTimerDisplay();
+                    saveAppData();
+                } else {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                    appData.days[currentDayIndex].timerRunning = false;
+                    appData.days[currentDayIndex].tasks[4] = true; // Conclui tarefa de estudo
+                    document.getElementById('task-4').checked = true;
+                    updateCardStatusStyle(4, true);
+                    saveAppData();
+                    updateProgress();
+                    alert("Parabéns! Você concluiu seus 30 minutos de estudo!");
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            appData.days[currentDayIndex].timerRunning = false;
+            saveAppData();
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            appData.days[currentDayIndex].timerSeconds = 1800;
+            updateTimerDisplay();
+            saveAppData();
+        }
+
+        function saveCurrentTimerState() {
+            pauseTimer();
+        }
+
+        // Executar inicialização ao carregar o DOM
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+
+    <!-- PWA Service Worker & Install Prompt Script -->
+    <script>
+        // Registrar Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(reg => console.log('Service Worker registrado com sucesso:', reg.scope))
+                    .catch(err => console.error('Erro ao registrar Service Worker:', err));
+            });
+        }
+
+        // Capturar evento beforeinstallprompt
+        let deferredPrompt;
+        const installAppBtn = document.getElementById('installAppBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installAppBtn.classList.remove('hidden');
+        });
+
+        installAppBtn.addEventListener('click', async () => {
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                console.log('Usuário aceitou a instalação do PWA');
+            }
+            deferredPrompt = null;
+            installAppBtn.classList.add('hidden');
+        });
+
+        window.addEventListener('appinstalled', () => {
+            installAppBtn.classList.add('hidden');
+            deferredPrompt = null;
+            console.log('PWA instalado com sucesso');
+        });
+    </script>
+</body>
+</html>
