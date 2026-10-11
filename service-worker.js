@@ -1,31 +1,30 @@
-const CACHE_NAME = "rotina-criador-v1";
+const CACHE_NAME = 'rotina-criador-v2';
 const ASSETS_TO_CACHE = [
-  "./index.html",
-  "./manifest.json",
-  "https://cdn.tailwindcss.com",
-  "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap",
-  "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+  './index.html',
+  './manifest.json',
+  'https://cdn.tailwindcss.com',
+  'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap'
 ];
 
-// Instalação do Service Worker
-self.addEventListener("install", (event) => {
+// Install event
+self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log("Cache aberto com sucesso");
+      console.log('Cache aberto com sucesso');
       return cache.addAll(ASSETS_TO_CACHE);
-    }).catch(err => console.error("Erro ao fazer cache dos assets:", err))
+    }).catch((error) => console.error('Erro ao fazer cache dos assets:', error))
   );
   self.skipWaiting();
 });
 
-// Ativação e limpeza de caches antigos
-self.addEventListener("activate", (event) => {
+// Activate event - cleanup old caches
+self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cache) => {
           if (cache !== CACHE_NAME) {
-            console.log("Removendo cache antigo:", cache);
+            console.log('Removendo cache antigo:', cache);
             return caches.delete(cache);
           }
         })
@@ -35,17 +34,16 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
-// Estratégia Cache-First com fallback para index.html
-self.addEventListener("fetch", (event) => {
+// Fetch event - Cache first with fallback
+self.addEventListener('fetch', (event) => {
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
+    caches.match(event.request).then((response) => {
+      if (response) {
+        return response;
       }
       return fetch(event.request).catch(() => {
-        // Fallback offline para páginas HTML
-        if (event.request.mode === "navigate") {
-          return caches.match("./index.html");
+        if (event.request.mode === 'navigate') {
+          return caches.match('./index.html');
         }
       });
     })
