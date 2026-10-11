@@ -1,13 +1,13 @@
 {
   "name": "Painel de Rotina do Criador",
   "short_name": "Rotina Criador",
+  "description": "Minha rotina diária sem datas — foco e consistência.",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0f172a",
   "theme_color": "#0f172a",
   "lang": "pt-BR",
-  "description": "Painel de rotina diária sem datas — Foco e consistência para criadores de conteúdo.",
   "icons": [
     {
       "src": "icon-192.png",
