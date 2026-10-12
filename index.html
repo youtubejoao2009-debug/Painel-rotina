@@ -279,7 +279,6 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </footer>
 
-<!-- MISSÕES -->
 <div id="missionsModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="missions-panel rounded-3xl p-5 max-w-md w-full my-auto">
     <div class="text-center mb-4">
@@ -297,7 +296,6 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
-<!-- CONQUISTAS -->
 <div id="achievementsModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="rounded-3xl p-5 max-w-md w-full bg-slate-900 border-2 border-yellow-500/40 shadow-2xl my-auto">
     <div class="flex items-center justify-between mb-4">
@@ -312,7 +310,6 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
-<!-- STATS -->
 <div id="statsModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="rounded-3xl p-5 max-w-md w-full bg-slate-900 border-2 border-emerald-500/40 shadow-2xl my-auto">
     <div class="flex items-center justify-between mb-4">
@@ -336,7 +333,6 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
-<!-- ROLETA -->
 <div id="rouletteModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="rounded-3xl p-5 max-w-md w-full bg-slate-900 border-2 border-pink-500/40 shadow-2xl my-auto">
     <div class="flex items-center justify-between mb-4">
@@ -367,7 +363,6 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
-<!-- PET -->
 <div id="petModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="rounded-3xl p-5 max-w-md w-full bg-slate-900 border-2 border-lime-500/40 shadow-2xl my-auto">
     <div class="flex items-center justify-between mb-4">
@@ -401,7 +396,6 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
-<!-- POMODORO -->
 <div id="pomodoroModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="rounded-3xl p-5 max-w-md w-full bg-slate-900 border-2 border-red-500/40 shadow-2xl my-auto">
     <div class="flex items-center justify-between mb-4">
@@ -426,7 +420,6 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
-<!-- WEEKLY -->
 <div id="weeklyModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="rounded-3xl p-5 max-w-md w-full bg-slate-900 border-2 border-orange-500/40 shadow-2xl my-auto">
     <div class="flex items-center justify-between mb-4">
@@ -441,19 +434,16 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
-<!-- BOSS -->
 <div id="bossModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="rounded-3xl p-5 max-w-md w-full bg-slate-900 border-2 border-red-600/60 shadow-2xl my-auto" style="box-shadow:0 0 60px rgba(239,68,68,0.3);">
     <div class="flex items-center justify-between mb-3">
       <h2 class="text-xl font-black text-red-500">👹 Boss Fight</h2>
       <button id="bossCloseBtn" type="button" class="btn-action p-2 rounded-xl bg-slate-800 text-slate-300 text-sm">✕</button>
     </div>
-
     <div class="text-center mb-3">
       <p class="text-[10px] text-slate-400 font-bold">Semana atual</p>
       <p id="bossStatusText" class="text-[11px] font-black text-red-400 mt-0.5">Preparado para o combate?</p>
     </div>
-
     <div class="boss-arena mb-3">
       <div id="bossStage" class="boss-stage boss-idle">👹</div>
       <div class="text-center mb-1">
@@ -461,7 +451,6 @@ body.light-bg .avatar-inner { background: #eef2ff; }
         <div id="bossLevelText" class="text-[10px] text-slate-400 font-bold">Nível 1</div>
       </div>
     </div>
-
     <div class="mb-4">
       <div class="flex justify-between text-[10px] font-bold mb-1">
         <span class="text-red-400">❤️ HP DO BOSS</span>
@@ -472,7 +461,6 @@ body.light-bg .avatar-inner { background: #eef2ff; }
         <div class="boss-hp-text" id="bossHpInnerText">100%</div>
       </div>
     </div>
-
     <div class="grid grid-cols-2 gap-2 mb-3">
       <div class="stat-card">
         <div class="stat-value" id="bossPlayerDamage">0</div>
@@ -483,12 +471,10 @@ body.light-bg .avatar-inner { background: #eef2ff; }
         <div class="stat-label">Recompensa 🪙</div>
       </div>
     </div>
-
     <div class="text-[10px] text-slate-500 text-center italic">Cada tarefa completada na semana = 1 ataque automático!</div>
   </div>
 </div>
 
-<!-- LEVEL UP -->
 <div id="levelUpModal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
   <div id="levelUpCard" class="relative rounded-3xl p-6 sm:p-8 max-w-md w-full text-white text-center shadow-2xl overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-br from-blue-700 via-indigo-700 to-purple-800"></div>
@@ -517,7 +503,6 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
-<!-- CONFIRM -->
 <div id="confirmModal" class="hidden fixed inset-0 z-[60] modal-overlay flex items-center justify-center p-4">
   <div class="rounded-3xl p-6 max-w-sm w-full bg-slate-900 border border-slate-700 text-center shadow-2xl">
     <div class="text-5xl mb-2" id="confirmEmoji">⚠️</div>
@@ -530,7 +515,6 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
-<!-- STORE -->
 <div id="storeModal" class="hidden fixed inset-0 z-[70] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="rounded-3xl p-5 max-w-lg w-full bg-slate-900 border border-slate-700 shadow-2xl my-auto">
     <div class="flex items-center justify-between mb-4">
@@ -727,17 +711,21 @@ function getBossForWeek() {
   for (let i = 0; i < wk.length; i++) hash = ((hash << 5) - hash) + wk.charCodeAt(i);
   return Math.abs(hash) % BOSSES.length;
 }
-function getBossMaxHp() {
-  return 150 + (appData.level || 0) * 40 + (appData.prestiges || 0) * 250;
+function getBossMaxHp(level, prestiges) {
+  return 150 + (level || 0) * 40 + (prestiges || 0) * 250;
 }
-function getPlayerDamage() {
-  return 5 + (appData.level || 0) * 2;
+function getPlayerDamage(level) {
+  return 5 + (level || 0) * 2;
 }
-function getBossReward() {
-  return 150 + (appData.level || 0) * 30 + (appData.prestiges || 0) * 200;
+function getBossReward(level, prestiges) {
+  return 150 + (level || 0) * 30 + (prestiges || 0) * 200;
+}
+function newBoss(level, prestiges) {
+  const idx = getBossForWeek();
+  const maxHp = getBossMaxHp(level, prestiges);
+  return { weekKey: getMondayKey(), bossIdx: idx, hp: maxHp, maxHp: maxHp, defeated: false };
 }
 
-/* AUDIO */
 let audioCtx = null;
 function getAudioCtx() { if (!audioCtx) { try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { return null; } } return audioCtx; }
 function playTone(freq, dur, type = 'sine', vol = 0.15, delay = 0) {
@@ -788,26 +776,19 @@ function spawnBgParticles() {
   }
 }
 
-/* ===== LO-FI MUSIC ===== */
 let lofiPlaying = false;
 let lofiIntervals = [];
 const LOFI_CHORDS = [
-  [261.63, 329.63, 392.00], // C
-  [220.00, 261.63, 329.63], // Am
-  [174.61, 220.00, 261.63], // F
-  [196.00, 246.94, 293.66]  // G
+  [261.63, 329.63, 392.00], [220.00, 261.63, 329.63],
+  [174.61, 220.00, 261.63], [196.00, 246.94, 293.66]
 ];
 function playLofiChord(freqs, vol = 0.04) {
   const ctx = getAudioCtx(); if (!ctx) return;
   const t = ctx.currentTime;
-  freqs.forEach((f, i) => {
-    const o = ctx.createOscillator();
-    const g = ctx.createGain();
-    const filt = ctx.createBiquadFilter();
-    filt.type = 'lowpass';
-    filt.frequency.setValueAtTime(1200, t);
-    o.type = 'triangle';
-    o.frequency.setValueAtTime(f, t);
+  freqs.forEach(f => {
+    const o = ctx.createOscillator(), g = ctx.createGain(), filt = ctx.createBiquadFilter();
+    filt.type = 'lowpass'; filt.frequency.setValueAtTime(1200, t);
+    o.type = 'triangle'; o.frequency.setValueAtTime(f, t);
     o.frequency.detune.setValueAtTime((Math.random() - 0.5) * 8, t);
     g.gain.setValueAtTime(0, t);
     g.gain.linearRampToValueAtTime(vol, t + 0.8);
@@ -824,37 +805,18 @@ function startLofi() {
   if (ctx.state === 'suspended') ctx.resume();
   lofiPlaying = true;
   let chordIdx = 0;
-  const playNext = () => {
-    if (!lofiPlaying) return;
-    playLofiChord(LOFI_CHORDS[chordIdx % LOFI_CHORDS.length]);
-    chordIdx++;
-  };
+  const playNext = () => { if (!lofiPlaying) return; playLofiChord(LOFI_CHORDS[chordIdx % LOFI_CHORDS.length]); chordIdx++; };
   playNext();
-  const iv = setInterval(playNext, 3200);
-  lofiIntervals.push(iv);
+  lofiIntervals.push(setInterval(playNext, 3200));
 }
-function stopLofi() {
-  lofiPlaying = false;
-  lofiIntervals.forEach(iv => clearInterval(iv));
-  lofiIntervals = [];
-}
+function stopLofi() { lofiPlaying = false; lofiIntervals.forEach(iv => clearInterval(iv)); lofiIntervals = []; }
 function toggleLofi() {
   const btn = document.getElementById('lofiBtn');
   const icon = document.getElementById('lofiIcon');
-  if (lofiPlaying) {
-    stopLofi();
-    btn.classList.remove('lofi-btn-playing');
-    icon.textContent = '🎵';
-    soundClick();
-  } else {
-    startLofi();
-    btn.classList.add('lofi-btn-playing');
-    icon.textContent = '🔊';
-    soundSystem();
-  }
+  if (lofiPlaying) { stopLofi(); btn.classList.remove('lofi-btn-playing'); icon.textContent = '🎵'; soundClick(); }
+  else { startLofi(); btn.classList.add('lofi-btn-playing'); icon.textContent = '🔊'; soundSystem(); }
 }
 
-/* ===== ESTADO ===== */
 let currentDayIndex = new Date().getDay();
 let appData = null;
 let timerInterval = null;
@@ -874,12 +836,7 @@ function newDayData(studySecs, noPhoneSecs) {
     noPhoneSeconds: noPhoneSecs, noPhoneRunning: false, sleepOk: false
   };
 }
-function newBoss() {
-  const idx = getBossForWeek();
-  const boss = BOSSES[idx];
-  const maxHp = getBossMaxHp();
-  return { weekKey: getMondayKey(), bossIdx: idx, hp: maxHp, maxHp: maxHp, defeated: false };
-}
+
 function loadAppData() {
   const def = {
     theme: 'dark', autoTheme: false, quoteIndex: 0, level: 0, prestiges: 0, xp: 0, coins: 0, streak: 0,
@@ -894,7 +851,7 @@ function loadAppData() {
     pet: { xp: 0, hunger: 100, happiness: 100, lastUpdate: getTodayKey() },
     pomodoro: { today: 0, date: getTodayKey(), mode: 'focus', seconds: 1500, running: false },
     weekly: { weekKey: getMondayKey(), missions: [], progress: {}, claimed: {} },
-    boss: newBoss(),
+    boss: newBoss(0, 0),
     sleepSchedule: { bedtime: '22:00', wakeup: '06:00' }, days: {}
   };
   DAYS.forEach(d => { def.days[d.id] = newDayData(1800, 3600); });
@@ -940,8 +897,8 @@ function loadAppData() {
       if (!parsed.pet) parsed.pet = def.pet;
       if (!parsed.pomodoro) parsed.pomodoro = def.pomodoro;
       if (!parsed.weekly || parsed.weekly.weekKey !== getMondayKey()) parsed.weekly = { weekKey: getMondayKey(), missions: [], progress: {}, claimed: {} };
-      if (!parsed.boss || parsed.boss.weekKey !== getMondayKey()) parsed.boss = newBoss();
-      else parsed.boss.maxHp = getBossMaxHp();
+      if (!parsed.boss || parsed.boss.weekKey !== getMondayKey()) parsed.boss = newBoss(parsed.level || 0, parsed.prestiges || 0);
+      else parsed.boss.maxHp = getBossMaxHp(parsed.level || 0, parsed.prestiges || 0);
       return parsed;
     }
   } catch(e) { console.error('Erro load:', e); }
@@ -957,7 +914,6 @@ function checkAutoTheme() {
   if (appData.theme !== newTheme) { appData.theme = newTheme; initTheme(); saveAppData(); }
 }
 
-/* ===== BOSS ===== */
 function updateBossUI() {
   if (!appData || !appData.boss) return;
   const boss = appData.boss;
@@ -971,31 +927,24 @@ function updateBossUI() {
   const rewardEl = document.getElementById('bossReward');
   const dmgEl = document.getElementById('bossPlayerDamage');
   const statusEl = document.getElementById('bossStatusText');
-
-  if (stage) {
-    stage.textContent = bossData.emoji;
-    stage.className = 'boss-stage ' + (boss.defeated ? 'boss-defeat' : 'boss-idle');
-  }
+  if (stage) { stage.textContent = bossData.emoji; stage.className = 'boss-stage ' + (boss.defeated ? 'boss-defeat' : 'boss-idle'); }
   if (nameEl) nameEl.textContent = bossData.name;
   if (lvlEl) lvlEl.textContent = `Nível ${appData.level || 0}`;
   const hpPct = Math.max(0, Math.round((boss.hp / boss.maxHp) * 100));
   if (hpTextEl) hpTextEl.textContent = `${Math.max(0, boss.hp)} / ${boss.maxHp}`;
   if (hpFill) hpFill.style.width = hpPct + '%';
   if (hpInner) hpInner.textContent = hpPct + '%';
-  if (rewardEl) rewardEl.textContent = getBossReward();
-  if (dmgEl) dmgEl.textContent = getPlayerDamage();
-  if (statusEl) {
-    if (boss.defeated) statusEl.textContent = '🏆 BOSS DERROTADO!';
-    else statusEl.textContent = '⚔️ Complete tarefas para atacar!';
-  }
+  if (rewardEl) rewardEl.textContent = getBossReward(appData.level || 0, appData.prestiges || 0);
+  if (dmgEl) dmgEl.textContent = getPlayerDamage(appData.level || 0);
+  if (statusEl) statusEl.textContent = boss.defeated ? '🏆 BOSS DERROTADO!' : '⚔️ Complete tarefas para atacar!';
 }
 function bossTakeHit() {
   if (!appData || !appData.boss || appData.boss.defeated) return;
-  const dmg = getPlayerDamage();
+  const dmg = getPlayerDamage(appData.level || 0);
   appData.boss.hp = Math.max(0, appData.boss.hp - dmg);
   if (appData.boss.hp <= 0) {
     appData.boss.defeated = true;
-    const reward = getBossReward();
+    const reward = getBossReward(appData.level || 0, appData.prestiges || 0);
     appData.coins = (appData.coins || 0) + reward;
     appData.stats.coinsTotal = (appData.stats.coinsTotal || 0) + reward;
     appData.stats.bossWins = (appData.stats.bossWins || 0) + 1;
@@ -1004,9 +953,7 @@ function bossTakeHit() {
     soundBossWin();
     vibrate([100,50,100,50,200]);
     launchConfetti(100, ['💥','⚔️','👹','💀','🏆','✨','💰']);
-    setTimeout(() => {
-      showAchievementToast({ emoji: '👹', name: 'BOSS DERROTADO!', reward });
-    }, 300);
+    setTimeout(() => showAchievementToast({ emoji: '👹', name: 'BOSS DERROTADO!', reward }), 300);
     checkAchievements();
   } else {
     soundHit();
@@ -1014,7 +961,6 @@ function bossTakeHit() {
   }
   saveAppData();
   updateBossUI();
-  // Animação de hit no stage
   const stage = document.getElementById('bossStage');
   if (stage && !appData.boss.defeated) {
     stage.classList.remove('boss-hit');
@@ -1026,7 +972,6 @@ function bossTakeHit() {
 function openBoss() { soundClick(); updateBossUI(); const m = document.getElementById('bossModal'); m.classList.remove('hidden'); m.style.display = 'flex'; }
 function closeBoss() { const m = document.getElementById('bossModal'); m.classList.add('hidden'); m.style.display = 'none'; soundClick(); }
 
-/* ===== PET ===== */
 function updatePetDecay() {
   const today = getTodayKey();
   if (appData.pet.lastUpdate !== today) {
@@ -1042,10 +987,7 @@ function updatePetDecay() {
 function addPetXP(amount) {
   appData.pet.xp = (appData.pet.xp || 0) + amount;
   const { idx } = getPetStage(appData.pet.xp);
-  if (idx > (appData.stats.petMaxStage || 0)) {
-    appData.stats.petMaxStage = idx;
-    checkAchievements();
-  }
+  if (idx > (appData.stats.petMaxStage || 0)) { appData.stats.petMaxStage = idx; checkAchievements(); }
   saveAppData();
   updatePetUI();
 }
@@ -1105,20 +1047,15 @@ function playWithPet() {
   launchConfetti(8, ['🎾','✨','💚']);
 }
 
-/* ===== POMODORO ===== */
 function openPomodoro() {
   soundClick();
   if (appData.pomodoro.date !== getTodayKey()) {
-    appData.pomodoro.today = 0;
-    appData.pomodoro.date = getTodayKey();
-    appData.pomodoro.seconds = 1500;
-    appData.pomodoro.mode = 'focus';
-    appData.pomodoro.running = false;
+    appData.pomodoro.today = 0; appData.pomodoro.date = getTodayKey();
+    appData.pomodoro.seconds = 1500; appData.pomodoro.mode = 'focus'; appData.pomodoro.running = false;
     saveAppData();
   }
   updatePomodoroUI();
-  const m = document.getElementById('pomodoroModal');
-  m.classList.remove('hidden'); m.style.display = 'flex';
+  const m = document.getElementById('pomodoroModal'); m.classList.remove('hidden'); m.style.display = 'flex';
 }
 function closePomodoro() { const m = document.getElementById('pomodoroModal'); m.classList.add('hidden'); m.style.display = 'none'; soundClick(); }
 function updatePomodoroUI() {
@@ -1129,10 +1066,7 @@ function updatePomodoroUI() {
   const total = mode === 'focus' ? 1500 : 300;
   const secs = p.seconds !== undefined ? p.seconds : total;
   const m = Math.floor(secs / 60), s = secs % 60;
-  if (disp) {
-    disp.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-    disp.className = 'pomodoro-display mb-5' + (mode === 'break' ? ' break-mode' : '');
-  }
+  if (disp) { disp.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; disp.className = 'pomodoro-display mb-5' + (mode === 'break' ? ' break-mode' : ''); }
   const fb = document.getElementById('pomoFocusBtn');
   const bb = document.getElementById('pomoBreakBtn');
   if (fb) fb.classList.toggle('active', mode === 'focus');
@@ -1161,9 +1095,7 @@ function startPomodoro() {
         if (appData.pomodoro.today % 4 === 0) { addXP(100); launchConfetti(30, ['🍅','🔥','✨','💪']); }
         appData.pomodoro.mode = 'break';
         appData.pomodoro.seconds = 300;
-        if (appData.weekly && appData.weekly.progress) {
-          appData.weekly.progress.pomodoro = (appData.weekly.progress.pomodoro || 0) + 1;
-        }
+        if (appData.weekly && appData.weekly.progress) appData.weekly.progress.pomodoro = (appData.weekly.progress.pomodoro || 0) + 1;
       } else {
         appData.pomodoro.mode = 'focus';
         appData.pomodoro.seconds = 1500;
@@ -1171,8 +1103,7 @@ function startPomodoro() {
       appData.pomodoro.running = false;
       saveAppData(); updatePomodoroUI(); updateLevelUI();
       checkAchievements();
-      soundPomodoro();
-      vibrate([50,30,50,30,80]);
+      soundPomodoro(); vibrate([50,30,50,30,80]);
       launchConfetti(20, appData.pomodoro.mode === 'break' ? ['🎉','☕','✨'] : ['🍅','💪','🎯']);
       checkWeeklyMissions();
     }
@@ -1182,7 +1113,6 @@ function pausePomodoro() { if (pomodoroInterval) { clearInterval(pomodoroInterva
 function resetPomodoro() { pausePomodoro(); appData.pomodoro.mode = 'focus'; appData.pomodoro.seconds = 1500; saveAppData(); updatePomodoroUI(); }
 function setPomodoroMode(mode) { pausePomodoro(); appData.pomodoro.mode = mode; appData.pomodoro.seconds = mode === 'focus' ? 1500 : 300; saveAppData(); updatePomodoroUI(); }
 
-/* ===== WEEKLY ===== */
 function ensureWeeklyMissions() {
   const wk = getMondayKey();
   if (!appData.weekly || appData.weekly.weekKey !== wk) {
@@ -1253,7 +1183,6 @@ function updateWeeklyUI() {
   }
 }
 
-/* ===== BASIC ===== */
 function ensureBasicTasksToday() {
   const today = getTodayKey();
   if (appData.basicDate !== today) {
@@ -1292,7 +1221,6 @@ function renderBasicTasks() {
 function openMissions() { ensureBasicTasksToday(); renderBasicTasks(); soundSystem(); vibrate([20,10,30]); const m = document.getElementById('missionsModal'); m.classList.remove('hidden'); m.style.display = 'flex'; }
 function closeMissions() { const m = document.getElementById('missionsModal'); m.classList.add('hidden'); m.style.display = 'none'; soundClick(); }
 
-/* ===== ACHIEVEMENTS ===== */
 function checkAchievements() {
   if (!appData.unlockedAchievements) appData.unlockedAchievements = [];
   ACHIEVEMENTS.forEach(a => {
@@ -1333,7 +1261,6 @@ function renderAchievements() {
   document.getElementById('achvProgress').textContent = `${unlocked} / ${ACHIEVEMENTS.length}`;
 }
 
-/* ===== STATS ===== */
 function openStats() { soundClick(); renderStats(); const m = document.getElementById('statsModal'); m.classList.remove('hidden'); m.style.display = 'flex'; }
 function closeStats() { const m = document.getElementById('statsModal'); m.classList.add('hidden'); m.style.display = 'none'; soundClick(); }
 function renderStats() {
@@ -1360,7 +1287,6 @@ function renderStats() {
   }
 }
 
-/* ===== ROULETTE ===== */
 function openRoulette() { soundClick(); updateRouletteStatus(); const m = document.getElementById('rouletteModal'); m.classList.remove('hidden'); m.style.display = 'flex'; }
 function closeRoulette() { const m = document.getElementById('rouletteModal'); m.classList.add('hidden'); m.style.display = 'none'; soundClick(); }
 function updateRouletteStatus() {
@@ -1421,7 +1347,6 @@ function spinRoulette(isPaid) {
   }, 4100);
 }
 
-/* ===== THEME ===== */
 function applyThemeStyle() {
   ['theme-purple','theme-green','theme-red','theme-gold','theme-pink','theme-rainbow'].forEach(c => document.body.classList.remove(c));
   if (appData.themeStyle && appData.themeStyle !== 'default') document.body.classList.add('theme-' + appData.themeStyle);
@@ -1442,7 +1367,6 @@ function initTheme() {
   applyThemeStyle();
 }
 
-/* ===== DAYS ===== */
 function renderDaysNav() {
   const c = document.getElementById('daysNavContainer');
   c.innerHTML = '';
@@ -1762,8 +1686,7 @@ function triggerLevelUp() {
   document.getElementById('levelUpModal').classList.remove('hidden');
   DAYS.forEach(d => { appData.days[d.id] = newDayData(ng.study, ng.noPhone); });
   appData.xp = 0;
-  // Atualiza boss pro novo nível
-  appData.boss = newBoss();
+  appData.boss = newBoss(appData.level, appData.prestiges);
   saveAppData(); updateLevelUI(); updateBossUI();
   checkAchievements(); checkWeeklyMissions();
   setTimeout(() => { const b = document.getElementById('rankBadge'); b.classList.add('badge-glow','shine'); setTimeout(() => b.classList.remove('badge-glow'), 4000); }, 600);
@@ -1903,9 +1826,8 @@ function initApp() {
   ensureBasicTasksToday();
   updatePetDecay();
   ensureWeeklyMissions();
-  // Valida boss da semana
-  if (!appData.boss || appData.boss.weekKey !== getMondayKey()) appData.boss = newBoss();
-  else appData.boss.maxHp = getBossMaxHp();
+  if (!appData.boss || appData.boss.weekKey !== getMondayKey()) appData.boss = newBoss(appData.level, appData.prestiges);
+  else appData.boss.maxHp = getBossMaxHp(appData.level, appData.prestiges);
   spawnBgParticles();
   initTheme();
   updateLevelUI();
