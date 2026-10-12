@@ -170,7 +170,10 @@ body.light-bg .avatar-inner{background:#eef2ff}
 .edit-btn.del{background:rgba(239,68,68,.2);color:#f87171;border-color:rgba(239,68,68,.4)}
 .edit-input{width:100%;padding:8px 10px;border-radius:10px;background:rgba(15,23,42,.9);border:1px solid rgba(59,130,246,.3);color:#e2e8f0;font-size:12px}
 .edit-input:focus{outline:none;border-color:#3b82f6}
-.task-hidden{opacity:.5;filter:grayscale(.7)}
+.toggle-switch{width:60px;height:32px;border-radius:999px;background:#334155;position:relative;transition:all .3s;cursor:pointer;border:2px solid #475569}
+.toggle-switch.on{background:linear-gradient(135deg,#22c55e,#16a34a);border-color:#22c55e;box-shadow:0 0 15px rgba(34,197,94,.5)}
+.toggle-knob{position:absolute;top:2px;left:2px;width:24px;height:24px;border-radius:50%;background:#fff;transition:all .3s;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.toggle-switch.on .toggle-knob{left:30px}
 </style>
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col">
@@ -257,8 +260,8 @@ body.light-bg .avatar-inner{background:#eef2ff}
   <div class="rounded-3xl p-5 max-w-md w-full bg-slate-900 border-2 border-cyan-500/40 shadow-2xl my-auto">
     <div class="flex items-center justify-between mb-4"><h2 class="text-xl font-black text-cyan-400">✏️ Editar Rotina</h2><button id="editCloseBtn" type="button" class="btn-action p-2 rounded-xl bg-slate-800 text-slate-300 text-sm">✕</button></div>
     <div class="flex items-center justify-between bg-cyan-500/10 border border-cyan-500/30 rounded-2xl px-4 py-3 mb-4">
-      <div><div class="text-sm font-black text-white">Modo Edição</div><div class="text-[10px] text-slate-400">Ativar pra mexer nas tarefas</div></div>
-      <button id="editToggleBtn" type="button" class="px-4 py-2 rounded-xl font-black text-xs bg-slate-800 text-slate-400 border border-slate-700">DESLIGADO</button>
+      <div><div class="text-sm font-black text-white">Modo Edição</div><div id="editStatusText" class="text-[10px] text-slate-400">Desligado — rotina protegida</div></div>
+      <div id="editToggleSwitch" class="toggle-switch"><div class="toggle-knob"></div></div>
     </div>
     <div id="editListArea" class="hidden">
       <p class="text-[10px] text-slate-400 font-bold mb-2 uppercase tracking-wider">Suas Tarefas</p>
@@ -450,22 +453,22 @@ const AVATARS_SHOP=[{emoji:'⚡',price:0,name:'Raio'},{emoji:'🚀',price:0,name
 const THEMES_SHOP=[{id:'default',name:'Azul Padrão',price:0},{id:'purple',name:'Roxo Místico',price:100},{id:'green',name:'Verde Selva',price:100},{id:'pink',name:'Rosa Neon',price:150},{id:'red',name:'Vermelho Fogo',price:200},{id:'gold',name:'Dourado Real',price:300},{id:'rainbow',name:'Arco-Íris',price:500}];
 const CHEST_PRICE=100;
 const CHEST_REWARDS=[{type:'coins',weight:35,min:30,max:150},{type:'xp',weight:20,min:20,max:80},{type:'avatar',weight:25},{type:'theme',weight:15},{type:'jackpot',weight:5}];
-const ACHIEVEMENTS=[{id:'first_task',emoji:'✅',name:'Primeira Tarefa',desc:'Complete 1 tarefa',check:s=>s.tasksTotal>=1,reward:20},{id:'ten_tasks',emoji:'🔟',name:'Aquecendo',desc:'Complete 10 tarefas',check:s=>s.tasksTotal>=10,reward:30},{id:'fifty_tasks',emoji:'💪',name:'Guerreiro',desc:'Complete 50 tarefas',check:s=>s.tasksTotal>=50,reward:80},{id:'hundred_tasks',emoji:'⚔️',name:'Veterano',desc:'Complete 100 tarefas',check:s=>s.tasksTotal>=100,reward:150},{id:'first_perfect',emoji:'⭐',name:'Dia Perfeito',desc:'1 dia 100% completo',check:s=>s.perfectDays>=1,reward:50},{id:'week_perfect',emoji:'🏆',name:'Semana Perfeita',desc:'7 dias perfeitos',check:s=>s.perfectDays>=7,reward:200},{id:'month_perfect',emoji:'👑',name:'Mês Perfeito',desc:'30 dias perfeitos',check:s=>s.perfectDays>=30,reward:500},{id:'first_level',emoji:'🎮',name:'Subindo',desc:'Nível 1',check:s=>s.maxLevel>=1,reward:30},{id:'level_5',emoji:'🚀',name:'Decolando',desc:'Nível 5',check:s=>s.maxLevel>=5,reward:100},{id:'level_10',emoji:'🌟',name:'Estrela',desc:'Nível 10',check:s=>s.maxLevel>=10,reward:250},{id:'first_prestige',emoji:'🥉',name:'Prestígio',desc:'Prestígio 1',check:s=>s.prestiges>=1,reward:300},{id:'rich',emoji:'💰',name:'Rico',desc:'500 moedas',check:s=>s.coinsTotal>=500,reward:100},{id:'streak_3',emoji:'🔥',name:'Em Chamas',desc:'Streak 3',check:s=>s.bestStreak>=3,reward:150},{id:'streak_10',emoji:'🌋',name:'Imparável',desc:'Streak 10',check:s=>s.bestStreak>=10,reward:500},{id:'xp_1000',emoji:'⚡',name:'Energizado',desc:'1000 XP',check:s=>s.xpTotal>=1000,reward:100},{id:'spinner',emoji:'🎰',name:'Sortudo',desc:'Gire 10x',check:s=>s.spinsTotal>=10,reward:100},{id:'pomodoro_1',emoji:'🍅',name:'Focado',desc:'1 pomodoro',check:s=>(s.pomoTotal||0)>=1,reward:30},{id:'pomodoro_25',emoji:'🧠',name:'Mente Afiada',desc:'25 pomodoros',check:s=>(s.pomoTotal||0)>=25,reward:200},{id:'pet_evo',emoji:'🐣',name:'Papai Coruja',desc:'Pet evoluiu',check:s=>(s.petMaxStage||0)>=1,reward:50},{id:'pet_dragon',emoji:'🐉',name:'Domador',desc:'Pet virou Dragão',check:s=>(s.petMaxStage||0)>=4,reward:500},{id:'boss_first',emoji:'👹',name:'Caçador',desc:'1 boss derrotado',check:s=>(s.bossWins||0)>=1,reward:100},{id:'boss_5',emoji:'⚔️',name:'Matador',desc:'5 bosses',check:s=>(s.bossWins||0)>=5,reward:400}];
+const ACHIEVEMENTS=[{id:'first_task',emoji:'✅',name:'Primeira Tarefa',desc:'Complete 1 tarefa',check:s=>s.tasksTotal>=1,reward:20},{id:'ten_tasks',emoji:'🔟',name:'Aquecendo',desc:'Complete 10 tarefas',check:s=>s.tasksTotal>=10,reward:30},{id:'fifty_tasks',emoji:'💪',name:'Guerreiro',desc:'Complete 50 tarefas',check:s=>s.tasksTotal>=50,reward:80},{id:'hundred_tasks',emoji:'⚔️',name:'Veterano',desc:'Complete 100 tarefas',check:s=>s.tasksTotal>=100,reward:150},{id:'first_perfect',emoji:'⭐',name:'Dia Perfeito',desc:'1 dia 100%',check:s=>s.perfectDays>=1,reward:50},{id:'week_perfect',emoji:'🏆',name:'Semana Perfeita',desc:'7 dias perfeitos',check:s=>s.perfectDays>=7,reward:200},{id:'month_perfect',emoji:'👑',name:'Mês Perfeito',desc:'30 dias perfeitos',check:s=>s.perfectDays>=30,reward:500},{id:'first_level',emoji:'🎮',name:'Subindo',desc:'Nível 1',check:s=>s.maxLevel>=1,reward:30},{id:'level_5',emoji:'🚀',name:'Decolando',desc:'Nível 5',check:s=>s.maxLevel>=5,reward:100},{id:'level_10',emoji:'🌟',name:'Estrela',desc:'Nível 10',check:s=>s.maxLevel>=10,reward:250},{id:'first_prestige',emoji:'🥉',name:'Prestígio',desc:'Prestígio 1',check:s=>s.prestiges>=1,reward:300},{id:'rich',emoji:'💰',name:'Rico',desc:'500 moedas',check:s=>s.coinsTotal>=500,reward:100},{id:'streak_3',emoji:'🔥',name:'Em Chamas',desc:'Streak 3',check:s=>s.bestStreak>=3,reward:150},{id:'streak_10',emoji:'🌋',name:'Imparável',desc:'Streak 10',check:s=>s.bestStreak>=10,reward:500},{id:'xp_1000',emoji:'⚡',name:'Energizado',desc:'1000 XP',check:s=>s.xpTotal>=1000,reward:100},{id:'spinner',emoji:'🎰',name:'Sortudo',desc:'Gire 10x',check:s=>s.spinsTotal>=10,reward:100},{id:'pomodoro_1',emoji:'🍅',name:'Focado',desc:'1 pomodoro',check:s=>(s.pomoTotal||0)>=1,reward:30},{id:'pomodoro_25',emoji:'🧠',name:'Mente Afiada',desc:'25 pomodoros',check:s=>(s.pomoTotal||0)>=25,reward:200},{id:'pet_evo',emoji:'🐣',name:'Papai Coruja',desc:'Pet evoluiu',check:s=>(s.petMaxStage||0)>=1,reward:50},{id:'pet_dragon',emoji:'🐉',name:'Domador',desc:'Pet virou Dragão',check:s=>(s.petMaxStage||0)>=4,reward:500},{id:'boss_first',emoji:'👹',name:'Caçador',desc:'1 boss',check:s=>(s.bossWins||0)>=1,reward:100},{id:'boss_5',emoji:'⚔️',name:'Matador',desc:'5 bosses',check:s=>(s.bossWins||0)>=5,reward:400}];
 const ROULETTE_REWARDS=[{emoji:'🪙',text:'+30 moedas',type:'coins',value:30},{emoji:'⭐',text:'+20 XP',type:'xp',value:20},{emoji:'🪙',text:'+50 moedas',type:'coins',value:50},{emoji:'💫',text:'+40 XP',type:'xp',value:40},{emoji:'💰',text:'+100 moedas',type:'coins',value:100},{emoji:'⚡',text:'+75 XP',type:'xp',value:75},{emoji:'🎁',text:'Baú grátis!',type:'chest',value:0},{emoji:'🪙',text:'+75 moedas',type:'coins',value:75},{emoji:'👑',text:'Avatar raro!',type:'avatar',value:0},{emoji:'💎',text:'+150 moedas',type:'coins',value:150},{emoji:'🎨',text:'Tema aleatório!',type:'theme',value:0},{emoji:'🌟',text:'+200 XP',type:'xp',value:200}];
 const PET_STAGES=[{min:0,emoji:'🥚',name:'Ovo Misterioso',color:'#94a3b8'},{min:100,emoji:'🐣',name:'Filhote',color:'#fbbf24'},{min:300,emoji:'🦊',name:'Jovem Astuto',color:'#f97316'},{min:700,emoji:'🐺',name:'Lobo Feroz',color:'#22c55e'},{min:1500,emoji:'🐉',name:'Dragão',color:'#a855f7'},{min:3000,emoji:'🔥',name:'Lendário',color:'#ef4444'}];
 const WEEKLY_POOL=[{id:'tasks',desc:'Complete 25 tarefas',target:25,reward:150,emoji:'✅'},{id:'perfect',desc:'Tenha 4 dias perfeitos',target:4,reward:250,emoji:'⭐'},{id:'pomodoro',desc:'Complete 5 pomodoros',target:5,reward:200,emoji:'🍅'},{id:'water',desc:'Tome 10L de água na semana',target:10,reward:150,emoji:'💧'}];
 const BOSSES=[{emoji:'👹',name:'GOBLIN SOMBRIO'},{emoji:'👺',name:'DUENDE MALIGNO'},{emoji:'🐗',name:'JAVALI FERAL'},{emoji:'🐻',name:'URSO DAS SOMBRAS'},{emoji:'🦁',name:'LEÃO ANCESTRAL'},{emoji:'🐲',name:'SERPENTE DRACÔNICA'},{emoji:'👾',name:'ENTIDADE CÓSMICA'},{emoji:'😈',name:'DEMÔNIO SUPREMO'}];
 const DEFAULT_TASK_LIST=[
-{id:'mine',type:'checkbox',emoji:'🎬',title:'Minerar vídeos bons',desc:'Busque referências e ideias.',rarity:'common',fixed:false,enabled:true,meta:''},
-{id:'subvideos',type:'subvideos',emoji:'📹',title:'Fazer vídeos',desc:'Grave os vídeos hoje.',rarity:'rare',fixed:true,enabled:true,meta:''},
-{id:'longvideo',type:'checkbox',emoji:'🎥',title:'Fazer 1 vídeo longo',desc:'Conteúdo aprofundado.',rarity:'epic',fixed:false,enabled:true,meta:''},
-{id:'insta',type:'instagram',emoji:'📱',title:'Focar no Instagram',desc:'Interaja e otimize o perfil.',rarity:'common',fixed:false,enabled:true,meta:''},
-{id:'study',type:'timer',emoji:'📚',title:'Estudar',desc:'Use o timer.',rarity:'rare',fixed:true,enabled:true,meta:''},
-{id:'read',type:'reading',emoji:'📖',title:'Ler um pouco',desc:'Alimente a mente.',rarity:'common',fixed:false,enabled:true,meta:''},
-{id:'water',type:'water',emoji:'💧',title:'Beber água',desc:'Hidratação é foco.',rarity:'common',fixed:true,enabled:true,meta:''},
-{id:'diary',type:'diary',emoji:'📝',title:'Diário',desc:'Reflita e registre.',rarity:'rare',fixed:false,enabled:true,meta:''},
-{id:'nophone',type:'nophone',emoji:'📵',title:'Sem celular',desc:'Timer offline.',rarity:'epic',fixed:true,enabled:true,meta:''},
-{id:'sleep',type:'sleep',emoji:'🌙',title:'Dormir no horário',desc:'Meta de sono.',rarity:'legendary',fixed:false,enabled:true,meta:''}
+{id:'mine',type:'checkbox',emoji:'🎬',title:'Minerar vídeos bons',desc:'Busque referências e ideias.',rarity:'common',fixed:false,enabled:true},
+{id:'subvideos',type:'subvideos',emoji:'📹',title:'Fazer vídeos',desc:'Grave os vídeos hoje.',rarity:'rare',fixed:true,enabled:true},
+{id:'longvideo',type:'checkbox',emoji:'🎥',title:'Fazer 1 vídeo longo',desc:'Conteúdo aprofundado.',rarity:'epic',fixed:false,enabled:true},
+{id:'insta',type:'instagram',emoji:'📱',title:'Focar no Instagram',desc:'Interaja e otimize o perfil.',rarity:'common',fixed:false,enabled:true},
+{id:'study',type:'timer',emoji:'📚',title:'Estudar',desc:'Use o timer.',rarity:'rare',fixed:true,enabled:true},
+{id:'read',type:'reading',emoji:'📖',title:'Ler um pouco',desc:'Alimente a mente.',rarity:'common',fixed:false,enabled:true},
+{id:'water',type:'water',emoji:'💧',title:'Beber água',desc:'Hidratação é foco.',rarity:'common',fixed:true,enabled:true},
+{id:'diary',type:'diary',emoji:'📝',title:'Diário',desc:'Reflita e registre.',rarity:'rare',fixed:false,enabled:true},
+{id:'nophone',type:'nophone',emoji:'📵',title:'Sem celular',desc:'Timer offline.',rarity:'epic',fixed:true,enabled:true},
+{id:'sleep',type:'sleep',emoji:'🌙',title:'Dormir no horário',desc:'Meta de sono.',rarity:'legendary',fixed:false,enabled:true}
 ];
 
 function getLevelGoals(level){return{videos:3+Math.floor(level/4),water:2000,study:1800+level*120,diaryPages:1+Math.floor(level/4),noPhone:3600+level*240};}
@@ -476,10 +479,10 @@ function getTodayKey(){const d=new Date();return `${d.getFullYear()}-${String(d.
 function getMondayKey(){const d=new Date();const day=d.getDay();const diff=d.getDate()-day+(day===0?-6:1);const monday=new Date(d.getFullYear(),d.getMonth(),diff);return `${monday.getFullYear()}-${String(monday.getMonth()+1).padStart(2,'0')}-${String(monday.getDate()).padStart(2,'0')}`;}
 function getPetStage(xp){let stage=PET_STAGES[0],idx=0;PET_STAGES.forEach((s,i)=>{if(xp>=s.min){stage=s;idx=i;}});return{stage,idx};}
 function getBossForWeek(){const wk=getMondayKey();let hash=0;for(let i=0;i<wk.length;i++)hash=((hash<<5)-hash)+wk.charCodeAt(i);return Math.abs(hash)%BOSSES.length;}
-function getBossMaxHp(level,prestiges){return 150+(level||0)*40+(prestiges||0)*250;}
-function getPlayerDamage(level){return 5+(level||0)*2;}
-function getBossReward(level,prestiges){return 150+(level||0)*30+(prestiges||0)*200;}
-function newBoss(level,prestiges){const idx=getBossForWeek();const maxHp=getBossMaxHp(level,prestiges);return{weekKey:getMondayKey(),bossIdx:idx,hp:maxHp,maxHp:maxHp,defeated:false};}
+function getBossMaxHp(l,p){return 150+(l||0)*40+(p||0)*250;}
+function getPlayerDamage(l){return 5+(l||0)*2;}
+function getBossReward(l,p){return 150+(l||0)*30+(p||0)*200;}
+function newBoss(l,p){const idx=getBossForWeek();const maxHp=getBossMaxHp(l,p);return{weekKey:getMondayKey(),bossIdx:idx,hp:maxHp,maxHp:maxHp,defeated:false};}
 function getTotalTasks(){return appData&&appData.taskList?appData.taskList.filter(t=>t.enabled).length:10;}
 
 let audioCtx=null;
@@ -519,9 +522,7 @@ let isProcessingLevelUp=false,confirmCallback=null;
 let currentStoreTab='avatars',isSpinning=false;
 let editModeOn=false,taskEditId=null;
 
-function newDayData(){
-  return{taskState:{},subvideos:[false,false,false],water:0,instagramNotes:'',readingText:'',diaryText:'',timerSeconds:1800,timerRunning:false,noPhoneSeconds:3600,noPhoneRunning:false};
-}
+function newDayData(){return{taskState:{},subvideos:[false,false,false],water:0,instagramNotes:'',readingText:'',diaryText:'',timerSeconds:1800,timerRunning:false,noPhoneSeconds:3600,noPhoneRunning:false};}
 function makeDefaultData(){
   const def={theme:'dark',autoTheme:false,quoteIndex:0,level:0,prestiges:0,xp:0,coins:0,streak:0,avatar:'⚡',themeStyle:'default',unlockedAvatars:['⚡','🚀','🔥','💪'],unlockedThemes:['default'],unlockedAchievements:[],basicTasks:{},basicDate:'',lastFreeSpin:'',lofiOn:false,stats:{xpTotal:0,coinsTotal:0,tasksTotal:0,perfectDays:0,bestStreak:0,maxLevel:0,prestiges:0,spinsTotal:0,pomoTotal:0,petMaxStage:0,bossWins:0},pet:{xp:0,hunger:100,happiness:100,lastUpdate:getTodayKey()},pomodoro:{today:0,date:getTodayKey(),mode:'focus',seconds:1500,running:false},weekly:{weekKey:getMondayKey(),missions:[],progress:{},claimed:{}},boss:newBoss(0,0),sleepSchedule:{bedtime:'22:00',wakeup:'06:00'},taskList:JSON.parse(JSON.stringify(DEFAULT_TASK_LIST)),days:{}};
   DAYS.forEach(d=>{def.days[d.id]=newDayData();});
@@ -534,20 +535,13 @@ function loadAppData(){
     if(saved){
       const parsed=JSON.parse(saved);
       if(!parsed.days)parsed.days={};
-      // Migração: se algum dia tem array tasks antigo, converte
       const needsMigration=DAYS.some(d=>parsed.days[d.id]&&Array.isArray(parsed.days[d.id].tasks));
       if(!parsed.taskList||needsMigration){
-        // Se precisa migrar, cria taskList do default e converte arrays
         const oldTaskList=parsed.taskList||DEFAULT_TASK_LIST;
         DAYS.forEach(d=>{
           const dd=parsed.days[d.id];
           if(!dd){parsed.days[d.id]=newDayData();return;}
-          if(Array.isArray(dd.tasks)){
-            const arr=dd.tasks;
-            dd.taskState=dd.taskState||{};
-            oldTaskList.forEach((t,i)=>{dd.taskState[t.id]=arr[i]===true;});
-            delete dd.tasks;
-          }
+          if(Array.isArray(dd.tasks)){const arr=dd.tasks;dd.taskState=dd.taskState||{};oldTaskList.forEach((t,i)=>{dd.taskState[t.id]=arr[i]===true;});delete dd.tasks;}
           if(!dd.taskState)dd.taskState={};
           if(!dd.subvideos)dd.subvideos=[false,false,false];
           if(dd.water===undefined)dd.water=0;
@@ -597,6 +591,7 @@ function resetAllData(){
   localStorage.removeItem('rotina_criador_v2');
   appData=makeDefaultData();saveAppData();
   currentDayIndex=new Date().getDay();
+  editModeOn=false;
   initTheme();updateLevelUI();updatePetUI();updateBossUI();
   document.getElementById('avatarInner').textContent='⚡';
   renderDaysNav();loadDayData(currentDayIndex);
@@ -678,37 +673,41 @@ function renderTasks(dd){
     const card=document.createElement('div');
     card.className=`task-card rarity-${task.rarity} ${checked?'completed':''} glass rounded-2xl p-4 shadow-lg flex flex-col justify-between`;
     let title=task.title,desc=task.desc,emoji=task.emoji;
-    // Títulos dinâmicos para tipos especiais
     if(task.type==='subvideos'){title=`Fazer ${goals.videos} vídeos`;desc=`Grave ${goals.videos} vídeos hoje.`;}
     if(task.type==='timer'){title=`Estudar ${studyMin} min`;}
     if(task.type==='water'){title=`Beber ${waterL} L`;}
     if(task.type==='nophone'){title=`Sem celular ${noPhoneH}h`;}
     if(task.type==='diary'){title=`Diário (${goals.diaryPages} pág)`;}
     let html=`<div><div class="flex items-center justify-between mb-2"><div class="flex items-center gap-2"><span class="text-3xl">${emoji}</span><span class="rarity-tag ${task.rarity}">${rar.label}</span></div>`;
-    if(editModeOn)html+=`<div class="edit-badge"><div class="edit-btn edit" data-action="edit" data-id="${task.id}">✏️</div>${task.fixed?'':`<div class="edit-btn del" data-action="del" data-id="${task.id}">🗑️</div>`}</div>`;
-    else if(task.type==='checkbox'||task.type==='custom')html+=`<input type="checkbox" data-id="${task.id}" class="custom-checkbox task-checkbox" ${checked?'checked':''}>`;
-    else if(task.type!=='subvideos'&&task.type!=='water'&&task.type!=='timer'&&task.type!=='nophone'&&task.type!=='sleep')html+=`<input type="checkbox" data-id="${task.id}" class="custom-checkbox task-checkbox" ${checked?'checked':''}>`;
+    // Botões de edição OU checkbox normal
+    if(editModeOn){
+      html+=`<div class="edit-badge"><div class="edit-btn edit" data-action="edit" data-id="${task.id}">✏️</div>${task.fixed?'':`<div class="edit-btn del" data-action="del" data-id="${task.id}">🗑️</div>`}</div>`;
+    }else{
+      if(task.type==='checkbox'||task.type==='custom'||task.type==='instagram'||task.type==='reading'||task.type==='diary'||task.type==='sleep'){
+        html+=`<input type="checkbox" data-id="${task.id}" class="custom-checkbox task-checkbox" ${checked?'checked':''}>`;
+      }
+    }
     html+=`</div><h3 class="font-black text-sm text-white mb-0.5">${title}</h3><p class="text-[11px] text-slate-400 mb-2">${desc}</p>`;
     if(task.type==='subvideos'){
       html+=`<div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 space-y-1.5">`;
-      for(let s=0;s<3;s++)html+=`<label class="flex items-center gap-2 text-[11px] font-semibold cursor-pointer text-slate-300"><input type="checkbox" data-sub="${s}" class="custom-checkbox subvideo-checkbox !w-5 !h-5" ${dd.subvideos[s]?'checked':''}><span>Vídeo ${s+1}</span></label>`;
+      for(let s=0;s<3;s++)html+=`<label class="flex items-center gap-2 text-[11px] font-semibold cursor-pointer text-slate-300"><input type="checkbox" data-sub="${s}" class="custom-checkbox subvideo-checkbox !w-5 !h-5" ${dd.subvideos[s]?'checked':''} ${editModeOn?'disabled':''}><span>Vídeo ${s+1}</span></label>`;
       html+=`</div>`;
     }else if(task.type==='instagram'){
-      html+=`<textarea data-field="instagramNotes" rows="2" placeholder="Anotações..." class="w-full text-[11px] p-2 rounded-xl bg-slate-950/60 border border-slate-800 text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none">${dd.instagramNotes||''}</textarea>`;
+      html+=`<textarea data-field="instagramNotes" rows="2" placeholder="Anotações..." ${editModeOn?'disabled':''} class="w-full text-[11px] p-2 rounded-xl bg-slate-950/60 border border-slate-800 text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none">${dd.instagramNotes||''}</textarea>`;
     }else if(task.type==='timer'){
-      html+=`<div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 text-center"><div id="timerDisplay" class="text-xl font-mono font-black text-blue-400 mb-2">${formatTime(dd.timerSeconds??goals.study)}</div><div class="flex justify-center gap-1.5"><button id="timerStartBtn" type="button" class="btn-action px-2.5 py-1 bg-blue-500 text-white rounded-lg text-[11px] font-bold">▶</button><button id="timerPauseBtn" type="button" class="btn-action px-2.5 py-1 bg-amber-500 text-white rounded-lg text-[11px] font-bold">⏸</button><button id="timerResetBtn" type="button" class="btn-action px-2.5 py-1 bg-slate-700 text-slate-200 rounded-lg text-[11px] font-bold">↺</button></div></div>`;
+      html+=`<div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 text-center"><div id="timerDisplay" class="text-xl font-mono font-black text-blue-400 mb-2">${formatTime(dd.timerSeconds??goals.study)}</div><div class="flex justify-center gap-1.5"><button id="timerStartBtn" type="button" ${editModeOn?'disabled':''} class="btn-action px-2.5 py-1 bg-blue-500 text-white rounded-lg text-[11px] font-bold">▶</button><button id="timerPauseBtn" type="button" ${editModeOn?'disabled':''} class="btn-action px-2.5 py-1 bg-amber-500 text-white rounded-lg text-[11px] font-bold">⏸</button><button id="timerResetBtn" type="button" ${editModeOn?'disabled':''} class="btn-action px-2.5 py-1 bg-slate-700 text-slate-200 rounded-lg text-[11px] font-bold">↺</button></div></div>`;
     }else if(task.type==='reading'){
-      html+=`<input type="text" data-field="readingText" placeholder="Livro e páginas..." value="${dd.readingText||''}" class="w-full text-[11px] p-2 rounded-xl bg-slate-950/60 border border-slate-800 text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">`;
+      html+=`<input type="text" data-field="readingText" placeholder="Livro e páginas..." value="${dd.readingText||''}" ${editModeOn?'disabled':''} class="w-full text-[11px] p-2 rounded-xl bg-slate-950/60 border border-slate-800 text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">`;
     }else if(task.type==='water'){
       const pct=Math.min(100,Math.round(((dd.water||0)/goals.water)*100));
-      html+=`<div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800"><div class="flex justify-between items-center mb-1.5"><span class="text-[10px] font-bold text-slate-400">Progresso</span><span id="waterMlText" class="text-[11px] font-black text-cyan-400">${dd.water||0}/${goals.water}ml</span></div><div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-2"><div id="waterProgressBar" class="bg-gradient-to-r from-cyan-400 to-blue-500 h-full transition-all duration-300" style="width:${pct}%"></div></div><div class="flex gap-1.5"><button id="waterMinusBtn" type="button" class="btn-action flex-1 py-1.5 bg-rose-500/15 text-rose-400 text-[11px] font-bold rounded-lg border border-rose-500/30">-250</button><button id="waterPlusBtn" type="button" class="btn-action flex-1 py-1.5 bg-cyan-500 text-white text-[11px] font-bold rounded-lg">+250</button></div></div>`;
+      html+=`<div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800"><div class="flex justify-between items-center mb-1.5"><span class="text-[10px] font-bold text-slate-400">Progresso</span><span id="waterMlText" class="text-[11px] font-black text-cyan-400">${dd.water||0}/${goals.water}ml</span></div><div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-2"><div id="waterProgressBar" class="bg-gradient-to-r from-cyan-400 to-blue-500 h-full transition-all duration-300" style="width:${pct}%"></div></div><div class="flex gap-1.5"><button id="waterMinusBtn" type="button" ${editModeOn?'disabled':''} class="btn-action flex-1 py-1.5 bg-rose-500/15 text-rose-400 text-[11px] font-bold rounded-lg border border-rose-500/30">-250</button><button id="waterPlusBtn" type="button" ${editModeOn?'disabled':''} class="btn-action flex-1 py-1.5 bg-cyan-500 text-white text-[11px] font-bold rounded-lg">+250</button></div></div>`;
     }else if(task.type==='diary'){
-      html+=`<textarea data-field="diaryText" rows="3" placeholder="Escreva sua página..." class="w-full text-[11px] p-2 rounded-xl bg-slate-950/60 border border-slate-800 text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none">${dd.diaryText||''}</textarea>`;
+      html+=`<textarea data-field="diaryText" rows="3" placeholder="Escreva sua página..." ${editModeOn?'disabled':''} class="w-full text-[11px] p-2 rounded-xl bg-slate-950/60 border border-slate-800 text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none">${dd.diaryText||''}</textarea>`;
     }else if(task.type==='nophone'){
-      html+=`<div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 text-center"><div id="noPhoneDisplay" class="text-xl font-mono font-black text-purple-400 mb-2">${formatTime(dd.noPhoneSeconds??goals.noPhone)}</div><div class="flex justify-center gap-1.5"><button id="noPhoneStartBtn" type="button" class="btn-action px-2.5 py-1 bg-purple-500 text-white rounded-lg text-[11px] font-bold">▶</button><button id="noPhonePauseBtn" type="button" class="btn-action px-2.5 py-1 bg-amber-500 text-white rounded-lg text-[11px] font-bold">⏸</button><button id="noPhoneResetBtn" type="button" class="btn-action px-2.5 py-1 bg-slate-700 text-slate-200 rounded-lg text-[11px] font-bold">↺</button></div></div>`;
+      html+=`<div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 text-center"><div id="noPhoneDisplay" class="text-xl font-mono font-black text-purple-400 mb-2">${formatTime(dd.noPhoneSeconds??goals.noPhone)}</div><div class="flex justify-center gap-1.5"><button id="noPhoneStartBtn" type="button" ${editModeOn?'disabled':''} class="btn-action px-2.5 py-1 bg-purple-500 text-white rounded-lg text-[11px] font-bold">▶</button><button id="noPhonePauseBtn" type="button" ${editModeOn?'disabled':''} class="btn-action px-2.5 py-1 bg-amber-500 text-white rounded-lg text-[11px] font-bold">⏸</button><button id="noPhoneResetBtn" type="button" ${editModeOn?'disabled':''} class="btn-action px-2.5 py-1 bg-slate-700 text-slate-200 rounded-lg text-[11px] font-bold">↺</button></div></div>`;
     }else if(task.type==='sleep'){
       const sl=appData.sleepSchedule;
-      html+=`<div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 space-y-1.5"><div class="flex justify-between items-center text-[11px]"><span class="font-bold text-slate-400">🌙 Dormir</span><input type="time" id="bedtimeInput" value="${sl.bedtime}" class="text-[11px] px-2 py-1 rounded-lg bg-slate-900 border border-slate-700 text-white"></div><div class="flex justify-between items-center text-[11px]"><span class="font-bold text-slate-400">☀️ Acordar</span><input type="time" id="wakeupInput" value="${sl.wakeup}" class="text-[11px] px-2 py-1 rounded-lg bg-slate-900 border border-slate-700 text-white"></div></div>`;
+      html+=`<div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 space-y-1.5"><div class="flex justify-between items-center text-[11px]"><span class="font-bold text-slate-400">🌙 Dormir</span><input type="time" id="bedtimeInput" value="${sl.bedtime}" ${editModeOn?'disabled':''} class="text-[11px] px-2 py-1 rounded-lg bg-slate-900 border border-slate-700 text-white"></div><div class="flex justify-between items-center text-[11px]"><span class="font-bold text-slate-400">☀️ Acordar</span><input type="time" id="wakeupInput" value="${sl.wakeup}" ${editModeOn?'disabled':''} class="text-[11px] px-2 py-1 rounded-lg bg-slate-900 border border-slate-700 text-white"></div></div>`;
     }
     html+=`</div><div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] font-bold"><span class="text-slate-500">+${rar.xp} XP • +${rar.coins} 🪙</span><span class="${checked?'text-emerald-400':'text-slate-500'}">${checked?'✓ FEITO':'PENDENTE'}</span></div>`;
     card.innerHTML=html;
@@ -727,57 +726,62 @@ function setTaskState(taskId,newState,rar,rect){const dd=appData.days[currentDay
 function bindTaskEvents(){
   const dd=appData.days[currentDayIndex];
   const goals=getLevelGoals(appData.level);
-  document.querySelectorAll('.task-checkbox').forEach(cb=>{
-    cb.addEventListener('change',e=>{
-      const id=e.target.getAttribute('data-id');
-      const task=appData.taskList.find(t=>t.id===id);
-      if(!task)return;
-      const rar=RARITY[task.rarity]||RARITY.common;
-      const rect=e.target.getBoundingClientRect();
-      const to=e.target.checked;
-      setTaskState(id,to,rar,rect);
-      if(to){if(task.type==='water')soundWater();else soundCheck();vibrate([20,10,30]);}
-      else{soundClick();vibrate(20);}
-      saveAppData();loadDayData(currentDayIndex);renderDaysNav();
+  // Só bind click events se NÃO estiver em modo edição
+  if(!editModeOn){
+    document.querySelectorAll('.task-checkbox').forEach(cb=>{
+      cb.addEventListener('change',e=>{
+        const id=e.target.getAttribute('data-id');
+        const task=appData.taskList.find(t=>t.id===id);
+        if(!task)return;
+        const rar=RARITY[task.rarity]||RARITY.common;
+        const rect=e.target.getBoundingClientRect();
+        const to=e.target.checked;
+        setTaskState(id,to,rar,rect);
+        if(to){if(task.type==='water')soundWater();else soundCheck();vibrate([20,10,30]);}
+        else{soundClick();vibrate(20);}
+        saveAppData();loadDayData(currentDayIndex);renderDaysNav();
+      });
     });
-  });
-  document.querySelectorAll('.subvideo-checkbox').forEach(cb=>{
-    cb.addEventListener('change',e=>{
-      const s=parseInt(e.target.getAttribute('data-sub'));
-      dd.subvideos[s]=e.target.checked;
-      const done=dd.subvideos.filter(Boolean).length;
-      const task=appData.taskList.find(t=>t.id==='subvideos');
-      if(task){const rar=RARITY[task.rarity]||RARITY.rare;setTaskState('subvideos',done>=goals.videos,rar,null);}
-      if(e.target.checked){soundCheck();vibrate(20);}
-      saveAppData();loadDayData(currentDayIndex);renderDaysNav();
+    document.querySelectorAll('.subvideo-checkbox').forEach(cb=>{
+      cb.addEventListener('change',e=>{
+        const s=parseInt(e.target.getAttribute('data-sub'));
+        dd.subvideos[s]=e.target.checked;
+        const done=dd.subvideos.filter(Boolean).length;
+        const task=appData.taskList.find(t=>t.id==='subvideos');
+        if(task){const rar=RARITY[task.rarity]||RARITY.rare;setTaskState('subvideos',done>=goals.videos,rar,null);}
+        if(e.target.checked){soundCheck();vibrate(20);}
+        saveAppData();loadDayData(currentDayIndex);renderDaysNav();
+      });
     });
-  });
-  document.querySelectorAll('[data-field]').forEach(el=>{
-    el.addEventListener('input',e=>{dd[e.target.getAttribute('data-field')]=e.target.value;saveAppData();});
-  });
-  document.querySelectorAll('.edit-btn').forEach(btn=>{
-    btn.addEventListener('click',e=>{
-      const action=e.currentTarget.getAttribute('data-action');
-      const id=e.currentTarget.getAttribute('data-id');
-      if(action==='edit')openTaskEdit(id);
-      else if(action==='del')deleteTask(id);
+    document.querySelectorAll('[data-field]').forEach(el=>{
+      el.addEventListener('input',e=>{dd[e.target.getAttribute('data-field')]=e.target.value;saveAppData();});
     });
-  });
-  const wp=document.getElementById('waterPlusBtn');
-  const wm=document.getElementById('waterMinusBtn');
-  if(wp)wp.addEventListener('click',()=>{dd.water=Math.min(goals.water*2,(dd.water||0)+250);const task=appData.taskList.find(t=>t.id==='water');if(task){const rar=RARITY[task.rarity]||RARITY.common;setTaskState('water',dd.water>=goals.water,rar,null);}soundWater();vibrate(20);saveAppData();loadDayData(currentDayIndex);renderDaysNav();});
-  if(wm)wm.addEventListener('click',()=>{dd.water=Math.max(0,(dd.water||0)-250);const task=appData.taskList.find(t=>t.id==='water');if(task){const rar=RARITY[task.rarity]||RARITY.common;setTaskState('water',dd.water>=goals.water,rar,null);}soundClick();saveAppData();loadDayData(currentDayIndex);renderDaysNav();});
-  const ts=document.getElementById('timerStartBtn'),tp=document.getElementById('timerPauseBtn'),tr=document.getElementById('timerResetBtn');
-  if(ts)ts.addEventListener('click',()=>{startStudyTimer(goals);soundClick();});
-  if(tp)tp.addEventListener('click',()=>{pauseStudyTimer();soundClick();});
-  if(tr)tr.addEventListener('click',()=>{pauseStudyTimer();dd.timerSeconds=goals.study;const task=appData.taskList.find(t=>t.id==='study');if(task){const rar=RARITY[task.rarity]||RARITY.rare;setTaskState('study',false,rar,null);}saveAppData();loadDayData(currentDayIndex);renderDaysNav();});
-  const ns=document.getElementById('noPhoneStartBtn'),np=document.getElementById('noPhonePauseBtn'),nr=document.getElementById('noPhoneResetBtn');
-  if(ns)ns.addEventListener('click',()=>{startNoPhoneTimer(goals);soundClick();});
-  if(np)np.addEventListener('click',()=>{pauseNoPhoneTimer();soundClick();});
-  if(nr)nr.addEventListener('click',()=>{pauseNoPhoneTimer();dd.noPhoneSeconds=goals.noPhone;const task=appData.taskList.find(t=>t.id==='nophone');if(task){const rar=RARITY[task.rarity]||RARITY.epic;setTaskState('nophone',false,rar,null);}saveAppData();loadDayData(currentDayIndex);renderDaysNav();});
-  const bt=document.getElementById('bedtimeInput'),wk=document.getElementById('wakeupInput');
-  if(bt)bt.addEventListener('change',e=>{appData.sleepSchedule.bedtime=e.target.value;saveAppData();});
-  if(wk)wk.addEventListener('change',e=>{appData.sleepSchedule.wakeup=e.target.value;saveAppData();});
+    const wp=document.getElementById('waterPlusBtn');
+    const wm=document.getElementById('waterMinusBtn');
+    if(wp)wp.addEventListener('click',()=>{dd.water=Math.min(goals.water*2,(dd.water||0)+250);const task=appData.taskList.find(t=>t.id==='water');if(task){const rar=RARITY[task.rarity]||RARITY.common;setTaskState('water',dd.water>=goals.water,rar,null);}soundWater();vibrate(20);saveAppData();loadDayData(currentDayIndex);renderDaysNav();});
+    if(wm)wm.addEventListener('click',()=>{dd.water=Math.max(0,(dd.water||0)-250);const task=appData.taskList.find(t=>t.id==='water');if(task){const rar=RARITY[task.rarity]||RARITY.common;setTaskState('water',dd.water>=goals.water,rar,null);}soundClick();saveAppData();loadDayData(currentDayIndex);renderDaysNav();});
+    const ts=document.getElementById('timerStartBtn'),tp=document.getElementById('timerPauseBtn'),tr=document.getElementById('timerResetBtn');
+    if(ts)ts.addEventListener('click',()=>{startStudyTimer(goals);soundClick();});
+    if(tp)tp.addEventListener('click',()=>{pauseStudyTimer();soundClick();});
+    if(tr)tr.addEventListener('click',()=>{pauseStudyTimer();dd.timerSeconds=goals.study;const task=appData.taskList.find(t=>t.id==='study');if(task){const rar=RARITY[task.rarity]||RARITY.rare;setTaskState('study',false,rar,null);}saveAppData();loadDayData(currentDayIndex);renderDaysNav();});
+    const ns=document.getElementById('noPhoneStartBtn'),np=document.getElementById('noPhonePauseBtn'),nr=document.getElementById('noPhoneResetBtn');
+    if(ns)ns.addEventListener('click',()=>{startNoPhoneTimer(goals);soundClick();});
+    if(np)np.addEventListener('click',()=>{pauseNoPhoneTimer();soundClick();});
+    if(nr)nr.addEventListener('click',()=>{pauseNoPhoneTimer();dd.noPhoneSeconds=goals.noPhone;const task=appData.taskList.find(t=>t.id==='nophone');if(task){const rar=RARITY[task.rarity]||RARITY.epic;setTaskState('nophone',false,rar,null);}saveAppData();loadDayData(currentDayIndex);renderDaysNav();});
+    const bt=document.getElementById('bedtimeInput'),wk=document.getElementById('wakeupInput');
+    if(bt)bt.addEventListener('change',e=>{appData.sleepSchedule.bedtime=e.target.value;saveAppData();});
+    if(wk)wk.addEventListener('change',e=>{appData.sleepSchedule.wakeup=e.target.value;saveAppData();});
+  } else {
+    // Modo edição: bind botões de editar/deletar
+    document.querySelectorAll('.edit-btn').forEach(btn=>{
+      btn.addEventListener('click',e=>{
+        const action=e.currentTarget.getAttribute('data-action');
+        const id=e.currentTarget.getAttribute('data-id');
+        if(action==='edit')openTaskEdit(id);
+        else if(action==='del')deleteTask(id);
+      });
+    });
+  }
 }
 function addXP(a){appData.xp=(appData.xp||0)+a;const n=xpNeededForLevel(appData.level);if(appData.xp>n)appData.xp=n;updateLevelUI();}
 function removeXP(a){appData.xp=Math.max(0,(appData.xp||0)-a);updateLevelUI();}
@@ -860,35 +864,83 @@ function renderChestTab(){const c=document.getElementById('storeContent');const 
 function openChest(){const totalWeight=CHEST_REWARDS.reduce((a,r)=>a+r.weight,0);let roll=Math.random()*totalWeight;let reward=CHEST_REWARDS[0];for(const r of CHEST_REWARDS){if(roll<r.weight){reward=r;break;}roll-=r.weight;}let emoji='🎁',title='Você ganhou!',text='';let confettiEmojis=['🎉','✨','🎁'];if(reward.type==='coins'){const amount=Math.floor(reward.min+Math.random()*(reward.max-reward.min));appData.coins+=amount;appData.stats.coinsTotal=(appData.stats.coinsTotal||0)+amount;emoji='🪙';text=`+${amount} moedas!`;confettiEmojis=['🪙','✨','💰'];}else if(reward.type==='xp'){const amount=Math.floor(reward.min+Math.random()*(reward.max-reward.min));addXP(amount);appData.stats.xpTotal=(appData.stats.xpTotal||0)+amount;emoji='⭐';text=`+${amount} XP!`;confettiEmojis=['⭐','✨','💫'];}else if(reward.type==='avatar'){const locked=AVATARS_SHOP.filter(a=>!appData.unlockedAvatars.includes(a.emoji)&&a.price>0);if(locked.length>0){const won=locked[Math.floor(Math.random()*locked.length)];appData.unlockedAvatars.push(won.emoji);emoji=won.emoji;text=`Avatar "${won.name}" desbloqueado!`;confettiEmojis=['👤','✨',won.emoji];}else{appData.coins+=100;emoji='🪙';text=`Já tem todos! +100 moedas.`;}}else if(reward.type==='theme'){const locked=THEMES_SHOP.filter(t=>!appData.unlockedThemes.includes(t.id)&&t.price>0);if(locked.length>0){const won=locked[Math.floor(Math.random()*locked.length)];appData.unlockedThemes.push(won.id);emoji='🎨';text=`Tema "${won.name}" desbloqueado!`;confettiEmojis=['🎨','✨','🌈'];}else{appData.coins+=150;emoji='🪙';text=`Já tem todos! +150 moedas.`;}}else{appData.coins+=500;appData.stats.coinsTotal=(appData.stats.coinsTotal||0)+500;emoji='💎';title='🎉 JACKPOT!';text='+500 moedas!!!';confettiEmojis=['💎','💰','🎉','👑','✨','🪙'];}saveAppData();updateLevelUI();soundLevelUp();vibrate([50,30,50,30,100]);launchConfetti(60,confettiEmojis);document.getElementById('chestResultEmoji').textContent=emoji;document.getElementById('chestResultTitle').textContent=title;document.getElementById('chestResultText').textContent=text;document.getElementById('chestResultModal').classList.remove('hidden');checkAchievements();}
 
 // EDIT ROUTINE
-function openEdit(){soundClick();renderEditList();const m=document.getElementById('editModal');m.classList.remove('hidden');m.style.display='flex';}
-function closeEdit(){const m=document.getElementById('editModal');m.classList.add('hidden');m.style.display='none';soundClick();}
+function openEdit(){soundClick();editModeOn=false;updateEditUI();renderEditList();const m=document.getElementById('editModal');m.classList.remove('hidden');m.style.display='flex';}
+function closeEdit(){
+  editModeOn=false;
+  updateEditUI();
+  loadDayData(currentDayIndex);
+  const m=document.getElementById('editModal');m.classList.add('hidden');m.style.display='none';
+  soundClick();
+}
+function updateEditUI(){
+  const sw=document.getElementById('editToggleSwitch');
+  const area=document.getElementById('editListArea');
+  const status=document.getElementById('editStatusText');
+  if(editModeOn){
+    sw.classList.add('on');
+    area.classList.remove('hidden');
+    status.textContent='Ligado — você pode editar';
+    status.style.color='#22c55e';
+  }else{
+    sw.classList.remove('on');
+    area.classList.add('hidden');
+    status.textContent='Desligado — rotina protegida';
+    status.style.color='#94a3b8';
+  }
+}
 function toggleEditMode(){
   editModeOn=!editModeOn;
-  const btn=document.getElementById('editToggleBtn');
-  const area=document.getElementById('editListArea');
-  if(editModeOn){btn.textContent='LIGADO';btn.className='px-4 py-2 rounded-xl font-black text-xs bg-emerald-500/20 text-emerald-400 border border-emerald-500/40';area.classList.remove('hidden');}
-  else{btn.textContent='DESLIGADO';btn.className='px-4 py-2 rounded-xl font-black text-xs bg-slate-800 text-slate-400 border border-slate-700';area.classList.add('hidden');}
+  updateEditUI();
+  // Re-renderiza a grade de tarefas para mostrar/esconder botões de edição
   renderTasks(appData.days[currentDayIndex]);
+  soundClick();
+  vibrate(20);
 }
 function renderEditList(){
   const list=document.getElementById('editTasksList');
+  if(!list)return;
   list.innerHTML='';
   appData.taskList.forEach(t=>{
     const div=document.createElement('div');
     div.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:rgba(15,23,42,.7);border:1px solid rgba(59,130,246,.25);border-radius:12px';
-    div.innerHTML=`<div style="display:flex;align-items:center;gap:10px"><span style="font-size:22px">${t.emoji}</span><div><div style="font-size:13px;font-weight:800;color:${t.enabled?'#e2e8f0':'#64748b'}">${t.title}</div><div style="font-size:10px;color:#94a3b8">${t.fixed?'Fixa':t.type==='checkbox'||t.type==='custom'?'Editável':'Especial'}</div></div></div><div style="display:flex;gap:4px">${t.fixed?'<span style="font-size:10px;color:#64748b;padding:6px">🔒</span>':`<button type="button" class="edit-btn edit" data-edit="${t.id}" style="width:32px;height:32px;font-size:14px">✏️</button>`}<button type="button" class="edit-btn" data-toggle="${t.id}" style="width:32px;height:32px;font-size:14px;background:rgba(${t.enabled?'251,191,36':'34,197,94'},.2);color:${t.enabled?'#fbbf24':'#22c55e'};border:1px solid rgba(${t.enabled?'251,191,36':'34,197,94'},.4)">${t.enabled?'⏸️':'▶️'}</button></div>`;
+    div.innerHTML=`<div style="display:flex;align-items:center;gap:10px"><span style="font-size:22px">${t.emoji}</span><div><div style="font-size:13px;font-weight:800;color:${t.enabled?'#e2e8f0':'#64748b'}">${t.title}</div><div style="font-size:10px;color:#94a3b8">${t.fixed?'🔒 Fixa':t.type==='custom'?'Personalizada':'Especial'}</div></div></div><div style="display:flex;gap:4px">${t.fixed?'<span style="font-size:10px;color:#64748b;padding:6px">🔒</span>':`<button type="button" class="edit-btn edit" data-edit="${t.id}" style="width:32px;height:32px;font-size:14px">✏️</button>`}<button type="button" class="edit-btn" data-toggle="${t.id}" style="width:32px;height:32px;font-size:14px;background:rgba(${t.enabled?'251,191,36':'34,197,94'},.2);color:${t.enabled?'#fbbf24':'#22c55e'};border:1px solid rgba(${t.enabled?'251,191,36':'34,197,94'},.4)">${t.enabled?'⏸️':'▶️'}</button></div>`;
     list.appendChild(div);
   });
   list.querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',()=>openTaskEdit(b.getAttribute('data-edit'))));
   list.querySelectorAll('[data-toggle]').forEach(b=>b.addEventListener('click',()=>{
-    const id=b.getAttribute('data-toggle');const task=appData.taskList.find(t=>t.id===id);
-    if(task&&!task.fixed){task.enabled=!task.enabled;saveAppData();renderEditList();loadDayData(currentDayIndex);renderDaysNav();soundClick();}
+    const id=b.getAttribute('data-toggle');
+    const task=appData.taskList.find(t=>t.id===id);
+    if(task&&!task.fixed){
+      task.enabled=!task.enabled;
+      saveAppData();
+      renderEditList();
+      loadDayData(currentDayIndex);
+      renderDaysNav();
+      soundClick();
+      vibrate(20);
+    }else{
+      soundError();
+    }
   }));
 }
 function openTaskEdit(id){
   soundClick();
-  if(id){taskEditId=id;const task=appData.taskList.find(t=>t.id===id);document.getElementById('taskEditTitle').textContent='Editar Tarefa';document.getElementById('taskEditEmoji').value=task.emoji;document.getElementById('taskEditName').value=task.title;document.getElementById('taskEditDesc').value=task.desc;document.getElementById('taskEditRarity').value=task.rarity;}
-  else{taskEditId=null;document.getElementById('taskEditTitle').textContent='Nova Tarefa';document.getElementById('taskEditEmoji').value='🎯';document.getElementById('taskEditName').value='';document.getElementById('taskEditDesc').value='';document.getElementById('taskEditRarity').value='common';}
+  if(id){
+    taskEditId=id;
+    const task=appData.taskList.find(t=>t.id===id);
+    document.getElementById('taskEditTitle').textContent='Editar Tarefa';
+    document.getElementById('taskEditEmoji').value=task.emoji;
+    document.getElementById('taskEditName').value=task.title;
+    document.getElementById('taskEditDesc').value=task.desc;
+    document.getElementById('taskEditRarity').value=task.rarity;
+  }else{
+    taskEditId=null;
+    document.getElementById('taskEditTitle').textContent='Nova Tarefa';
+    document.getElementById('taskEditEmoji').value='🎯';
+    document.getElementById('taskEditName').value='';
+    document.getElementById('taskEditDesc').value='';
+    document.getElementById('taskEditRarity').value='common';
+  }
   const m=document.getElementById('taskEditModal');m.classList.remove('hidden');m.style.display='flex';
 }
 function closeTaskEdit(){const m=document.getElementById('taskEditModal');m.classList.add('hidden');m.style.display='none';soundClick();}
@@ -903,11 +955,14 @@ function saveTaskEdit(){
     if(task){task.emoji=emoji;task.title=name;task.desc=desc;task.rarity=rarity;}
   }else{
     const id='custom_'+Date.now();
-    appData.taskList.push({id,type:'custom',emoji,title:name,desc,rarity,fixed:false,enabled:true,meta:''});
+    appData.taskList.push({id,type:'custom',emoji,title:name,desc,rarity,fixed:false,enabled:true});
     DAYS.forEach(d=>{appData.days[d.id].taskState[id]=false;});
   }
   saveAppData();soundBuy();vibrate([30,20,30]);
-  closeTaskEdit();renderEditList();loadDayData(currentDayIndex);renderDaysNav();
+  closeTaskEdit();
+  renderEditList();
+  loadDayData(currentDayIndex);
+  renderDaysNav();
 }
 function deleteTask(id){
   const task=appData.taskList.find(t=>t.id===id);
@@ -915,14 +970,20 @@ function deleteTask(id){
   showConfirm('🗑️','Remover Tarefa?','Tem certeza que quer remover "'+task.title+'"?',()=>{
     appData.taskList=appData.taskList.filter(t=>t.id!==id);
     DAYS.forEach(d=>{delete appData.days[d.id].taskState[id];});
-    saveAppData();soundReset();renderEditList();loadDayData(currentDayIndex);renderDaysNav();
+    saveAppData();soundReset();
+    renderEditList();
+    loadDayData(currentDayIndex);
+    renderDaysNav();
   });
 }
 function restoreDefaults(){
   showConfirm('🔄','Restaurar Padrão?','Vai apagar suas tarefas customizadas e voltar as 10 originais.',()=>{
     appData.taskList=JSON.parse(JSON.stringify(DEFAULT_TASK_LIST));
     DAYS.forEach(d=>{appData.days[d.id]=newDayData();});
-    saveAppData();soundBuy();vibrate([50,30,50]);renderEditList();loadDayData(currentDayIndex);renderDaysNav();
+    saveAppData();soundBuy();vibrate([50,30,50]);
+    renderEditList();
+    loadDayData(currentDayIndex);
+    renderDaysNav();
   });
 }
 
@@ -959,7 +1020,7 @@ function initApp(){
   document.getElementById('bossCloseBtn').addEventListener('click',closeBoss);
   document.getElementById('editRoutineBtn').addEventListener('click',openEdit);
   document.getElementById('editCloseBtn').addEventListener('click',closeEdit);
-  document.getElementById('editToggleBtn').addEventListener('click',toggleEditMode);
+  document.getElementById('editToggleSwitch').addEventListener('click',toggleEditMode);
   document.getElementById('addTaskBtn').addEventListener('click',()=>openTaskEdit(null));
   document.getElementById('restoreDefaultsBtn').addEventListener('click',restoreDefaults);
   document.getElementById('taskEditCancelBtn').addEventListener('click',closeTaskEdit);
@@ -1032,7 +1093,7 @@ function initApp(){
   });
 
   checkAchievements();checkWeeklyMissions();
-  console.log('✅ Modo Monstro v6 inicializado!');
+  console.log('✅ Modo Monstro v7 inicializado!');
 }
 document.addEventListener('DOMContentLoaded',initApp);
 </script>
