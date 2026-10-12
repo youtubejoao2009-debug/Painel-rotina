@@ -133,7 +133,7 @@ body.light-bg .avatar-inner { background: #eef2ff; }
 .roulette-wheel { width: 100%; height: 100%; border-radius: 50%; background: conic-gradient(#ef4444 0deg 30deg, #f59e0b 30deg 60deg, #eab308 60deg 90deg, #22c55e 90deg 120deg, #06b6d4 120deg 150deg, #3b82f6 150deg 180deg, #8b5cf6 180deg 210deg, #ec4899 210deg 240deg, #ef4444 240deg 270deg, #f59e0b 270deg 300deg, #eab308 300deg 330deg, #22c55e 330deg 360deg); border: 6px solid #1e293b; box-shadow: 0 0 30px rgba(59,130,246,0.4), inset 0 0 20px rgba(0,0,0,0.4); position: relative; transition: transform 4s cubic-bezier(0.17, 0.67, 0.15, 1); will-change: transform; }
 .roulette-pointer { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 14px solid transparent; border-right: 14px solid transparent; border-top: 24px solid #fbbf24; filter: drop-shadow(0 0 8px #fbbf24); z-index: 3; }
 .roulette-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(circle, #1e293b, #0f172a); border: 3px solid #fbbf24; display: grid; place-content: center; font-size: 26px; z-index: 2; box-shadow: 0 0 20px rgba(251,191,36,0.5); }
-.action-chip { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-width: 58px; padding: 6px 8px; border-radius: 12px; border: 1px solid; font-size: 18px; line-height: 1; transition: transform 0.15s, background 0.2s; flex-shrink: 0; }
+.action-chip { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-width: 58px; padding: 6px 8px; border-radius: 12px; border: 1px solid; font-size: 18px; line-height: 1; transition: transform 0.15s, background 0.2s; flex-shrink: 0; cursor: pointer; }
 .action-chip:active { transform: scale(0.94); }
 .chip-label { font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.3px; opacity: 0.95; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -147,7 +147,7 @@ body.light-bg .avatar-inner { background: #eef2ff; }
 .pet-bar-fill { height: 100%; transition: width 0.4s; }
 .pomodoro-display { font-size: 64px; font-weight: 900; text-align: center; font-family: 'Inter', monospace; background: linear-gradient(135deg, #ef4444, #f59e0b, #eab308); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: 0 0 40px rgba(239,68,68,0.3); letter-spacing: 2px; }
 .pomodoro-display.break-mode { background: linear-gradient(135deg, #22c55e, #06b6d4, #3b82f6); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: 0 0 40px rgba(34,197,94,0.3); }
-.pomo-mode-btn { padding: 8px 16px; border-radius: 12px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; border: 2px solid transparent; }
+.pomo-mode-btn { padding: 8px 16px; border-radius: 12px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; border: 2px solid transparent; cursor: pointer; }
 .pomo-mode-btn.active { border-color: currentColor; }
 .weekly-item { background: rgba(15,23,42,0.7); border: 1px solid rgba(249,115,22,0.3); border-radius: 14px; padding: 14px; margin-bottom: 10px; transition: all 0.3s; }
 .weekly-item.complete { border-color: #22c55e; background: linear-gradient(135deg, rgba(34,197,94,0.1), rgba(34,197,94,0.05)); box-shadow: 0 0 15px rgba(34,197,94,0.25); }
@@ -223,6 +223,7 @@ body.light-bg .avatar-inner { background: #eef2ff; }
         <button id="achievementsBtn" type="button" class="action-chip bg-yellow-500/15 text-yellow-400 border-yellow-500/40"><span>🏆</span><span class="chip-label">Troféus</span></button>
         <button id="statsBtn" type="button" class="action-chip bg-emerald-500/15 text-emerald-400 border-emerald-500/40"><span>📊</span><span class="chip-label">Stats</span></button>
         <button id="storeBtn" type="button" class="action-chip bg-amber-500/15 text-amber-400 border-amber-500/40"><span>🛒</span><span class="chip-label">Loja</span></button>
+        <button id="resetAllBtn" type="button" class="action-chip bg-rose-600/20 text-rose-500 border-rose-600/50"><span>💥</span><span class="chip-label">Reset Tudo</span></button>
       </div>
     </div>
 
@@ -279,6 +280,7 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </footer>
 
+<!-- MISSÕES BÁSICAS -->
 <div id="missionsModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="missions-panel rounded-3xl p-5 max-w-md w-full my-auto">
     <div class="text-center mb-4">
@@ -296,6 +298,7 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
+<!-- CONQUISTAS -->
 <div id="achievementsModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="rounded-3xl p-5 max-w-md w-full bg-slate-900 border-2 border-yellow-500/40 shadow-2xl my-auto">
     <div class="flex items-center justify-between mb-4">
@@ -310,6 +313,7 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
+<!-- STATS -->
 <div id="statsModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="rounded-3xl p-5 max-w-md w-full bg-slate-900 border-2 border-emerald-500/40 shadow-2xl my-auto">
     <div class="flex items-center justify-between mb-4">
@@ -333,6 +337,7 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
+<!-- ROLETA -->
 <div id="rouletteModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="rounded-3xl p-5 max-w-md w-full bg-slate-900 border-2 border-pink-500/40 shadow-2xl my-auto">
     <div class="flex items-center justify-between mb-4">
@@ -363,6 +368,7 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
+<!-- PET -->
 <div id="petModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="rounded-3xl p-5 max-w-md w-full bg-slate-900 border-2 border-lime-500/40 shadow-2xl my-auto">
     <div class="flex items-center justify-between mb-4">
@@ -396,6 +402,7 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
+<!-- POMODORO -->
 <div id="pomodoroModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="rounded-3xl p-5 max-w-md w-full bg-slate-900 border-2 border-red-500/40 shadow-2xl my-auto">
     <div class="flex items-center justify-between mb-4">
@@ -420,6 +427,7 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
+<!-- WEEKLY -->
 <div id="weeklyModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="rounded-3xl p-5 max-w-md w-full bg-slate-900 border-2 border-orange-500/40 shadow-2xl my-auto">
     <div class="flex items-center justify-between mb-4">
@@ -434,6 +442,7 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
+<!-- BOSS -->
 <div id="bossModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="rounded-3xl p-5 max-w-md w-full bg-slate-900 border-2 border-red-600/60 shadow-2xl my-auto" style="box-shadow:0 0 60px rgba(239,68,68,0.3);">
     <div class="flex items-center justify-between mb-3">
@@ -475,6 +484,37 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
+<!-- LOJA -->
+<div id="storeModal" class="hidden fixed inset-0 z-[70] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
+  <div class="rounded-3xl p-5 max-w-lg w-full bg-slate-900 border border-slate-700 shadow-2xl my-auto">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-xl font-black text-white">🛒 Loja</h2>
+      <button id="storeCloseBtn" type="button" class="btn-action p-2 rounded-xl bg-slate-800 text-slate-300 text-sm">✕</button>
+    </div>
+    <div class="flex items-center justify-center gap-2 bg-amber-500/15 border border-amber-500/40 rounded-2xl py-2 mb-4">
+      <span class="text-2xl">🪙</span><span id="storeCoins" class="text-xl font-black text-amber-400">0</span><span class="text-xs text-amber-400/70 font-bold">moedas</span>
+    </div>
+    <div class="flex gap-1.5 mb-4">
+      <button type="button" class="store-tab active flex-1 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-black" data-tab="avatars">👤 Avatares</button>
+      <button type="button" class="store-tab flex-1 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-black" data-tab="themes">🎨 Temas</button>
+      <button type="button" class="store-tab flex-1 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-black" data-tab="chest">🎁 Baú</button>
+    </div>
+    <div id="storeContent" class="max-h-[60vh] overflow-y-auto pr-1"></div>
+  </div>
+</div>
+
+<div id="chestResultModal" class="hidden fixed inset-0 z-[80] modal-overlay flex items-center justify-center p-4">
+  <div class="rounded-3xl p-8 max-w-sm w-full bg-gradient-to-br from-amber-600 via-yellow-600 to-orange-600 border-2 border-yellow-400 shadow-2xl text-center text-white relative overflow-hidden">
+    <div class="relative z-10">
+      <div id="chestResultEmoji" class="text-7xl mb-3">🎁</div>
+      <h3 class="text-2xl font-black mb-1" id="chestResultTitle">Você ganhou!</h3>
+      <p id="chestResultText" class="text-lg font-bold mb-5">Algo incrível</p>
+      <button id="chestResultCloseBtn" type="button" class="w-full py-3 rounded-2xl bg-white text-amber-700 font-black text-sm">🎉 Legal!</button>
+    </div>
+  </div>
+</div>
+
+<!-- LEVEL UP -->
 <div id="levelUpModal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
   <div id="levelUpCard" class="relative rounded-3xl p-6 sm:p-8 max-w-md w-full text-white text-center shadow-2xl overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-br from-blue-700 via-indigo-700 to-purple-800"></div>
@@ -503,6 +543,7 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
+<!-- CONFIRM -->
 <div id="confirmModal" class="hidden fixed inset-0 z-[60] modal-overlay flex items-center justify-center p-4">
   <div class="rounded-3xl p-6 max-w-sm w-full bg-slate-900 border border-slate-700 text-center shadow-2xl">
     <div class="text-5xl mb-2" id="confirmEmoji">⚠️</div>
@@ -511,35 +552,6 @@ body.light-bg .avatar-inner { background: #eef2ff; }
     <div class="flex gap-2">
       <button id="confirmCancelBtn" type="button" class="btn-action flex-1 py-2.5 rounded-xl bg-slate-800 text-slate-300 font-bold text-sm hover:bg-slate-700">Cancelar</button>
       <button id="confirmOkBtn" type="button" class="btn-action flex-1 py-2.5 rounded-xl bg-rose-600 text-white font-black text-sm hover:bg-rose-700">Confirmar</button>
-    </div>
-  </div>
-</div>
-
-<div id="storeModal" class="hidden fixed inset-0 z-[70] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
-  <div class="rounded-3xl p-5 max-w-lg w-full bg-slate-900 border border-slate-700 shadow-2xl my-auto">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="text-xl font-black text-white">🛒 Loja</h2>
-      <button id="storeCloseBtn" type="button" class="btn-action p-2 rounded-xl bg-slate-800 text-slate-300 text-sm">✕</button>
-    </div>
-    <div class="flex items-center justify-center gap-2 bg-amber-500/15 border border-amber-500/40 rounded-2xl py-2 mb-4">
-      <span class="text-2xl">🪙</span><span id="storeCoins" class="text-xl font-black text-amber-400">0</span><span class="text-xs text-amber-400/70 font-bold">moedas</span>
-    </div>
-    <div class="flex gap-1.5 mb-4">
-      <button type="button" class="store-tab active flex-1 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-black" data-tab="avatars">👤 Avatares</button>
-      <button type="button" class="store-tab flex-1 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-black" data-tab="themes">🎨 Temas</button>
-      <button type="button" class="store-tab flex-1 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-black" data-tab="chest">🎁 Baú</button>
-    </div>
-    <div id="storeContent" class="max-h-[60vh] overflow-y-auto pr-1"></div>
-  </div>
-</div>
-
-<div id="chestResultModal" class="hidden fixed inset-0 z-[80] modal-overlay flex items-center justify-center p-4">
-  <div class="rounded-3xl p-8 max-w-sm w-full bg-gradient-to-br from-amber-600 via-yellow-600 to-orange-600 border-2 border-yellow-400 shadow-2xl text-center text-white relative overflow-hidden">
-    <div class="relative z-10">
-      <div id="chestResultEmoji" class="text-7xl mb-3">🎁</div>
-      <h3 class="text-2xl font-black mb-1" id="chestResultTitle">Você ganhou!</h3>
-      <p id="chestResultText" class="text-lg font-bold mb-5">Algo incrível</p>
-      <button id="chestResultCloseBtn" type="button" class="w-full py-3 rounded-2xl bg-white text-amber-700 font-black text-sm">🎉 Legal!</button>
     </div>
   </div>
 </div>
@@ -640,18 +652,18 @@ const ACHIEVEMENTS = [
   { id: 'boss_5', emoji: '⚔️', name: 'Matador de Boss', desc: 'Derrote 5 bosses', check: s => (s.bossWins || 0) >= 5, reward: 400 }
 ];
 const ROULETTE_REWARDS = [
-  { emoji: '🪙', text: '+30 moedas', type: 'coins', value: 30, color: '#ef4444' },
-  { emoji: '⭐', text: '+20 XP', type: 'xp', value: 20, color: '#f59e0b' },
-  { emoji: '🪙', text: '+50 moedas', type: 'coins', value: 50, color: '#eab308' },
-  { emoji: '💫', text: '+40 XP', type: 'xp', value: 40, color: '#22c55e' },
-  { emoji: '💰', text: '+100 moedas', type: 'coins', value: 100, color: '#06b6d4' },
-  { emoji: '⚡', text: '+75 XP', type: 'xp', value: 75, color: '#3b82f6' },
-  { emoji: '🎁', text: 'Baú grátis!', type: 'chest', value: 0, color: '#8b5cf6' },
-  { emoji: '🪙', text: '+75 moedas', type: 'coins', value: 75, color: '#ec4899' },
-  { emoji: '👑', text: 'Avatar raro!', type: 'avatar', value: 0, color: '#ef4444' },
-  { emoji: '💎', text: '+150 moedas', type: 'coins', value: 150, color: '#f59e0b' },
-  { emoji: '🎨', text: 'Tema aleatório!', type: 'theme', value: 0, color: '#eab308' },
-  { emoji: '🌟', text: '+200 XP', type: 'xp', value: 200, color: '#22c55e' }
+  { emoji: '🪙', text: '+30 moedas', type: 'coins', value: 30 },
+  { emoji: '⭐', text: '+20 XP', type: 'xp', value: 20 },
+  { emoji: '🪙', text: '+50 moedas', type: 'coins', value: 50 },
+  { emoji: '💫', text: '+40 XP', type: 'xp', value: 40 },
+  { emoji: '💰', text: '+100 moedas', type: 'coins', value: 100 },
+  { emoji: '⚡', text: '+75 XP', type: 'xp', value: 75 },
+  { emoji: '🎁', text: 'Baú grátis!', type: 'chest', value: 0 },
+  { emoji: '🪙', text: '+75 moedas', type: 'coins', value: 75 },
+  { emoji: '👑', text: 'Avatar raro!', type: 'avatar', value: 0 },
+  { emoji: '💎', text: '+150 moedas', type: 'coins', value: 150 },
+  { emoji: '🎨', text: 'Tema aleatório!', type: 'theme', value: 0 },
+  { emoji: '🌟', text: '+200 XP', type: 'xp', value: 200 }
 ];
 const PET_STAGES = [
   { min: 0, emoji: '🥚', name: 'Ovo Misterioso', color: '#94a3b8' },
@@ -711,15 +723,9 @@ function getBossForWeek() {
   for (let i = 0; i < wk.length; i++) hash = ((hash << 5) - hash) + wk.charCodeAt(i);
   return Math.abs(hash) % BOSSES.length;
 }
-function getBossMaxHp(level, prestiges) {
-  return 150 + (level || 0) * 40 + (prestiges || 0) * 250;
-}
-function getPlayerDamage(level) {
-  return 5 + (level || 0) * 2;
-}
-function getBossReward(level, prestiges) {
-  return 150 + (level || 0) * 30 + (prestiges || 0) * 200;
-}
+function getBossMaxHp(level, prestiges) { return 150 + (level || 0) * 40 + (prestiges || 0) * 250; }
+function getPlayerDamage(level) { return 5 + (level || 0) * 2; }
+function getBossReward(level, prestiges) { return 150 + (level || 0) * 30 + (prestiges || 0) * 200; }
 function newBoss(level, prestiges) {
   const idx = getBossForWeek();
   const maxHp = getBossMaxHp(level, prestiges);
@@ -751,13 +757,8 @@ function soundAchievement() { playTone(659.25, 0.12, 'triangle', 0.15, 0); playT
 function soundPomodoro() { playTone(800, 0.15, 'triangle', 0.15, 0); playTone(1000, 0.15, 'triangle', 0.15, 0.15); playTone(1200, 0.4, 'triangle', 0.2, 0.3); }
 function soundPet() { playTone(700, 0.08, 'sine', 0.12); playTone(900, 0.1, 'sine', 0.12, 0.06); }
 function soundHit() { playTone(200, 0.08, 'square', 0.15); playTone(150, 0.12, 'sawtooth', 0.12, 0.05); }
-function soundBossWin() {
-  playTone(392, 0.2, 'triangle', 0.2, 0);
-  playTone(523.25, 0.2, 'triangle', 0.2, 0.15);
-  playTone(659.25, 0.2, 'triangle', 0.2, 0.3);
-  playTone(783.99, 0.2, 'triangle', 0.2, 0.45);
-  playTone(1046.5, 0.8, 'triangle', 0.25, 0.6);
-}
+function soundBossWin() { playTone(392, 0.2, 'triangle', 0.2, 0); playTone(523.25, 0.2, 'triangle', 0.2, 0.15); playTone(659.25, 0.2, 'triangle', 0.2, 0.3); playTone(783.99, 0.2, 'triangle', 0.2, 0.45); playTone(1046.5, 0.8, 'triangle', 0.25, 0.6); }
+function soundReset() { playTone(400, 0.15, 'sawtooth', 0.2, 0); playTone(300, 0.15, 'sawtooth', 0.2, 0.15); playTone(200, 0.5, 'sawtooth', 0.2, 0.3); }
 function vibrate(p) { if (navigator.vibrate) { try { navigator.vibrate(p); } catch(e) {} } }
 
 function spawnBgParticles() {
@@ -778,10 +779,7 @@ function spawnBgParticles() {
 
 let lofiPlaying = false;
 let lofiIntervals = [];
-const LOFI_CHORDS = [
-  [261.63, 329.63, 392.00], [220.00, 261.63, 329.63],
-  [174.61, 220.00, 261.63], [196.00, 246.94, 293.66]
-];
+const LOFI_CHORDS = [[261.63, 329.63, 392.00], [220.00, 261.63, 329.63], [174.61, 220.00, 261.63], [196.00, 246.94, 293.66]];
 function playLofiChord(freqs, vol = 0.04) {
   const ctx = getAudioCtx(); if (!ctx) return;
   const t = ctx.currentTime;
@@ -790,18 +788,15 @@ function playLofiChord(freqs, vol = 0.04) {
     filt.type = 'lowpass'; filt.frequency.setValueAtTime(1200, t);
     o.type = 'triangle'; o.frequency.setValueAtTime(f, t);
     o.frequency.detune.setValueAtTime((Math.random() - 0.5) * 8, t);
-    g.gain.setValueAtTime(0, t);
-    g.gain.linearRampToValueAtTime(vol, t + 0.8);
-    g.gain.linearRampToValueAtTime(vol * 0.7, t + 2.5);
-    g.gain.linearRampToValueAtTime(0, t + 3.6);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + 0.8);
+    g.gain.linearRampToValueAtTime(vol * 0.7, t + 2.5); g.gain.linearRampToValueAtTime(0, t + 3.6);
     o.connect(filt); filt.connect(g); g.connect(ctx.destination);
     o.start(t); o.stop(t + 3.8);
   });
 }
 function startLofi() {
   if (lofiPlaying) return;
-  const ctx = getAudioCtx();
-  if (!ctx) return;
+  const ctx = getAudioCtx(); if (!ctx) return;
   if (ctx.state === 'suspended') ctx.resume();
   lofiPlaying = true;
   let chordIdx = 0;
@@ -837,7 +832,7 @@ function newDayData(studySecs, noPhoneSecs) {
   };
 }
 
-function loadAppData() {
+function makeDefaultData() {
   const def = {
     theme: 'dark', autoTheme: false, quoteIndex: 0, level: 0, prestiges: 0, xp: 0, coins: 0, streak: 0,
     avatar: '⚡', themeStyle: 'default',
@@ -845,8 +840,7 @@ function loadAppData() {
     unlockedThemes: ['default'],
     unlockedAchievements: [],
     basicTasks: {}, basicDate: '',
-    lastFreeSpin: '',
-    lofiOn: false,
+    lastFreeSpin: '', lofiOn: false,
     stats: { xpTotal: 0, coinsTotal: 0, tasksTotal: 0, perfectDays: 0, bestStreak: 0, maxLevel: 0, prestiges: 0, spinsTotal: 0, pomoTotal: 0, petMaxStage: 0, bossWins: 0 },
     pet: { xp: 0, hunger: 100, happiness: 100, lastUpdate: getTodayKey() },
     pomodoro: { today: 0, date: getTodayKey(), mode: 'focus', seconds: 1500, running: false },
@@ -855,6 +849,11 @@ function loadAppData() {
     sleepSchedule: { bedtime: '22:00', wakeup: '06:00' }, days: {}
   };
   DAYS.forEach(d => { def.days[d.id] = newDayData(1800, 3600); });
+  return def;
+}
+
+function loadAppData() {
+  const def = makeDefaultData();
   try {
     const saved = localStorage.getItem('rotina_criador_v2');
     if (saved) {
@@ -906,6 +905,30 @@ function loadAppData() {
 }
 function saveAppData() { try { localStorage.setItem('rotina_criador_v2', JSON.stringify(appData)); } catch(e) { console.error('Erro save:', e); } }
 
+function resetAllData() {
+  pauseAllTimers();
+  pausePomodoro();
+  stopLofi();
+  localStorage.removeItem('rotina_criador_v2');
+  appData = makeDefaultData();
+  saveAppData();
+  currentDayIndex = new Date().getDay();
+  initTheme();
+  updateLevelUI();
+  updatePetUI();
+  updateBossUI();
+  updateWeeklyUI();
+  document.getElementById('avatarInner').textContent = '⚡';
+  renderDaysNav();
+  loadDayData(currentDayIndex);
+  document.getElementById('quoteText').textContent = `"${QUOTES[0]}"`;
+  soundReset();
+  vibrate([100,50,100,50,200]);
+  launchConfetti(60, ['💥','🔄','✨','🎮']);
+  checkAchievements();
+  checkWeeklyMissions();
+}
+
 function checkAutoTheme() {
   if (!appData.autoTheme) return;
   const h = new Date().getHours();
@@ -950,15 +973,11 @@ function bossTakeHit() {
     appData.stats.bossWins = (appData.stats.bossWins || 0) + 1;
     addXP(200);
     appData.stats.xpTotal = (appData.stats.xpTotal || 0) + 200;
-    soundBossWin();
-    vibrate([100,50,100,50,200]);
+    soundBossWin(); vibrate([100,50,100,50,200]);
     launchConfetti(100, ['💥','⚔️','👹','💀','🏆','✨','💰']);
     setTimeout(() => showAchievementToast({ emoji: '👹', name: 'BOSS DERROTADO!', reward }), 300);
     checkAchievements();
-  } else {
-    soundHit();
-    vibrate(30);
-  }
+  } else { soundHit(); vibrate(30); }
   saveAppData();
   updateBossUI();
   const stage = document.getElementById('bossStage');
@@ -988,8 +1007,7 @@ function addPetXP(amount) {
   appData.pet.xp = (appData.pet.xp || 0) + amount;
   const { idx } = getPetStage(appData.pet.xp);
   if (idx > (appData.stats.petMaxStage || 0)) { appData.stats.petMaxStage = idx; checkAchievements(); }
-  saveAppData();
-  updatePetUI();
+  saveAppData(); updatePetUI();
 }
 function openPet() { updatePetDecay(); soundClick(); updatePetUI(); const m = document.getElementById('petModal'); m.classList.remove('hidden'); m.style.display = 'flex'; }
 function closePet() { const m = document.getElementById('petModal'); m.classList.add('hidden'); m.style.display = 'none'; soundClick(); }
@@ -998,10 +1016,7 @@ function updatePetUI() {
   const pet = appData.pet;
   const { stage, idx } = getPetStage(pet.xp);
   const stageEl = document.getElementById('petStage');
-  if (stageEl) {
-    stageEl.textContent = stage.emoji;
-    stageEl.className = 'pet-stage mb-3' + (idx === PET_STAGES.length - 1 ? ' legendary' : idx === 4 ? ' dragon' : idx === 0 ? ' pet-bounce' : '');
-  }
+  if (stageEl) { stageEl.textContent = stage.emoji; stageEl.className = 'pet-stage mb-3' + (idx === PET_STAGES.length - 1 ? ' legendary' : idx === 4 ? ' dragon' : idx === 0 ? ' pet-bounce' : ''); }
   const nameEl = document.getElementById('petName');
   if (nameEl) { nameEl.textContent = stage.name; nameEl.style.color = stage.color; }
   const lvlEl = document.getElementById('petLevelText');
@@ -1011,17 +1026,12 @@ function updatePetUI() {
     else lvlEl.textContent = `Forma Final — ${pet.xp} XP`;
   }
   const hunger = pet.hunger || 0, happiness = pet.happiness || 0;
-  const hungerEl = document.getElementById('petHungerText');
-  const happinessEl = document.getElementById('petHappinessText');
-  const xpEl = document.getElementById('petXpText');
-  const hungerBar = document.getElementById('petHungerBar');
-  const happinessBar = document.getElementById('petHappinessBar');
+  if (document.getElementById('petHungerText')) document.getElementById('petHungerText').textContent = hunger + '%';
+  if (document.getElementById('petHappinessText')) document.getElementById('petHappinessText').textContent = happiness + '%';
+  if (document.getElementById('petXpText')) document.getElementById('petXpText').textContent = pet.xp;
+  if (document.getElementById('petHungerBar')) document.getElementById('petHungerBar').style.width = hunger + '%';
+  if (document.getElementById('petHappinessBar')) document.getElementById('petHappinessBar').style.width = happiness + '%';
   const xpBar = document.getElementById('petXpBar');
-  if (hungerEl) hungerEl.textContent = hunger + '%';
-  if (happinessEl) happinessEl.textContent = happiness + '%';
-  if (xpEl) xpEl.textContent = pet.xp;
-  if (hungerBar) hungerBar.style.width = hunger + '%';
-  if (happinessBar) happinessBar.style.width = happiness + '%';
   if (xpBar) {
     const nextStage = PET_STAGES[idx + 1];
     const currentMin = PET_STAGES[idx].min;
@@ -1034,16 +1044,14 @@ function feedPet() {
   appData.coins -= 20;
   appData.pet.hunger = Math.min(100, (appData.pet.hunger || 0) + 25);
   appData.pet.happiness = Math.min(100, (appData.pet.happiness || 0) + 5);
-  saveAppData(); updateLevelUI(); updatePetUI();
-  soundPet(); vibrate([20,10,20]);
+  saveAppData(); updateLevelUI(); updatePetUI(); soundPet(); vibrate([20,10,20]);
   launchConfetti(10, ['🍖','✨']);
 }
 function playWithPet() {
   if ((appData.pet.hunger || 0) < 5) { soundError(); vibrate([50,30,50]); return; }
   appData.pet.hunger = Math.max(0, appData.pet.hunger - 5);
   appData.pet.happiness = Math.min(100, (appData.pet.happiness || 0) + 15);
-  saveAppData(); updatePetUI();
-  soundPet(); vibrate([20,10,20]);
+  saveAppData(); updatePetUI(); soundPet(); vibrate([20,10,20]);
   launchConfetti(8, ['🎾','✨','💚']);
 }
 
@@ -1063,18 +1071,15 @@ function updatePomodoroUI() {
   const p = appData.pomodoro;
   const disp = document.getElementById('pomodoroDisplay');
   const mode = p.mode;
-  const total = mode === 'focus' ? 1500 : 300;
-  const secs = p.seconds !== undefined ? p.seconds : total;
+  const secs = p.seconds !== undefined ? p.seconds : (mode === 'focus' ? 1500 : 300);
   const m = Math.floor(secs / 60), s = secs % 60;
   if (disp) { disp.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; disp.className = 'pomodoro-display mb-5' + (mode === 'break' ? ' break-mode' : ''); }
   const fb = document.getElementById('pomoFocusBtn');
   const bb = document.getElementById('pomoBreakBtn');
   if (fb) fb.classList.toggle('active', mode === 'focus');
   if (bb) bb.classList.toggle('active', mode === 'break');
-  const tc = document.getElementById('pomoTodayCount');
-  const tt = document.getElementById('pomoTotalCount');
-  if (tc) tc.textContent = p.today || 0;
-  if (tt) tt.textContent = appData.stats.pomoTotal || 0;
+  if (document.getElementById('pomoTodayCount')) document.getElementById('pomoTodayCount').textContent = p.today || 0;
+  if (document.getElementById('pomoTotalCount')) document.getElementById('pomoTotalCount').textContent = appData.stats.pomoTotal || 0;
 }
 function startPomodoro() {
   if (pomodoroInterval) return;
@@ -1093,23 +1098,18 @@ function startPomodoro() {
         addXP(50);
         appData.stats.xpTotal = (appData.stats.xpTotal || 0) + 50;
         if (appData.pomodoro.today % 4 === 0) { addXP(100); launchConfetti(30, ['🍅','🔥','✨','💪']); }
-        appData.pomodoro.mode = 'break';
-        appData.pomodoro.seconds = 300;
+        appData.pomodoro.mode = 'break'; appData.pomodoro.seconds = 300;
         if (appData.weekly && appData.weekly.progress) appData.weekly.progress.pomodoro = (appData.weekly.progress.pomodoro || 0) + 1;
-      } else {
-        appData.pomodoro.mode = 'focus';
-        appData.pomodoro.seconds = 1500;
-      }
+      } else { appData.pomodoro.mode = 'focus'; appData.pomodoro.seconds = 1500; }
       appData.pomodoro.running = false;
       saveAppData(); updatePomodoroUI(); updateLevelUI();
-      checkAchievements();
-      soundPomodoro(); vibrate([50,30,50,30,80]);
+      checkAchievements(); soundPomodoro(); vibrate([50,30,50,30,80]);
       launchConfetti(20, appData.pomodoro.mode === 'break' ? ['🎉','☕','✨'] : ['🍅','💪','🎯']);
       checkWeeklyMissions();
     }
   }, 1000);
 }
-function pausePomodoro() { if (pomodoroInterval) { clearInterval(pomodoroInterval); pomodoroInterval = null; } appData.pomodoro.running = false; saveAppData(); }
+function pausePomodoro() { if (pomodoroInterval) { clearInterval(pomodoroInterval); pomodoroInterval = null; } if (appData && appData.pomodoro) appData.pomodoro.running = false; saveAppData(); }
 function resetPomodoro() { pausePomodoro(); appData.pomodoro.mode = 'focus'; appData.pomodoro.seconds = 1500; saveAppData(); updatePomodoroUI(); }
 function setPomodoroMode(mode) { pausePomodoro(); appData.pomodoro.mode = mode; appData.pomodoro.seconds = mode === 'focus' ? 1500 : 300; saveAppData(); updatePomodoroUI(); }
 
@@ -1155,19 +1155,7 @@ function updateWeeklyUI() {
     const done = prog >= mission.target;
     const div = document.createElement('div');
     div.className = 'weekly-item' + (done ? ' complete' : '');
-    div.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:center;">
-        <div style="display:flex;align-items:center;gap:8px;">
-          <span style="font-size:24px;">${mission.emoji}</span>
-          <div>
-            <div style="font-size:13px;font-weight:800;color:#e2e8f0;">${mission.desc}</div>
-            <div style="font-size:10px;color:#94a3b8;font-weight:700;">Recompensa: ${mission.reward} 🪙</div>
-          </div>
-        </div>
-        <div style="font-size:14px;font-weight:900;color:${done ? '#22c55e' : '#f97316'};">${prog}/${mission.target}</div>
-      </div>
-      <div class="weekly-bar"><div class="weekly-bar-fill" style="width:${pct}%"></div></div>
-      ${done ? '<div style="text-align:right;font-size:10px;color:#22c55e;font-weight:900;margin-top:4px;">✅ CONCLUÍDA</div>' : ''}`;
+    div.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;"><div style="display:flex;align-items:center;gap:8px;"><span style="font-size:24px;">${mission.emoji}</span><div><div style="font-size:13px;font-weight:800;color:#e2e8f0;">${mission.desc}</div><div style="font-size:10px;color:#94a3b8;font-weight:700;">Recompensa: ${mission.reward} 🪙</div></div></div><div style="font-size:14px;font-weight:900;color:${done ? '#22c55e' : '#f97316'};">${prog}/${mission.target}</div></div><div class="weekly-bar"><div class="weekly-bar-fill" style="width:${pct}%"></div></div>${done ? '<div style="text-align:right;font-size:10px;color:#22c55e;font-weight:900;margin-top:4px;">✅ CONCLUÍDA</div>' : ''}`;
     list.appendChild(div);
   });
   const el = document.getElementById('weeklyTimeLeft');
@@ -1177,9 +1165,7 @@ function updateWeeklyUI() {
     const daysToMon = day === 0 ? 1 : 8 - day;
     const nextMonday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysToMon, 0, 0, 0);
     const diff = nextMonday - now;
-    const d = Math.floor(diff / 86400000);
-    const h = Math.floor((diff % 86400000) / 3600000);
-    el.textContent = `${d}d ${h}h`;
+    el.textContent = `${Math.floor(diff / 86400000)}d ${Math.floor((diff % 86400000) / 3600000)}h`;
   }
 }
 
@@ -1255,7 +1241,7 @@ function renderAchievements() {
     const div = document.createElement('div');
     div.className = 'achv-badge ' + (isUnlocked ? 'unlocked' : 'locked');
     div.innerHTML = `<div class="achv-emoji">${a.emoji}</div><div class="achv-name">${a.name}</div>`;
-    div.addEventListener('click', () => showConfirm(a.emoji, a.name, a.desc + (isUnlocked ? ' ✅ DESBLOQUEADA' : ' 🔒 Bloqueada') + ' — Recompensa: ' + a.reward + ' 🪙', null));
+    div.addEventListener('click', () => showConfirm(a.emoji, a.name, a.desc + (isUnlocked ? ' ✅' : ' 🔒') + ' — +' + a.reward + ' 🪙', null));
     list.appendChild(div);
   });
   document.getElementById('achvProgress').textContent = `${unlocked} / ${ACHIEVEMENTS.length}`;
@@ -1290,12 +1276,11 @@ function renderStats() {
 function openRoulette() { soundClick(); updateRouletteStatus(); const m = document.getElementById('rouletteModal'); m.classList.remove('hidden'); m.style.display = 'flex'; }
 function closeRoulette() { const m = document.getElementById('rouletteModal'); m.classList.add('hidden'); m.style.display = 'none'; soundClick(); }
 function updateRouletteStatus() {
-  const today = getTodayKey();
-  const hasFree = appData.lastFreeSpin !== today;
+  const hasFree = appData.lastFreeSpin !== getTodayKey();
   const status = document.getElementById('rouletteStatus');
   const freeBtn = document.getElementById('spinBtn');
   if (hasFree) { status.textContent = '🎁 Você tem 1 giro grátis hoje!'; status.style.color = '#22c55e'; freeBtn.textContent = '🎰 GIRAR GRÁTIS'; freeBtn.disabled = false; freeBtn.style.opacity = '1'; }
-  else { status.textContent = '⏰ Giro grátis já usado hoje. Volte amanhã!'; status.style.color = '#f59e0b'; freeBtn.textContent = '❌ GIRO GRÁTIS USADO'; freeBtn.disabled = true; freeBtn.style.opacity = '0.5'; }
+  else { status.textContent = '⏰ Giro grátis já usado hoje.'; status.style.color = '#f59e0b'; freeBtn.textContent = '❌ GIRO GRÁTIS USADO'; freeBtn.disabled = true; freeBtn.style.opacity = '0.5'; }
 }
 function spinRoulette(isPaid) {
   if (isSpinning) return;
@@ -1324,8 +1309,7 @@ function spinRoulette(isPaid) {
       const locked = AVATARS_SHOP.filter(a => !appData.unlockedAvatars.includes(a.emoji) && a.price > 0);
       if (locked.length > 0) { const won = locked[Math.floor(Math.random() * locked.length)]; appData.unlockedAvatars.push(won.emoji); resultText = `Avatar "${won.name}" desbloqueado!`; }
       else { appData.coins += 100; resultText = 'Já tem todos! +100 moedas'; }
-    }
-    else if (reward.type === 'theme') {
+    } else if (reward.type === 'theme') {
       const locked = THEMES_SHOP.filter(t => !appData.unlockedThemes.includes(t.id) && t.price > 0);
       if (locked.length > 0) { const won = locked[Math.floor(Math.random() * locked.length)]; appData.unlockedThemes.push(won.id); resultText = `Tema "${won.name}" desbloqueado!`; }
       else { appData.coins += 100; resultText = 'Já tem todos! +100 moedas'; }
@@ -1339,11 +1323,7 @@ function spinRoulette(isPaid) {
     document.getElementById('spinResultText').textContent = resultText;
     document.getElementById('spinResultModal').classList.remove('hidden');
     checkAchievements();
-    setTimeout(() => {
-      wheel.style.transition = 'none';
-      wheel.style.transform = 'rotate(0deg)';
-      setTimeout(() => { wheel.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.15, 1)'; }, 50);
-    }, 100);
+    setTimeout(() => { wheel.style.transition = 'none'; wheel.style.transform = 'rotate(0deg)'; setTimeout(() => { wheel.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.15, 1)'; }, 50); }, 100);
   }, 4100);
 }
 
@@ -1379,12 +1359,7 @@ function renderDaysNav() {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = `day-tab flex flex-col items-center justify-center p-3 rounded-2xl border ${isCurrent ? 'active bg-gradient-to-br from-blue-600 to-cyan-600 text-white border-cyan-400' : 'glass text-slate-300 border-slate-700/80'}`;
-    btn.innerHTML = `
-      ${isToday ? '<span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-cyan-400 rounded-full border-2 border-slate-900"></span>' : ''}
-      ${isPerfect ? '<span class="absolute -top-1 -left-1 text-xs">⭐</span>' : ''}
-      <span class="text-[10px] uppercase tracking-wider opacity-80 font-bold">${day.short}</span>
-      <span class="text-xs font-black mt-0.5">${day.name}</span>
-      <span class="text-[9px] mt-1 px-2 py-0.5 rounded-full font-bold ${isCurrent ? 'bg-white/25 text-white' : 'bg-slate-800 text-slate-400'}">${completed}/${TOTAL_TASKS}</span>`;
+    btn.innerHTML = `${isToday ? '<span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-cyan-400 rounded-full border-2 border-slate-900"></span>' : ''}${isPerfect ? '<span class="absolute -top-1 -left-1 text-xs">⭐</span>' : ''}<span class="text-[10px] uppercase tracking-wider opacity-80 font-bold">${day.short}</span><span class="text-xs font-black mt-0.5">${day.name}</span><span class="text-[9px] mt-1 px-2 py-0.5 rounded-full font-bold ${isCurrent ? 'bg-white/25 text-white' : 'bg-slate-800 text-slate-400'}">${completed}/${TOTAL_TASKS}</span>`;
     btn.addEventListener('click', () => { pauseAllTimers(); soundClick(); currentDayIndex = day.id; renderDaysNav(); loadDayData(currentDayIndex); });
     c.appendChild(btn);
   });
@@ -1805,13 +1780,11 @@ function openChest() {
     const locked = AVATARS_SHOP.filter(a => !appData.unlockedAvatars.includes(a.emoji) && a.price > 0);
     if (locked.length > 0) { const won = locked[Math.floor(Math.random() * locked.length)]; appData.unlockedAvatars.push(won.emoji); emoji = won.emoji; text = `Avatar "${won.name}" desbloqueado!`; confettiEmojis = ['👤','✨',won.emoji]; }
     else { appData.coins += 100; emoji = '🪙'; text = `Já tem todos! +100 moedas.`; }
-  }
-  else if (reward.type === 'theme') {
+  } else if (reward.type === 'theme') {
     const locked = THEMES_SHOP.filter(t => !appData.unlockedThemes.includes(t.id) && t.price > 0);
     if (locked.length > 0) { const won = locked[Math.floor(Math.random() * locked.length)]; appData.unlockedThemes.push(won.id); emoji = '🎨'; text = `Tema "${won.name}" desbloqueado!`; confettiEmojis = ['🎨','✨','🌈']; }
     else { appData.coins += 150; emoji = '🪙'; text = `Já tem todos! +150 moedas.`; }
-  }
-  else { appData.coins += 500; appData.stats.coinsTotal = (appData.stats.coinsTotal || 0) + 500; emoji = '💎'; title = '🎉 JACKPOT!'; text = `+500 moedas!!!`; confettiEmojis = ['💎','💰','🎉','👑','✨','🪙']; }
+  } else { appData.coins += 500; appData.stats.coinsTotal = (appData.stats.coinsTotal || 0) + 500; emoji = '💎'; title = '🎉 JACKPOT!'; text = `+500 moedas!!!`; confettiEmojis = ['💎','💰','🎉','👑','✨','🪙']; }
   saveAppData(); updateLevelUI();
   soundLevelUp(); vibrate([50,30,50,30,100]); launchConfetti(60, confettiEmojis);
   document.getElementById('chestResultEmoji').textContent = emoji;
@@ -1865,6 +1838,12 @@ function initApp() {
   document.getElementById('weeklyCloseBtn').addEventListener('click', closeWeekly);
   document.getElementById('bossBtn').addEventListener('click', openBoss);
   document.getElementById('bossCloseBtn').addEventListener('click', closeBoss);
+
+  document.getElementById('resetAllBtn').addEventListener('click', () => {
+    showConfirm('💥', 'RESETAR TUDO?', 'Vai apagar nível, XP, moedas, conquistas, pet, boss e todo o progresso. Não tem volta!', () => {
+      resetAllData();
+    });
+  });
 
   document.getElementById('spinBtn').addEventListener('click', () => spinRoulette(false));
   document.getElementById('spinPaidBtn').addEventListener('click', () => spinRoulette(true));
@@ -1937,7 +1916,7 @@ function initApp() {
 
   checkAchievements();
   checkWeeklyMissions();
-  console.log('✅ Modo Monstro v4 inicializado!');
+  console.log('✅ Modo Monstro v5 inicializado!');
 }
 document.addEventListener('DOMContentLoaded', initApp);
 </script>
