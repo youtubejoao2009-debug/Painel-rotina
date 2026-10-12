@@ -25,48 +25,37 @@ tailwind.config = { darkMode: 'class', theme: { extend: {
 body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: #0a0f1e; min-height: 100vh; position: relative; }
 body.light-bg { background: #eef2ff; }
 
-/* ====== FUNDO SOLO LEVELING - OLHOS (SÓ RESPIRAÇÃO) ====== */
 .bg-eye-layer {
-  position: fixed;
-  inset: 0;
-  z-index: -4;
+  position: fixed; inset: 0; z-index: -4;
   background-image: url('bg-eye.jpg');
-  background-size: cover;
-  background-position: center top;
-  background-repeat: no-repeat;
-  opacity: 0.22;
-  pointer-events: none;
+  background-size: cover; background-position: center top; background-repeat: no-repeat;
+  opacity: 0.22; pointer-events: none;
   filter: brightness(1.1) contrast(1.25) saturate(1.3);
   animation: eyeBreathe 6s ease-in-out infinite;
   will-change: opacity, filter;
 }
-
 @keyframes eyeBreathe {
   0%   { opacity: 0.14; filter: brightness(1.0) contrast(1.25) saturate(1.2); }
   50%  { opacity: 0.32; filter: brightness(1.5) contrast(1.40) saturate(1.5); }
   100% { opacity: 0.14; filter: brightness(1.0) contrast(1.25) saturate(1.2); }
 }
-
 body.light-bg .bg-eye-layer { opacity: 0.12; }
 
 body::before {
   content: ""; position: fixed; inset: 0;
-  background:
-    radial-gradient(circle at 15% 20%, rgba(59,130,246,0.20), transparent 45%),
-    radial-gradient(circle at 85% 80%, rgba(168,85,247,0.18), transparent 45%),
-    radial-gradient(circle at 50% 50%, rgba(6,182,212,0.12), transparent 60%);
+  background: radial-gradient(circle at 15% 20%, rgba(59,130,246,0.20), transparent 45%),
+              radial-gradient(circle at 85% 80%, rgba(168,85,247,0.18), transparent 45%),
+              radial-gradient(circle at 50% 50%, rgba(6,182,212,0.12), transparent 60%);
   z-index: -3; pointer-events: none;
 }
 body::after {
   content: ""; position: fixed; inset: 0;
-  background-image:
-    linear-gradient(rgba(59,130,246,0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(59,130,246,0.05) 1px, transparent 1px),
-    radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.55) 100%);
+  background-image: linear-gradient(rgba(59,130,246,0.05) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(59,130,246,0.05) 1px, transparent 1px),
+                    radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.55) 100%);
   background-size: 40px 40px, 40px 40px, 100% 100%;
   z-index: -2; pointer-events: none;
 }
-
 body.theme-purple::before { background: radial-gradient(circle at 15% 20%, rgba(168,85,247,0.28), transparent 45%), radial-gradient(circle at 85% 80%, rgba(236,72,153,0.22), transparent 45%); }
 body.theme-green::before { background: radial-gradient(circle at 15% 20%, rgba(34,197,94,0.25), transparent 45%), radial-gradient(circle at 85% 80%, rgba(6,182,212,0.22), transparent 45%); }
 body.theme-red::before { background: radial-gradient(circle at 15% 20%, rgba(239,68,68,0.25), transparent 45%), radial-gradient(circle at 85% 80%, rgba(245,158,11,0.2), transparent 45%); }
@@ -194,19 +183,119 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   border-color: rgba(34,197,94,0.5);
   box-shadow: 0 0 12px rgba(34,197,94,0.25);
 }
-.basic-task-row.done .basic-task-name {
-  text-decoration: line-through;
-  opacity: 0.7;
-}
+.basic-task-row.done .basic-task-name { text-decoration: line-through; opacity: 0.7; }
 .basic-task-name {
-  font-weight: 700;
-  font-size: 13px;
-  color: #e2e8f0;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  font-weight: 700; font-size: 13px; color: #e2e8f0;
+  display: flex; align-items: center; gap: 10px;
 }
 .basic-task-emoji { font-size: 22px; }
+
+/* ====== CONQUISTAS ====== */
+.achv-badge {
+  position: relative;
+  aspect-ratio: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 8px;
+  border-radius: 16px;
+  background: rgba(15,23,42,0.7);
+  border: 2px solid #334155;
+  transition: all 0.3s;
+  text-align: center;
+}
+.achv-badge.unlocked {
+  border-color: #fbbf24;
+  background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(245,158,11,0.08));
+  box-shadow: 0 0 15px rgba(251,191,36,0.35);
+}
+.achv-badge.locked { opacity: 0.45; filter: grayscale(1); }
+.achv-emoji { font-size: 28px; margin-bottom: 2px; }
+.achv-name { font-size: 9px; font-weight: 800; color: #e2e8f0; line-height: 1.1; }
+.achv-badge.unlocked .achv-name { color: #fbbf24; }
+.achv-badge.locked .achv-emoji::after { content: " 🔒"; font-size: 12px; }
+
+/* ====== ESTATÍSTICAS ====== */
+.stat-card {
+  background: rgba(15,23,42,0.6);
+  border: 1px solid rgba(59,130,246,0.25);
+  border-radius: 14px;
+  padding: 12px;
+  text-align: center;
+}
+.stat-value {
+  font-size: 22px; font-weight: 900;
+  background: linear-gradient(135deg, #22d3ee, #3b82f6, #a855f7);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.stat-label { font-size: 10px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
+
+.chart-bar {
+  flex: 1;
+  border-radius: 8px 8px 4px 4px;
+  background: linear-gradient(180deg, #22d3ee, #3b82f6);
+  transition: height 0.5s ease-out;
+  position: relative;
+  min-height: 4px;
+  box-shadow: 0 0 8px rgba(59,130,246,0.4);
+}
+.chart-bar.today { background: linear-gradient(180deg, #fbbf24, #f59e0b); box-shadow: 0 0 12px rgba(251,191,36,0.6); }
+.chart-col { display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 4px; flex: 1; height: 100%; }
+.chart-day { font-size: 9px; font-weight: 800; color: #94a3b8; }
+
+/* ====== ROLETA ====== */
+.roulette-wrap {
+  position: relative;
+  width: 240px; height: 240px;
+  margin: 0 auto;
+}
+.roulette-wheel {
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  background: conic-gradient(
+    #ef4444 0deg 30deg, #f59e0b 30deg 60deg,
+    #eab308 60deg 90deg, #22c55e 90deg 120deg,
+    #06b6d4 120deg 150deg, #3b82f6 150deg 180deg,
+    #8b5cf6 180deg 210deg, #ec4899 210deg 240deg,
+    #ef4444 240deg 270deg, #f59e0b 270deg 300deg,
+    #eab308 300deg 330deg, #22c55e 330deg 360deg
+  );
+  border: 6px solid #1e293b;
+  box-shadow: 0 0 30px rgba(59,130,246,0.4), inset 0 0 20px rgba(0,0,0,0.4);
+  position: relative;
+  transition: transform 4s cubic-bezier(0.17, 0.67, 0.15, 1);
+  will-change: transform;
+}
+.roulette-pointer {
+  position: absolute;
+  top: -14px; left: 50%;
+  transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-top: 24px solid #fbbf24;
+  filter: drop-shadow(0 0 8px #fbbf24);
+  z-index: 3;
+}
+.roulette-center {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #1e293b, #0f172a);
+  border: 3px solid #fbbf24;
+  display: grid; place-content: center;
+  font-size: 26px;
+  z-index: 2;
+  box-shadow: 0 0 20px rgba(251,191,36,0.5);
+}
+.roulette-label {
+  position: absolute;
+  top: 50%; left: 50%;
+  font-size: 18px;
+  transform-origin: 0 0;
+  pointer-events: none;
+  z-index: 1;
+}
 </style>
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col">
@@ -227,10 +316,13 @@ body.light-bg .avatar-inner { background: #eef2ff; }
           </div>
         </div>
       </div>
-      <div class="flex items-center gap-1.5">
+      <div class="flex items-center gap-1.5 flex-wrap">
         <div id="rankBadge" class="rank-badge flex items-center gap-1.5 bg-slate-500/10 border border-slate-500/30 px-2.5 py-1.5 rounded-xl text-xs font-bold">
           <span id="rankEmoji">🌱</span><span id="rankName" class="hidden sm:inline">Iniciante</span>
         </div>
+        <button id="achievementsBtn" type="button" title="Conquistas" class="btn-action p-2 rounded-xl bg-yellow-500/15 text-yellow-400 border border-yellow-500/40 hover:bg-yellow-500/25 transition-all">🏆</button>
+        <button id="statsBtn" type="button" title="Estatísticas" class="btn-action p-2 rounded-xl bg-emerald-500/15 text-emerald-400 border border-emerald-500/40 hover:bg-emerald-500/25 transition-all">📊</button>
+        <button id="rouletteBtn" type="button" title="Roleta" class="btn-action p-2 rounded-xl bg-pink-500/15 text-pink-400 border border-pink-500/40 hover:bg-pink-500/25 transition-all">🎰</button>
         <button id="missionsBtn" type="button" title="Missões Básicas" class="btn-action p-2 rounded-xl bg-cyan-500/15 text-cyan-400 border border-cyan-500/40 hover:bg-cyan-500/25 transition-all">📋</button>
         <button id="storeBtn" type="button" title="Loja" class="btn-action p-2 rounded-xl bg-amber-500/15 text-amber-400 border border-amber-500/30 hover:bg-amber-500/25 transition-all">🛒</button>
         <button id="themeToggleBtn" type="button" title="Tema" class="btn-action p-2 rounded-xl bg-slate-800 hover:bg-slate-700 transition-all"><span id="themeIcon">🌙</span></button>
@@ -301,6 +393,7 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </footer>
 
+<!-- MODAL MISSÕES BÁSICAS -->
 <div id="missionsModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="missions-panel rounded-3xl p-5 max-w-md w-full my-auto">
     <div class="text-center mb-4">
@@ -318,6 +411,96 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
+<!-- MODAL CONQUISTAS -->
+<div id="achievementsModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
+  <div class="rounded-3xl p-5 max-w-md w-full bg-slate-900 border-2 border-yellow-500/40 shadow-2xl my-auto" style="box-shadow:0 0 40px rgba(251,191,36,0.25);">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-xl font-black text-yellow-400">🏆 Conquistas</h2>
+      <button id="achievementsCloseBtn" type="button" class="btn-action p-2 rounded-xl bg-slate-800 text-slate-300 text-sm">✕</button>
+    </div>
+    <div class="flex items-center justify-between px-1 mb-3">
+      <span class="text-[11px] text-slate-400 font-bold">Desbloqueadas:</span>
+      <span id="achvProgress" class="text-[12px] font-black text-yellow-400">0 / 0</span>
+    </div>
+    <div id="achievementsList" class="grid grid-cols-3 gap-2 max-h-[60vh] overflow-y-auto pr-1"></div>
+  </div>
+</div>
+
+<!-- MODAL ESTATÍSTICAS -->
+<div id="statsModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
+  <div class="rounded-3xl p-5 max-w-md w-full bg-slate-900 border-2 border-emerald-500/40 shadow-2xl my-auto" style="box-shadow:0 0 40px rgba(34,197,94,0.25);">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-xl font-black text-emerald-400">📊 Estatísticas</h2>
+      <button id="statsCloseBtn" type="button" class="btn-action p-2 rounded-xl bg-slate-800 text-slate-300 text-sm">✕</button>
+    </div>
+    <div class="grid grid-cols-2 gap-2 mb-3">
+      <div class="stat-card">
+        <div class="stat-value" id="statXpTotal">0</div>
+        <div class="stat-label">XP Total</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="statCoinsTotal">0</div>
+        <div class="stat-label">Moedas Ganhas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="statTasksTotal">0</div>
+        <div class="stat-label">Tarefas Feitas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="statBestStreak">0</div>
+        <div class="stat-label">Melhor Streak</div>
+      </div>
+    </div>
+    <div class="stat-card mb-3">
+      <div class="text-[10px] font-bold text-slate-400 uppercase mb-2">Últimos 7 dias (% conclusão)</div>
+      <div id="statsChart" class="flex items-end gap-1" style="height:100px;"></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="statPerfectDays">0</div>
+      <div class="stat-label">Dias Perfeitos (Total)</div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ROLETA -->
+<div id="rouletteModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
+  <div class="rounded-3xl p-5 max-w-md w-full bg-slate-900 border-2 border-pink-500/40 shadow-2xl my-auto" style="box-shadow:0 0 40px rgba(236,72,153,0.25);">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-xl font-black text-pink-400">🎰 Roleta da Sorte</h2>
+      <button id="rouletteCloseBtn" type="button" class="btn-action p-2 rounded-xl bg-slate-800 text-slate-300 text-sm">✕</button>
+    </div>
+
+    <div class="text-center mb-4">
+      <p class="text-[11px] text-slate-400 font-bold mb-1">Gire e ganhe prêmios aleatórios!</p>
+      <p id="rouletteStatus" class="text-[11px] font-black text-pink-400">Você tem 1 giro grátis hoje!</p>
+    </div>
+
+    <div class="roulette-wrap mb-5">
+      <div class="roulette-pointer"></div>
+      <div class="roulette-wheel" id="rouletteWheel">
+        <div class="roulette-center">🎁</div>
+      </div>
+    </div>
+
+    <button id="spinBtn" type="button" class="w-full py-4 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-black text-sm shadow-xl mb-2">🎰 GIRAR GRÁTIS</button>
+    <button id="spinPaidBtn" type="button" class="w-full py-3 rounded-2xl bg-slate-800 text-slate-300 font-bold text-xs border border-slate-700">🪙 GIRAR POR 50 MOEDAS</button>
+  </div>
+</div>
+
+<!-- MODAL RESULTADO ROLETA -->
+<div id="spinResultModal" class="hidden fixed inset-0 z-[80] modal-overlay flex items-center justify-center p-4">
+  <div class="rounded-3xl p-8 max-w-sm w-full bg-gradient-to-br from-pink-600 via-purple-600 to-indigo-700 border-2 border-pink-400 shadow-2xl text-center text-white relative overflow-hidden">
+    <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_50%_50%,white,transparent_70%)]"></div>
+    <div class="relative z-10">
+      <div id="spinResultEmoji" class="text-7xl mb-3">🎁</div>
+      <h3 class="text-2xl font-black mb-1">Você ganhou!</h3>
+      <p id="spinResultText" class="text-lg font-bold mb-5">Algo incrível</p>
+      <button id="spinResultCloseBtn" type="button" class="w-full py-3 rounded-2xl bg-white text-purple-700 font-black text-sm">🎉 Legal!</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL LEVEL UP -->
 <div id="levelUpModal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
   <div id="levelUpCard" class="relative rounded-3xl p-6 sm:p-8 max-w-md w-full text-white text-center shadow-2xl overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-br from-blue-700 via-indigo-700 to-purple-800"></div>
@@ -462,6 +645,38 @@ const CHEST_REWARDS = [
   { type: 'theme', weight: 15 },
   { type: 'jackpot', weight: 5 }
 ];
+const ACHIEVEMENTS = [
+  { id: 'first_task', emoji: '✅', name: 'Primeira Tarefa', desc: 'Complete 1 tarefa', check: s => s.tasksTotal >= 1, reward: 20 },
+  { id: 'ten_tasks', emoji: '🔟', name: 'Aquecendo', desc: 'Complete 10 tarefas', check: s => s.tasksTotal >= 10, reward: 30 },
+  { id: 'fifty_tasks', emoji: '💪', name: 'Guerreiro', desc: 'Complete 50 tarefas', check: s => s.tasksTotal >= 50, reward: 80 },
+  { id: 'hundred_tasks', emoji: '⚔️', name: 'Veterano', desc: 'Complete 100 tarefas', check: s => s.tasksTotal >= 100, reward: 150 },
+  { id: 'first_perfect', emoji: '⭐', name: 'Dia Perfeito', desc: 'Complete todos os 10 objetivos em 1 dia', check: s => s.perfectDays >= 1, reward: 50 },
+  { id: 'week_perfect', emoji: '🏆', name: 'Semana Perfeita', desc: 'Complete 7 dias perfeitos', check: s => s.perfectDays >= 7, reward: 200 },
+  { id: 'month_perfect', emoji: '👑', name: 'Mês Perfeito', desc: 'Complete 30 dias perfeitos', check: s => s.perfectDays >= 30, reward: 500 },
+  { id: 'first_level', emoji: '🎮', name: 'Subindo', desc: 'Alcance o nível 1', check: s => s.maxLevel >= 1, reward: 30 },
+  { id: 'level_5', emoji: '🚀', name: 'Decolando', desc: 'Alcance o nível 5', check: s => s.maxLevel >= 5, reward: 100 },
+  { id: 'level_10', emoji: '🌟', name: 'Estrela', desc: 'Alcance o nível 10', check: s => s.maxLevel >= 10, reward: 250 },
+  { id: 'first_prestige', emoji: '🥉', name: 'Primeiro Prestígio', desc: 'Alcance o prestígio 1', check: s => s.prestiges >= 1, reward: 300 },
+  { id: 'rich', emoji: '💰', name: 'Rico', desc: 'Acumule 500 moedas', check: s => s.coinsTotal >= 500, reward: 100 },
+  { id: 'streak_3', emoji: '🔥', name: 'Em Chamas', desc: 'Streak de 3 semanas', check: s => s.bestStreak >= 3, reward: 150 },
+  { id: 'streak_10', emoji: '🌋', name: 'Imparável', desc: 'Streak de 10 semanas', check: s => s.bestStreak >= 10, reward: 500 },
+  { id: 'xp_1000', emoji: '⚡', name: 'Energizado', desc: 'Ganhe 1000 XP total', check: s => s.xpTotal >= 1000, reward: 100 },
+  { id: 'spinner', emoji: '🎰', name: 'Sortudo', desc: 'Gire a roleta 10 vezes', check: s => s.spinsTotal >= 10, reward: 100 }
+];
+const ROULETTE_REWARDS = [
+  { emoji: '🪙', text: '+30 moedas', type: 'coins', value: 30, color: '#ef4444' },
+  { emoji: '⭐', text: '+20 XP', type: 'xp', value: 20, color: '#f59e0b' },
+  { emoji: '🪙', text: '+50 moedas', type: 'coins', value: 50, color: '#eab308' },
+  { emoji: '💫', text: '+40 XP', type: 'xp', value: 40, color: '#22c55e' },
+  { emoji: '💰', text: '+100 moedas', type: 'coins', value: 100, color: '#06b6d4' },
+  { emoji: '⚡', text: '+75 XP', type: 'xp', value: 75, color: '#3b82f6' },
+  { emoji: '🎁', text: 'Baú grátis!', type: 'chest', value: 0, color: '#8b5cf6' },
+  { emoji: '🪙', text: '+75 moedas', type: 'coins', value: 75, color: '#ec4899' },
+  { emoji: '👑', text: 'Avatar raro!', type: 'avatar', value: 0, color: '#ef4444' },
+  { emoji: '💎', text: '+150 moedas', type: 'coins', value: 150, color: '#f59e0b' },
+  { emoji: '🎨', text: 'Tema aleatório!', type: 'theme', value: 0, color: '#eab308' },
+  { emoji: '🌟', text: '+200 XP', type: 'xp', value: 200, color: '#22c55e' }
+];
 
 function getLevelGoals(level) {
   return { videos: 3 + Math.floor(level / 4), water: 2000, study: 1800 + level * 120, diaryPages: 1 + Math.floor(level / 4), noPhone: 3600 + level * 240 };
@@ -476,6 +691,11 @@ function getRank(p) {
 }
 function getTodayKey() {
   const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function getDayKey(offset) {
+  const d = new Date();
+  d.setDate(d.getDate() - offset);
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
@@ -502,6 +722,8 @@ function soundClick() { playTone(600, 0.04, 'square', 0.05); }
 function soundError() { playTone(200, 0.15, 'square', 0.15); playTone(150, 0.2, 'square', 0.12, 0.1); }
 function soundBuy() { playTone(880, 0.08, 'triangle', 0.12); playTone(1174.66, 0.08, 'triangle', 0.12, 0.06); playTone(1567.98, 0.15, 'triangle', 0.15, 0.12); }
 function soundChest() { playTone(440, 0.1, 'sine', 0.12); playTone(554, 0.1, 'sine', 0.12, 0.08); playTone(659, 0.1, 'sine', 0.12, 0.16); playTone(880, 0.3, 'sine', 0.18, 0.24); }
+function soundSpin() { playTone(700, 0.03, 'square', 0.06); }
+function soundAchievement() { playTone(659.25, 0.12, 'triangle', 0.15, 0); playTone(783.99, 0.12, 'triangle', 0.15, 0.1); playTone(1046.5, 0.12, 'triangle', 0.15, 0.2); playTone(1318.5, 0.4, 'triangle', 0.2, 0.3); }
 function vibrate(p) { if (navigator.vibrate) { try { navigator.vibrate(p); } catch(e) {} } }
 
 function spawnBgParticles() {
@@ -527,6 +749,7 @@ let noPhoneInterval = null;
 let isProcessingLevelUp = false;
 let confirmCallback = null;
 let currentStoreTab = 'avatars';
+let isSpinning = false;
 
 function newDayData(studySecs, noPhoneSecs) {
   return {
@@ -540,12 +763,15 @@ function newDayData(studySecs, noPhoneSecs) {
 
 function loadAppData() {
   const def = {
-    theme: 'dark', quoteIndex: 0, level: 0, prestiges: 0, xp: 0, coins: 0, streak: 0,
+    theme: 'dark', autoTheme: false, quoteIndex: 0, level: 0, prestiges: 0, xp: 0, coins: 0, streak: 0,
     avatar: '⚡', themeStyle: 'default',
     unlockedAvatars: ['⚡','🚀','🔥','💪'],
     unlockedThemes: ['default'],
+    unlockedAchievements: [],
     basicTasks: {},
     basicDate: '',
+    lastFreeSpin: '',
+    stats: { xpTotal: 0, coinsTotal: 0, tasksTotal: 0, perfectDays: 0, bestStreak: 0, maxLevel: 0, prestiges: 0, spinsTotal: 0 },
     sleepSchedule: { bedtime: '22:00', wakeup: '06:00' }, days: {}
   };
   DAYS.forEach(d => { def.days[d.id] = newDayData(1800, 3600); });
@@ -578,8 +804,13 @@ function loadAppData() {
       if (!parsed.themeStyle) parsed.themeStyle = 'default';
       if (!parsed.unlockedAvatars) parsed.unlockedAvatars = ['⚡','🚀','🔥','💪'];
       if (!parsed.unlockedThemes) parsed.unlockedThemes = ['default'];
+      if (!parsed.unlockedAchievements) parsed.unlockedAchievements = [];
       if (!parsed.basicTasks) parsed.basicTasks = {};
       if (!parsed.basicDate) parsed.basicDate = '';
+      if (!parsed.lastFreeSpin) parsed.lastFreeSpin = '';
+      if (parsed.autoTheme === undefined) parsed.autoTheme = false;
+      if (!parsed.stats) parsed.stats = { xpTotal: 0, coinsTotal: 0, tasksTotal: 0, perfectDays: 0, bestStreak: 0, maxLevel: 0, prestiges: 0, spinsTotal: 0 };
+      if (parsed.stats.spinsTotal === undefined) parsed.stats.spinsTotal = 0;
       return parsed;
     }
   } catch(e) { console.error('Erro load:', e); }
@@ -588,6 +819,20 @@ function loadAppData() {
 
 function saveAppData() { try { localStorage.setItem('rotina_criador_v2', JSON.stringify(appData)); } catch(e) { console.error('Erro save:', e); } }
 
+/* ===== AUTO TEMA ===== */
+function checkAutoTheme() {
+  if (!appData.autoTheme) return;
+  const h = new Date().getHours();
+  const shouldBeDark = h < 6 || h >= 19;
+  const newTheme = shouldBeDark ? 'dark' : 'light';
+  if (appData.theme !== newTheme) {
+    appData.theme = newTheme;
+    initTheme();
+    saveAppData();
+  }
+}
+
+/* ===== MISSÕES BÁSICAS ===== */
 function ensureBasicTasksToday() {
   const today = getTodayKey();
   if (appData.basicDate !== today) {
@@ -602,15 +847,11 @@ function toggleBasicTask(taskId) {
   const was = appData.basicTasks[taskId];
   appData.basicTasks[taskId] = !was;
   if (!was) {
-    addXP(5);
-    addCoins(2);
-    soundSystem();
-    vibrate([15,10,20]);
+    addXP(5); addCoins(2);
+    soundSystem(); vibrate([15,10,20]);
   } else {
-    removeXP(5);
-    removeCoins(2);
-    soundClick();
-    vibrate(15);
+    removeXP(5); removeCoins(2);
+    soundClick(); vibrate(15);
   }
   saveAppData();
   renderBasicTasks();
@@ -633,8 +874,7 @@ function renderBasicTasks() {
       </div>
       <div style="width:28px;height:28px;border-radius:8px;border:2px solid ${isDone ? '#22c55e' : '#475569'};display:grid;place-content:center;background:${isDone ? 'linear-gradient(135deg,#22c55e,#16a34a)' : 'transparent'};color:white;font-weight:900;font-size:14px;box-shadow:${isDone ? '0 0 12px rgba(34,197,94,0.6)' : 'none'};">
         ${isDone ? '✔' : ''}
-      </div>
-    `;
+      </div>`;
     row.addEventListener('click', () => toggleBasicTask(t.id));
     list.appendChild(row);
   });
@@ -643,19 +883,256 @@ function renderBasicTasks() {
 function openMissions() {
   ensureBasicTasksToday();
   renderBasicTasks();
-  soundSystem();
-  vibrate([20,10,30]);
+  soundSystem(); vibrate([20,10,30]);
   const m = document.getElementById('missionsModal');
-  m.classList.remove('hidden');
-  m.style.display = 'flex';
+  m.classList.remove('hidden'); m.style.display = 'flex';
 }
 function closeMissions() {
   const m = document.getElementById('missionsModal');
-  m.classList.add('hidden');
-  m.style.display = 'none';
+  m.classList.add('hidden'); m.style.display = 'none';
   soundClick();
 }
 
+/* ===== CONQUISTAS ===== */
+function checkAchievements() {
+  if (!appData.unlockedAchievements) appData.unlockedAchievements = [];
+  let unlocked = 0;
+  ACHIEVEMENTS.forEach(a => {
+    if (!appData.unlockedAchievements.includes(a.id) && a.check(appData.stats)) {
+      appData.unlockedAchievements.push(a.id);
+      appData.coins = (appData.coins || 0) + a.reward;
+      appData.stats.coinsTotal = (appData.stats.coinsTotal || 0) + a.reward;
+      soundAchievement();
+      vibrate([30,20,30,20,50]);
+      setTimeout(() => {
+        launchConfetti(25, ['🏆','✨','🎉',a.emoji]);
+        showAchievementToast(a);
+      }, 200);
+    }
+    if (appData.unlockedAchievements.includes(a.id)) unlocked++;
+  });
+  saveAppData();
+  updateLevelUI();
+  return unlocked;
+}
+function showAchievementToast(achv) {
+  const t = document.createElement('div');
+  t.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-100px);z-index:99999;transition:transform 0.5s cubic-bezier(0.34,1.56,0.64,1);';
+  t.innerHTML = `
+    <div style="background:linear-gradient(135deg,#fbbf24,#f59e0b);color:white;padding:14px 20px;border-radius:16px;box-shadow:0 10px 30px rgba(251,191,36,0.5);display:flex;align-items:center;gap:12px;font-weight:bold;max-width:320px;">
+      <span style="font-size:32px;">${achv.emoji}</span>
+      <div>
+        <div style="font-size:11px;opacity:0.9;letter-spacing:1px;">CONQUISTA DESBLOQUEADA!</div>
+        <div style="font-size:15px;">${achv.name}</div>
+        <div style="font-size:11px;opacity:0.85;">+${achv.reward} 🪙</div>
+      </div>
+    </div>`;
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.transform = 'translateX(-50%) translateY(0)'; }, 50);
+  setTimeout(() => { t.style.transform = 'translateX(-50%) translateY(-150px)'; }, 4000);
+  setTimeout(() => t.remove(), 4600);
+}
+function openAchievements() {
+  soundClick();
+  renderAchievements();
+  const m = document.getElementById('achievementsModal');
+  m.classList.remove('hidden'); m.style.display = 'flex';
+}
+function closeAchievements() {
+  const m = document.getElementById('achievementsModal');
+  m.classList.add('hidden'); m.style.display = 'none';
+  soundClick();
+}
+function renderAchievements() {
+  const list = document.getElementById('achievementsList');
+  list.innerHTML = '';
+  let unlocked = 0;
+  ACHIEVEMENTS.forEach(a => {
+    const isUnlocked = appData.unlockedAchievements.includes(a.id);
+    if (isUnlocked) unlocked++;
+    const div = document.createElement('div');
+    div.className = 'achv-badge ' + (isUnlocked ? 'unlocked' : 'locked');
+    div.innerHTML = `
+      <div class="achv-emoji">${isUnlocked ? a.emoji : a.emoji}</div>
+      <div class="achv-name">${a.name}</div>`;
+    div.addEventListener('click', () => {
+      showConfirm(a.emoji, a.name, a.desc + (isUnlocked ? ' ✅ DESBLOQUEADA' : ' 🔒 Bloqueada') + ' — Recompensa: ' + a.reward + ' 🪙', null);
+    });
+    list.appendChild(div);
+  });
+  document.getElementById('achvProgress').textContent = `${unlocked} / ${ACHIEVEMENTS.length}`;
+}
+
+/* ===== ESTATÍSTICAS ===== */
+function openStats() {
+  soundClick();
+  renderStats();
+  const m = document.getElementById('statsModal');
+  m.classList.remove('hidden'); m.style.display = 'flex';
+}
+function closeStats() {
+  const m = document.getElementById('statsModal');
+  m.classList.add('hidden'); m.style.display = 'none';
+  soundClick();
+}
+function renderStats() {
+  const s = appData.stats || {};
+  document.getElementById('statXpTotal').textContent = s.xpTotal || 0;
+  document.getElementById('statCoinsTotal').textContent = s.coinsTotal || 0;
+  document.getElementById('statTasksTotal').textContent = s.tasksTotal || 0;
+  document.getElementById('statBestStreak').textContent = s.bestStreak || 0;
+  document.getElementById('statPerfectDays').textContent = s.perfectDays || 0;
+
+  // Gráfico dos últimos 7 dias
+  const chart = document.getElementById('statsChart');
+  chart.innerHTML = '';
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const dayIdx = d.getDay();
+    const dd = appData.days[dayIdx];
+    const completed = dd.tasks.filter(Boolean).length;
+    const pct = Math.round((completed / TOTAL_TASKS) * 100);
+    const col = document.createElement('div');
+    col.className = 'chart-col';
+    col.innerHTML = `
+      <div style="font-size:9px;font-weight:800;color:${i===0?'#fbbf24':'#94a3b8'};">${pct}%</div>
+      <div class="chart-bar ${i===0?'today':''}" style="height:${Math.max(4,pct)}%;"></div>
+      <div class="chart-day">${DAYS[dayIdx].short}</div>`;
+    chart.appendChild(col);
+  }
+}
+
+/* ===== ROLETA ===== */
+function openRoulette() {
+  soundClick();
+  updateRouletteStatus();
+  const m = document.getElementById('rouletteModal');
+  m.classList.remove('hidden'); m.style.display = 'flex';
+}
+function closeRoulette() {
+  const m = document.getElementById('rouletteModal');
+  m.classList.add('hidden'); m.style.display = 'none';
+  soundClick();
+}
+function updateRouletteStatus() {
+  const today = getTodayKey();
+  const hasFree = appData.lastFreeSpin !== today;
+  const status = document.getElementById('rouletteStatus');
+  const freeBtn = document.getElementById('spinBtn');
+  if (hasFree) {
+    status.textContent = '🎁 Você tem 1 giro grátis hoje!';
+    status.style.color = '#22c55e';
+    freeBtn.textContent = '🎰 GIRAR GRÁTIS';
+    freeBtn.disabled = false;
+    freeBtn.style.opacity = '1';
+  } else {
+    status.textContent = '⏰ Giro grátis já usado hoje. Volte amanhã!';
+    status.style.color = '#f59e0b';
+    freeBtn.textContent = '❌ GIRO GRÁTIS USADO';
+    freeBtn.disabled = true;
+    freeBtn.style.opacity = '0.5';
+  }
+}
+function spinRoulette(isPaid) {
+  if (isSpinning) return;
+  if (!isPaid) {
+    if (appData.lastFreeSpin === getTodayKey()) { soundError(); return; }
+  } else {
+    if ((appData.coins || 0) < 50) {
+      soundError(); vibrate([50,30,50]);
+      document.getElementById('spinPaidBtn').textContent = '❌ SEM MOEDAS';
+      setTimeout(() => { document.getElementById('spinPaidBtn').textContent = '🪙 GIRAR POR 50 MOEDAS'; }, 1200);
+      return;
+    }
+    appData.coins -= 50;
+    saveAppData(); updateLevelUI();
+  }
+
+  isSpinning = true;
+  const wheel = document.getElementById('rouletteWheel');
+  const rewardIdx = Math.floor(Math.random() * ROULETTE_REWARDS.length);
+  const sliceAngle = 360 / ROULETTE_REWARDS.length;
+  // Cada fatia começa em sliceAngle * idx. O ponteiro está no topo (0°).
+  // Precisamos que o centro da fatia escolhida fique no topo.
+  const targetAngle = (360 * 8) + (360 - (rewardIdx * sliceAngle + sliceAngle / 2));
+  wheel.style.transform = `rotate(${targetAngle}deg)`;
+
+  // Tick sounds during spin
+  let tickCount = 0;
+  const tickInterval = setInterval(() => {
+    soundSpin();
+    tickCount++;
+    if (tickCount > 25) clearInterval(tickInterval);
+  }, 150);
+
+  setTimeout(() => {
+    clearInterval(tickInterval);
+    isSpinning = false;
+    // Aplicar recompensa
+    const reward = ROULETTE_REWARDS[rewardIdx];
+    let resultText = reward.text;
+
+    if (reward.type === 'coins') {
+      appData.coins = (appData.coins || 0) + reward.value;
+      appData.stats.coinsTotal = (appData.stats.coinsTotal || 0) + reward.value;
+    } else if (reward.type === 'xp') {
+      addXP(reward.value);
+      appData.stats.xpTotal = (appData.stats.xpTotal || 0) + reward.value;
+    } else if (reward.type === 'chest') {
+      // Abre um baú grátis
+      const amount = 50 + Math.floor(Math.random() * 100);
+      appData.coins = (appData.coins || 0) + amount;
+      appData.stats.coinsTotal = (appData.stats.coinsTotal || 0) + amount;
+      resultText = `Baú grátis! +${amount} moedas`;
+    } else if (reward.type === 'avatar') {
+      const locked = AVATARS_SHOP.filter(a => !appData.unlockedAvatars.includes(a.emoji) && a.price > 0);
+      if (locked.length > 0) {
+        const won = locked[Math.floor(Math.random() * locked.length)];
+        appData.unlockedAvatars.push(won.emoji);
+        resultText = `Avatar "${won.name}" desbloqueado!`;
+      } else {
+        appData.coins += 100;
+        resultText = 'Já tem todos! +100 moedas';
+      }
+    } else if (reward.type === 'theme') {
+      const locked = THEMES_SHOP.filter(t => !appData.unlockedThemes.includes(t.id) && t.price > 0);
+      if (locked.length > 0) {
+        const won = locked[Math.floor(Math.random() * locked.length)];
+        appData.unlockedThemes.push(won.id);
+        resultText = `Tema "${won.name}" desbloqueado!`;
+      } else {
+        appData.coins += 100;
+        resultText = 'Já tem todos! +100 moedas';
+      }
+    }
+
+    appData.stats.spinsTotal = (appData.stats.spinsTotal || 0) + 1;
+    if (!isPaid) appData.lastFreeSpin = getTodayKey();
+
+    saveAppData();
+    updateLevelUI();
+    updateRouletteStatus();
+    soundLevelUp();
+    vibrate([50,30,50,30,100]);
+    launchConfetti(40, [reward.emoji, '✨', '🎉']);
+
+    document.getElementById('spinResultEmoji').textContent = reward.emoji;
+    document.getElementById('spinResultText').textContent = resultText;
+    document.getElementById('spinResultModal').classList.remove('hidden');
+
+    checkAchievements();
+
+    // Reset wheel visualmente após fechar
+    setTimeout(() => {
+      wheel.style.transition = 'none';
+      wheel.style.transform = 'rotate(0deg)';
+      setTimeout(() => { wheel.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.15, 1)'; }, 50);
+    }, 100);
+  }, 4100);
+}
+
+/* ===== TEMA ===== */
 function applyThemeStyle() {
   ['theme-purple','theme-green','theme-red','theme-gold','theme-pink','theme-rainbow'].forEach(c => document.body.classList.remove(c));
   if (appData.themeStyle && appData.themeStyle !== 'default') document.body.classList.add('theme-' + appData.themeStyle);
@@ -676,6 +1153,7 @@ function initTheme() {
   applyThemeStyle();
 }
 
+/* ===== NAVEGAÇÃO DIAS ===== */
 function renderDaysNav() {
   const c = document.getElementById('daysNavContainer');
   c.innerHTML = '';
@@ -693,8 +1171,7 @@ function renderDaysNav() {
       ${isPerfect ? '<span class="absolute -top-1 -left-1 text-xs">⭐</span>' : ''}
       <span class="text-[10px] uppercase tracking-wider opacity-80 font-bold">${day.short}</span>
       <span class="text-xs font-black mt-0.5">${day.name}</span>
-      <span class="text-[9px] mt-1 px-2 py-0.5 rounded-full font-bold ${isCurrent ? 'bg-white/25 text-white' : 'bg-slate-800 text-slate-400'}">${completed}/${TOTAL_TASKS}</span>
-    `;
+      <span class="text-[9px] mt-1 px-2 py-0.5 rounded-full font-bold ${isCurrent ? 'bg-white/25 text-white' : 'bg-slate-800 text-slate-400'}">${completed}/${TOTAL_TASKS}</span>`;
     btn.addEventListener('click', () => {
       pauseAllTimers(); soundClick();
       currentDayIndex = day.id;
@@ -876,11 +1353,16 @@ function setTaskState(i, newState, rar, rect) {
   dd.tasks[i] = newState;
   if (newState) {
     addXP(rar.xp); addCoins(rar.coins);
+    appData.stats.tasksTotal = (appData.stats.tasksTotal || 0) + 1;
+    appData.stats.xpTotal = (appData.stats.xpTotal || 0) + rar.xp;
+    appData.stats.coinsTotal = (appData.stats.coinsTotal || 0) + rar.coins;
     if (rect) { burstParticles(rect.left + rect.width/2, rect.top + rect.height/2, rar.color); floatXP(rect.left, rect.top - 10, rar.xp, 'XP'); }
   } else {
     removeXP(rar.xp); removeCoins(rar.coins);
+    appData.stats.tasksTotal = Math.max(0, (appData.stats.tasksTotal || 0) - 1);
     if (rect) floatLoss(rect.left, rect.top - 10, rar.xp, 'XP');
   }
+  checkAchievements();
 }
 
 function bindTaskEvents() {
@@ -964,7 +1446,12 @@ function bindTaskEvents() {
   if (wk) wk.addEventListener('change', e => { appData.sleepSchedule.wakeup = e.target.value; saveAppData(); });
 }
 
-function addXP(a) { appData.xp = (appData.xp || 0) + a; const n = xpNeededForLevel(appData.level); if (appData.xp > n) appData.xp = n; updateLevelUI(); }
+function addXP(a) {
+  appData.xp = (appData.xp || 0) + a;
+  const n = xpNeededForLevel(appData.level);
+  if (appData.xp > n) appData.xp = n;
+  updateLevelUI();
+}
 function removeXP(a) { appData.xp = Math.max(0, (appData.xp || 0) - a); updateLevelUI(); }
 function addCoins(a) { appData.coins = (appData.coins || 0) + a; updateLevelUI(); }
 function removeCoins(a) { appData.coins = Math.max(0, (appData.coins || 0) - a); updateLevelUI(); }
@@ -1029,7 +1516,10 @@ function updateProgress() {
 }
 function updateWeekProgress() {
   let perfect = 0;
-  DAYS.forEach(d => { if (appData.days[d.id].tasks.filter(Boolean).length === TOTAL_TASKS) perfect++; });
+  DAYS.forEach(d => {
+    const dd = appData.days[d.id];
+    if (dd.tasks.filter(Boolean).length === TOTAL_TASKS) perfect++;
+  });
   const pct = Math.round((perfect / 7) * 100);
   document.getElementById('weekProgressBar').style.width = pct + '%';
   document.getElementById('weekProgressText').textContent = `${perfect}/7 dias perfeitos`;
@@ -1044,6 +1534,12 @@ function triggerLevelUp() {
   if (oldLevel < MAX_LEVEL) appData.level = oldLevel + 1;
   else { appData.level = 0; appData.prestiges = (appData.prestiges || 0) + 1; isPrestige = true; }
   appData.streak = (appData.streak || 0) + 1;
+  // Atualizar stats
+  appData.stats.perfectDays = (appData.stats.perfectDays || 0) + 7;
+  if (appData.level > (appData.stats.maxLevel || 0)) appData.stats.maxLevel = appData.level;
+  if (appData.streak > (appData.stats.bestStreak || 0)) appData.stats.bestStreak = appData.streak;
+  if (appData.prestiges > (appData.stats.prestiges || 0)) appData.stats.prestiges = appData.prestiges;
+
   const ng = getLevelGoals(appData.level);
   const rank = getRank(appData.prestiges || 0);
   const card = document.getElementById('levelUpCard');
@@ -1088,6 +1584,7 @@ function triggerLevelUp() {
   DAYS.forEach(d => { appData.days[d.id] = newDayData(ng.study, ng.noPhone); });
   appData.xp = 0;
   saveAppData(); updateLevelUI();
+  checkAchievements();
   setTimeout(() => {
     const b = document.getElementById('rankBadge');
     b.classList.add('badge-glow','shine');
@@ -1132,17 +1629,13 @@ function showConfirm(emoji, title, msg, cb) {
 }
 
 function openStore() {
-  soundClick();
-  updateLevelUI();
-  renderStore();
+  soundClick(); updateLevelUI(); renderStore();
   const sm = document.getElementById('storeModal');
-  sm.classList.remove('hidden');
-  sm.style.display = 'flex';
+  sm.classList.remove('hidden'); sm.style.display = 'flex';
 }
 function closeStore() {
   const sm = document.getElementById('storeModal');
-  sm.classList.add('hidden');
-  sm.style.display = 'none';
+  sm.classList.add('hidden'); sm.style.display = 'none';
   soundClick();
 }
 function renderStore() {
@@ -1166,8 +1659,7 @@ function renderAvatarsTab() {
       <div class="text-[10px] text-slate-400 font-bold mb-1">${item.name}</div>
       ${isCurrent ? '<div class="text-[10px] font-black text-emerald-400">✓ EM USO</div>' :
         owned ? '<button type="button" class="use-avatar-btn w-full text-[10px] font-black py-1 rounded-lg bg-blue-500/20 text-blue-300 border border-blue-500/30">USAR</button>' :
-        `<button type="button" class="buy-avatar-btn w-full text-[10px] font-black py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30">🪙 ${item.price}</button>`}
-    `;
+        `<button type="button" class="buy-avatar-btn w-full text-[10px] font-black py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30">🪙 ${item.price}</button>`}`;
     if (!isCurrent && owned) {
       div.querySelector('.use-avatar-btn').addEventListener('click', e => {
         e.stopPropagation();
@@ -1182,8 +1674,7 @@ function renderAvatarsTab() {
         if ((appData.coins || 0) < item.price) {
           soundError(); vibrate([50,30,50]);
           e.target.textContent = '❌ SEM MOEDAS';
-          setTimeout(() => renderStore(), 1200);
-          return;
+          setTimeout(() => renderStore(), 1200); return;
         }
         appData.coins -= item.price;
         appData.unlockedAvatars.push(item.emoji);
@@ -1215,8 +1706,7 @@ function renderThemesTab() {
       </div>
       ${isCurrent ? '' :
         owned ? '<button type="button" class="use-theme-btn text-[11px] font-black px-3 py-1.5 rounded-xl bg-blue-500/20 text-blue-300 border border-blue-500/30">USAR</button>' :
-        `<button type="button" class="buy-theme-btn text-[11px] font-black px-3 py-1.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30">🪙 ${item.price}</button>`}
-    `;
+        `<button type="button" class="buy-theme-btn text-[11px] font-black px-3 py-1.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30">🪙 ${item.price}</button>`}`;
     if (!isCurrent && owned) {
       div.querySelector('.use-theme-btn').addEventListener('click', () => {
         appData.themeStyle = item.id;
@@ -1228,8 +1718,7 @@ function renderThemesTab() {
         if ((appData.coins || 0) < item.price) {
           soundError(); vibrate([50,30,50]);
           e.target.textContent = '❌ SEM MOEDAS';
-          setTimeout(() => renderStore(), 1200);
-          return;
+          setTimeout(() => renderStore(), 1200); return;
         }
         appData.coins -= item.price;
         appData.unlockedThemes.push(item.id);
@@ -1254,15 +1743,13 @@ function renderChestTab() {
     <button type="button" id="openChestBtn" class="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-600 text-white font-black text-sm shadow-xl">
       🪙 ABRIR POR ${CHEST_PRICE} MOEDAS
     </button>
-    <p class="text-[10px] text-slate-500 mt-3">Suas moedas: 🪙 ${appData.coins || 0}</p>
-  `;
+    <p class="text-[10px] text-slate-500 mt-3">Suas moedas: 🪙 ${appData.coins || 0}</p>`;
   storeContent.appendChild(div);
   document.getElementById('openChestBtn').addEventListener('click', () => {
     if ((appData.coins || 0) < CHEST_PRICE) {
       soundError(); vibrate([50,30,50]);
       document.getElementById('openChestBtn').textContent = '❌ MOEDAS INSUFICIENTES';
-      setTimeout(() => renderChestTab(), 1200);
-      return;
+      setTimeout(() => renderChestTab(), 1200); return;
     }
     appData.coins -= CHEST_PRICE;
     saveAppData(); updateLevelUI();
@@ -1273,10 +1760,7 @@ function renderChestTab() {
       chest.classList.remove('chest-shake');
       chest.classList.add('chest-open');
       chest.textContent = '✨';
-      setTimeout(() => {
-        chest.classList.remove('chest-open');
-        openChest();
-      }, 600);
+      setTimeout(() => { chest.classList.remove('chest-open'); openChest(); }, 600);
     }, 1200);
   });
 }
@@ -1293,11 +1777,13 @@ function openChest() {
   if (reward.type === 'coins') {
     const amount = Math.floor(reward.min + Math.random() * (reward.max - reward.min));
     appData.coins += amount;
+    appData.stats.coinsTotal = (appData.stats.coinsTotal || 0) + amount;
     emoji = '🪙'; text = `+${amount} moedas!`;
     confettiEmojis = ['🪙','✨','💰'];
   } else if (reward.type === 'xp') {
     const amount = Math.floor(reward.min + Math.random() * (reward.max - reward.min));
     addXP(amount);
+    appData.stats.xpTotal = (appData.stats.xpTotal || 0) + amount;
     emoji = '⭐'; text = `+${amount} XP!`;
     confettiEmojis = ['⭐','✨','💫'];
   } else if (reward.type === 'avatar') {
@@ -1324,17 +1810,18 @@ function openChest() {
     }
   } else {
     appData.coins += 500;
+    appData.stats.coinsTotal = (appData.stats.coinsTotal || 0) + 500;
     emoji = '💎'; title = '🎉 JACKPOT!'; text = `+500 moedas!!!`;
     confettiEmojis = ['💎','💰','🎉','👑','✨','🪙'];
   }
   saveAppData(); updateLevelUI();
-  soundLevelUp();
-  vibrate([50,30,50,30,100]);
+  soundLevelUp(); vibrate([50,30,50,30,100]);
   launchConfetti(60, confettiEmojis);
   document.getElementById('chestResultEmoji').textContent = emoji;
   document.getElementById('chestResultTitle').textContent = title;
   document.getElementById('chestResultText').textContent = text;
   document.getElementById('chestResultModal').classList.remove('hidden');
+  checkAchievements();
 }
 
 function initApp() {
@@ -1349,14 +1836,45 @@ function initApp() {
   loadDayData(currentDayIndex);
   if (QUOTES[appData.quoteIndex]) document.getElementById('quoteText').textContent = `"${QUOTES[appData.quoteIndex]}"`;
 
+  // Auto-tema ao abrir
+  checkAutoTheme();
+  setInterval(checkAutoTheme, 60000);
+
   document.getElementById('themeToggleBtn').addEventListener('click', () => {
     appData.theme = appData.theme === 'dark' ? 'light' : 'dark';
+    appData.autoTheme = false;
     initTheme(); saveAppData(); soundClick();
   });
+  // Duplo toque no tema = ativar/desativar auto
+  let themeTapCount = 0;
+  let themeTapTimer = null;
+  document.getElementById('themeToggleBtn').addEventListener('dblclick', () => {
+    appData.autoTheme = !appData.autoTheme;
+    saveAppData();
+    checkAutoTheme();
+    if (appData.autoTheme) {
+      launchConfetti(10, ['🌓','✨']);
+    }
+    soundSystem();
+  });
+
   document.getElementById('storeBtn').addEventListener('click', openStore);
   document.getElementById('storeCloseBtn').addEventListener('click', closeStore);
   document.getElementById('missionsBtn').addEventListener('click', openMissions);
   document.getElementById('missionsCloseBtn').addEventListener('click', closeMissions);
+  document.getElementById('achievementsBtn').addEventListener('click', openAchievements);
+  document.getElementById('achievementsCloseBtn').addEventListener('click', closeAchievements);
+  document.getElementById('statsBtn').addEventListener('click', openStats);
+  document.getElementById('statsCloseBtn').addEventListener('click', closeStats);
+  document.getElementById('rouletteBtn').addEventListener('click', openRoulette);
+  document.getElementById('rouletteCloseBtn').addEventListener('click', closeRoulette);
+
+  document.getElementById('spinBtn').addEventListener('click', () => spinRoulette(false));
+  document.getElementById('spinPaidBtn').addEventListener('click', () => spinRoulette(true));
+  document.getElementById('spinResultCloseBtn').addEventListener('click', () => {
+    document.getElementById('spinResultModal').classList.add('hidden');
+    soundClick();
+  });
 
   document.querySelectorAll('.store-tab').forEach(tab => {
     tab.addEventListener('click', () => {
@@ -1408,8 +1926,7 @@ function initApp() {
 
   document.getElementById('chestResultCloseBtn').addEventListener('click', () => {
     document.getElementById('chestResultModal').classList.add('hidden');
-    soundClick();
-    renderChestTab();
+    soundClick(); renderChestTab();
   });
 
   document.getElementById('avatarInner').addEventListener('click', () => {
@@ -1420,7 +1937,10 @@ function initApp() {
     saveAppData(); soundClick(); vibrate(20);
   });
 
-  console.log('✅ Modo Monstro inicializado!');
+  // Checa conquistas ao abrir (para pegar as que já deveriam estar desbloqueadas)
+  checkAchievements();
+
+  console.log('✅ Modo Monstro v2 inicializado!');
 }
 
 document.addEventListener('DOMContentLoaded', initApp);
