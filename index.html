@@ -35,7 +35,7 @@ body.theme-rainbow::before{background:conic-gradient(from 0deg at 50% 50%,rgba(2
 @keyframes floatUp{0%{transform:translate3d(0,100vh,0);opacity:0}10%{opacity:.6}90%{opacity:.6}100%{transform:translate3d(0,-10vh,0);opacity:0}}
 .glass{background:rgba(15,23,42,.72);border:1px solid rgba(59,130,246,.18)}
 body.light-bg .glass{background:rgba(255,255,255,.8)}
-.custom-checkbox{appearance:none;-webkit-appearance:none;width:26px;height:26px;border:2px solid #475569;border-radius:8px;cursor:pointer;display:grid;place-content:center;transition:transform .2s,background .2s,border .2s,box-shadow .2s}
+.custom-checkbox{appearance:none;-webkit-appearance:none;width:26px;height:26px;border:2px solid #475569;border-radius:8px;cursor:pointer;display:grid;place-content:center;transition:transform .2s,background .2s,border .2s,box-shadow .2s;flex-shrink:0}
 .custom-checkbox:hover{border-color:#22c55e}
 .custom-checkbox:checked{background:linear-gradient(135deg,#22c55e,#16a34a);border-color:#22c55e;box-shadow:0 0 10px rgba(34,197,94,.6)}
 .custom-checkbox:checked::before{content:"✔";font-size:15px;color:#fff;font-weight:900}
@@ -679,11 +679,11 @@ function renderTasks(dd){
     if(task.type==='nophone'){title=`Sem celular ${noPhoneH}h`;}
     if(task.type==='diary'){title=`Diário (${goals.diaryPages} pág)`;}
     let html=`<div><div class="flex items-center justify-between mb-2"><div class="flex items-center gap-2"><span class="text-3xl">${emoji}</span><span class="rarity-tag ${task.rarity}">${rar.label}</span></div>`;
-    // Botões de edição OU checkbox normal
+    // MOSTRA CHECKBOX em TODAS as tarefas MENOS subvideos e water (que têm UI própria)
     if(editModeOn){
       html+=`<div class="edit-badge"><div class="edit-btn edit" data-action="edit" data-id="${task.id}">✏️</div>${task.fixed?'':`<div class="edit-btn del" data-action="del" data-id="${task.id}">🗑️</div>`}</div>`;
     }else{
-      if(task.type!=='subvideos'&&task.type!=='water'){.type==='sleep'){
+      if(task.type!=='subvideos'&&task.type!=='water'){
         html+=`<input type="checkbox" data-id="${task.id}" class="custom-checkbox task-checkbox" ${checked?'checked':''}>`;
       }
     }
@@ -726,7 +726,6 @@ function setTaskState(taskId,newState,rar,rect){const dd=appData.days[currentDay
 function bindTaskEvents(){
   const dd=appData.days[currentDayIndex];
   const goals=getLevelGoals(appData.level);
-  // Só bind click events se NÃO estiver em modo edição
   if(!editModeOn){
     document.querySelectorAll('.task-checkbox').forEach(cb=>{
       cb.addEventListener('change',e=>{
@@ -772,7 +771,6 @@ function bindTaskEvents(){
     if(bt)bt.addEventListener('change',e=>{appData.sleepSchedule.bedtime=e.target.value;saveAppData();});
     if(wk)wk.addEventListener('change',e=>{appData.sleepSchedule.wakeup=e.target.value;saveAppData();});
   } else {
-    // Modo edição: bind botões de editar/deletar
     document.querySelectorAll('.edit-btn').forEach(btn=>{
       btn.addEventListener('click',e=>{
         const action=e.currentTarget.getAttribute('data-action');
@@ -863,129 +861,16 @@ function renderThemesTab(){const c=document.getElementById('storeContent');const
 function renderChestTab(){const c=document.getElementById('storeContent');const div=document.createElement('div');div.className='text-center py-4';div.innerHTML=`<div id="chestVisual" class="text-8xl mb-3">🎁</div><h3 class="text-lg font-black text-white mb-1">Baú Misterioso</h3><p class="text-xs text-slate-400 mb-5 px-4">Pode vir moedas, XP, avatares ou temas raros!</p><button type="button" id="openChestBtn" class="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-600 text-white font-black text-sm shadow-xl">🪙 ABRIR POR ${CHEST_PRICE} MOEDAS</button><p class="text-[10px] text-slate-500 mt-3">Suas moedas: 🪙 ${appData.coins||0}</p>`;c.appendChild(div);document.getElementById('openChestBtn').addEventListener('click',()=>{if((appData.coins||0)<CHEST_PRICE){soundError();vibrate([50,30,50]);document.getElementById('openChestBtn').textContent='❌ MOEDAS INSUFICIENTES';setTimeout(()=>renderChestTab(),1200);return;}appData.coins-=CHEST_PRICE;saveAppData();updateLevelUI();const chest=document.getElementById('chestVisual');chest.classList.add('chest-shake');soundChest();setTimeout(()=>{chest.classList.remove('chest-shake');chest.classList.add('chest-open');chest.textContent='✨';setTimeout(()=>{chest.classList.remove('chest-open');openChest();},600);},1200);});}
 function openChest(){const totalWeight=CHEST_REWARDS.reduce((a,r)=>a+r.weight,0);let roll=Math.random()*totalWeight;let reward=CHEST_REWARDS[0];for(const r of CHEST_REWARDS){if(roll<r.weight){reward=r;break;}roll-=r.weight;}let emoji='🎁',title='Você ganhou!',text='';let confettiEmojis=['🎉','✨','🎁'];if(reward.type==='coins'){const amount=Math.floor(reward.min+Math.random()*(reward.max-reward.min));appData.coins+=amount;appData.stats.coinsTotal=(appData.stats.coinsTotal||0)+amount;emoji='🪙';text=`+${amount} moedas!`;confettiEmojis=['🪙','✨','💰'];}else if(reward.type==='xp'){const amount=Math.floor(reward.min+Math.random()*(reward.max-reward.min));addXP(amount);appData.stats.xpTotal=(appData.stats.xpTotal||0)+amount;emoji='⭐';text=`+${amount} XP!`;confettiEmojis=['⭐','✨','💫'];}else if(reward.type==='avatar'){const locked=AVATARS_SHOP.filter(a=>!appData.unlockedAvatars.includes(a.emoji)&&a.price>0);if(locked.length>0){const won=locked[Math.floor(Math.random()*locked.length)];appData.unlockedAvatars.push(won.emoji);emoji=won.emoji;text=`Avatar "${won.name}" desbloqueado!`;confettiEmojis=['👤','✨',won.emoji];}else{appData.coins+=100;emoji='🪙';text=`Já tem todos! +100 moedas.`;}}else if(reward.type==='theme'){const locked=THEMES_SHOP.filter(t=>!appData.unlockedThemes.includes(t.id)&&t.price>0);if(locked.length>0){const won=locked[Math.floor(Math.random()*locked.length)];appData.unlockedThemes.push(won.id);emoji='🎨';text=`Tema "${won.name}" desbloqueado!`;confettiEmojis=['🎨','✨','🌈'];}else{appData.coins+=150;emoji='🪙';text=`Já tem todos! +150 moedas.`;}}else{appData.coins+=500;appData.stats.coinsTotal=(appData.stats.coinsTotal||0)+500;emoji='💎';title='🎉 JACKPOT!';text='+500 moedas!!!';confettiEmojis=['💎','💰','🎉','👑','✨','🪙'];}saveAppData();updateLevelUI();soundLevelUp();vibrate([50,30,50,30,100]);launchConfetti(60,confettiEmojis);document.getElementById('chestResultEmoji').textContent=emoji;document.getElementById('chestResultTitle').textContent=title;document.getElementById('chestResultText').textContent=text;document.getElementById('chestResultModal').classList.remove('hidden');checkAchievements();}
 
-// EDIT ROUTINE
 function openEdit(){soundClick();editModeOn=false;updateEditUI();renderEditList();const m=document.getElementById('editModal');m.classList.remove('hidden');m.style.display='flex';}
-function closeEdit(){
-  editModeOn=false;
-  updateEditUI();
-  loadDayData(currentDayIndex);
-  const m=document.getElementById('editModal');m.classList.add('hidden');m.style.display='none';
-  soundClick();
-}
-function updateEditUI(){
-  const sw=document.getElementById('editToggleSwitch');
-  const area=document.getElementById('editListArea');
-  const status=document.getElementById('editStatusText');
-  if(editModeOn){
-    sw.classList.add('on');
-    area.classList.remove('hidden');
-    status.textContent='Ligado — você pode editar';
-    status.style.color='#22c55e';
-  }else{
-    sw.classList.remove('on');
-    area.classList.add('hidden');
-    status.textContent='Desligado — rotina protegida';
-    status.style.color='#94a3b8';
-  }
-}
-function toggleEditMode(){
-  editModeOn=!editModeOn;
-  updateEditUI();
-  // Re-renderiza a grade de tarefas para mostrar/esconder botões de edição
-  renderTasks(appData.days[currentDayIndex]);
-  soundClick();
-  vibrate(20);
-}
-function renderEditList(){
-  const list=document.getElementById('editTasksList');
-  if(!list)return;
-  list.innerHTML='';
-  appData.taskList.forEach(t=>{
-    const div=document.createElement('div');
-    div.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:rgba(15,23,42,.7);border:1px solid rgba(59,130,246,.25);border-radius:12px';
-    div.innerHTML=`<div style="display:flex;align-items:center;gap:10px"><span style="font-size:22px">${t.emoji}</span><div><div style="font-size:13px;font-weight:800;color:${t.enabled?'#e2e8f0':'#64748b'}">${t.title}</div><div style="font-size:10px;color:#94a3b8">${t.fixed?'🔒 Fixa':t.type==='custom'?'Personalizada':'Especial'}</div></div></div><div style="display:flex;gap:4px">${t.fixed?'<span style="font-size:10px;color:#64748b;padding:6px">🔒</span>':`<button type="button" class="edit-btn edit" data-edit="${t.id}" style="width:32px;height:32px;font-size:14px">✏️</button>`}<button type="button" class="edit-btn" data-toggle="${t.id}" style="width:32px;height:32px;font-size:14px;background:rgba(${t.enabled?'251,191,36':'34,197,94'},.2);color:${t.enabled?'#fbbf24':'#22c55e'};border:1px solid rgba(${t.enabled?'251,191,36':'34,197,94'},.4)">${t.enabled?'⏸️':'▶️'}</button></div>`;
-    list.appendChild(div);
-  });
-  list.querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',()=>openTaskEdit(b.getAttribute('data-edit'))));
-  list.querySelectorAll('[data-toggle]').forEach(b=>b.addEventListener('click',()=>{
-    const id=b.getAttribute('data-toggle');
-    const task=appData.taskList.find(t=>t.id===id);
-    if(task&&!task.fixed){
-      task.enabled=!task.enabled;
-      saveAppData();
-      renderEditList();
-      loadDayData(currentDayIndex);
-      renderDaysNav();
-      soundClick();
-      vibrate(20);
-    }else{
-      soundError();
-    }
-  }));
-}
-function openTaskEdit(id){
-  soundClick();
-  if(id){
-    taskEditId=id;
-    const task=appData.taskList.find(t=>t.id===id);
-    document.getElementById('taskEditTitle').textContent='Editar Tarefa';
-    document.getElementById('taskEditEmoji').value=task.emoji;
-    document.getElementById('taskEditName').value=task.title;
-    document.getElementById('taskEditDesc').value=task.desc;
-    document.getElementById('taskEditRarity').value=task.rarity;
-  }else{
-    taskEditId=null;
-    document.getElementById('taskEditTitle').textContent='Nova Tarefa';
-    document.getElementById('taskEditEmoji').value='🎯';
-    document.getElementById('taskEditName').value='';
-    document.getElementById('taskEditDesc').value='';
-    document.getElementById('taskEditRarity').value='common';
-  }
-  const m=document.getElementById('taskEditModal');m.classList.remove('hidden');m.style.display='flex';
-}
+function closeEdit(){editModeOn=false;updateEditUI();loadDayData(currentDayIndex);const m=document.getElementById('editModal');m.classList.add('hidden');m.style.display='none';soundClick();}
+function updateEditUI(){const sw=document.getElementById('editToggleSwitch');const area=document.getElementById('editListArea');const status=document.getElementById('editStatusText');if(editModeOn){sw.classList.add('on');area.classList.remove('hidden');status.textContent='Ligado — você pode editar';status.style.color='#22c55e';}else{sw.classList.remove('on');area.classList.add('hidden');status.textContent='Desligado — rotina protegida';status.style.color='#94a3b8';}}
+function toggleEditMode(){editModeOn=!editModeOn;updateEditUI();renderTasks(appData.days[currentDayIndex]);soundClick();vibrate(20);}
+function renderEditList(){const list=document.getElementById('editTasksList');if(!list)return;list.innerHTML='';appData.taskList.forEach(t=>{const div=document.createElement('div');div.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:rgba(15,23,42,.7);border:1px solid rgba(59,130,246,.25);border-radius:12px';div.innerHTML=`<div style="display:flex;align-items:center;gap:10px"><span style="font-size:22px">${t.emoji}</span><div><div style="font-size:13px;font-weight:800;color:${t.enabled?'#e2e8f0':'#64748b'}">${t.title}</div><div style="font-size:10px;color:#94a3b8">${t.fixed?'🔒 Fixa':t.type==='custom'?'Personalizada':'Especial'}</div></div></div><div style="display:flex;gap:4px">${t.fixed?'<span style="font-size:10px;color:#64748b;padding:6px">🔒</span>':`<button type="button" class="edit-btn edit" data-edit="${t.id}" style="width:32px;height:32px;font-size:14px">✏️</button>`}<button type="button" class="edit-btn" data-toggle="${t.id}" style="width:32px;height:32px;font-size:14px;background:rgba(${t.enabled?'251,191,36':'34,197,94'},.2);color:${t.enabled?'#fbbf24':'#22c55e'};border:1px solid rgba(${t.enabled?'251,191,36':'34,197,94'},.4)">${t.enabled?'⏸️':'▶️'}</button></div>`;list.appendChild(div);});list.querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',()=>openTaskEdit(b.getAttribute('data-edit'))));list.querySelectorAll('[data-toggle]').forEach(b=>b.addEventListener('click',()=>{const id=b.getAttribute('data-toggle');const task=appData.taskList.find(t=>t.id===id);if(task&&!task.fixed){task.enabled=!task.enabled;saveAppData();renderEditList();loadDayData(currentDayIndex);renderDaysNav();soundClick();vibrate(20);}else{soundError();}}));}
+function openTaskEdit(id){soundClick();if(id){taskEditId=id;const task=appData.taskList.find(t=>t.id===id);document.getElementById('taskEditTitle').textContent='Editar Tarefa';document.getElementById('taskEditEmoji').value=task.emoji;document.getElementById('taskEditName').value=task.title;document.getElementById('taskEditDesc').value=task.desc;document.getElementById('taskEditRarity').value=task.rarity;}else{taskEditId=null;document.getElementById('taskEditTitle').textContent='Nova Tarefa';document.getElementById('taskEditEmoji').value='🎯';document.getElementById('taskEditName').value='';document.getElementById('taskEditDesc').value='';document.getElementById('taskEditRarity').value='common';}const m=document.getElementById('taskEditModal');m.classList.remove('hidden');m.style.display='flex';}
 function closeTaskEdit(){const m=document.getElementById('taskEditModal');m.classList.add('hidden');m.style.display='none';soundClick();}
-function saveTaskEdit(){
-  const emoji=document.getElementById('taskEditEmoji').value.trim()||'🎯';
-  const name=document.getElementById('taskEditName').value.trim();
-  const desc=document.getElementById('taskEditDesc').value.trim()||'Tarefa personalizada';
-  const rarity=document.getElementById('taskEditRarity').value;
-  if(!name){soundError();return;}
-  if(taskEditId){
-    const task=appData.taskList.find(t=>t.id===taskEditId);
-    if(task){task.emoji=emoji;task.title=name;task.desc=desc;task.rarity=rarity;}
-  }else{
-    const id='custom_'+Date.now();
-    appData.taskList.push({id,type:'custom',emoji,title:name,desc,rarity,fixed:false,enabled:true});
-    DAYS.forEach(d=>{appData.days[d.id].taskState[id]=false;});
-  }
-  saveAppData();soundBuy();vibrate([30,20,30]);
-  closeTaskEdit();
-  renderEditList();
-  loadDayData(currentDayIndex);
-  renderDaysNav();
-}
-function deleteTask(id){
-  const task=appData.taskList.find(t=>t.id===id);
-  if(!task||task.fixed)return;
-  showConfirm('🗑️','Remover Tarefa?','Tem certeza que quer remover "'+task.title+'"?',()=>{
-    appData.taskList=appData.taskList.filter(t=>t.id!==id);
-    DAYS.forEach(d=>{delete appData.days[d.id].taskState[id];});
-    saveAppData();soundReset();
-    renderEditList();
-    loadDayData(currentDayIndex);
-    renderDaysNav();
-  });
-}
-function restoreDefaults(){
-  showConfirm('🔄','Restaurar Padrão?','Vai apagar suas tarefas customizadas e voltar as 10 originais.',()=>{
-    appData.taskList=JSON.parse(JSON.stringify(DEFAULT_TASK_LIST));
-    DAYS.forEach(d=>{appData.days[d.id]=newDayData();});
-    saveAppData();soundBuy();vibrate([50,30,50]);
-    renderEditList();
-    loadDayData(currentDayIndex);
-    renderDaysNav();
-  });
-}
+function saveTaskEdit(){const emoji=document.getElementById('taskEditEmoji').value.trim()||'🎯';const name=document.getElementById('taskEditName').value.trim();const desc=document.getElementById('taskEditDesc').value.trim()||'Tarefa personalizada';const rarity=document.getElementById('taskEditRarity').value;if(!name){soundError();return;}if(taskEditId){const task=appData.taskList.find(t=>t.id===taskEditId);if(task){task.emoji=emoji;task.title=name;task.desc=desc;task.rarity=rarity;}}else{const id='custom_'+Date.now();appData.taskList.push({id,type:'custom',emoji,title:name,desc,rarity,fixed:false,enabled:true});DAYS.forEach(d=>{appData.days[d.id].taskState[id]=false;});}saveAppData();soundBuy();vibrate([30,20,30]);closeTaskEdit();renderEditList();loadDayData(currentDayIndex);renderDaysNav();}
+function deleteTask(id){const task=appData.taskList.find(t=>t.id===id);if(!task||task.fixed)return;showConfirm('🗑️','Remover Tarefa?','Tem certeza que quer remover "'+task.title+'"?',()=>{appData.taskList=appData.taskList.filter(t=>t.id!==id);DAYS.forEach(d=>{delete appData.days[d.id].taskState[id];});saveAppData();soundReset();renderEditList();loadDayData(currentDayIndex);renderDaysNav();});}
+function restoreDefaults(){showConfirm('🔄','Restaurar Padrão?','Vai apagar suas tarefas customizadas e voltar as 10 originais.',()=>{appData.taskList=JSON.parse(JSON.stringify(DEFAULT_TASK_LIST));DAYS.forEach(d=>{appData.days[d.id]=newDayData();});saveAppData();soundBuy();vibrate([50,30,50]);renderEditList();loadDayData(currentDayIndex);renderDaysNav();});}
 
 function initApp(){
   appData=loadAppData();
@@ -1093,7 +978,7 @@ function initApp(){
   });
 
   checkAchievements();checkWeeklyMissions();
-  console.log('✅ Modo Monstro v7 inicializado!');
+  console.log('✅ Modo Monstro v8 inicializado!');
 }
 document.addEventListener('DOMContentLoaded',initApp);
 </script>
