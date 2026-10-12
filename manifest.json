@@ -1,6 +1,6 @@
 {
-  "name": "Painel de Rotina do Criador",
-  "short_name": "Rotina Criador",
+  "name": "MODO MONSTRO",
+  "short_name": "monstro",
   "description": "Minha rotina diária sem datas — foco e consistência.",
   "start_url": "./index.html",
   "display": "standalone",
