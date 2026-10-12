@@ -38,41 +38,21 @@ body::after {
   mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
   -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
 }
-
 body.theme-purple::before { background: radial-gradient(circle at 15% 20%, rgba(168,85,247,0.22), transparent 45%), radial-gradient(circle at 85% 80%, rgba(236,72,153,0.18), transparent 45%); }
 body.theme-green::before { background: radial-gradient(circle at 15% 20%, rgba(34,197,94,0.22), transparent 45%), radial-gradient(circle at 85% 80%, rgba(6,182,212,0.18), transparent 45%); }
 body.theme-red::before { background: radial-gradient(circle at 15% 20%, rgba(239,68,68,0.22), transparent 45%), radial-gradient(circle at 85% 80%, rgba(245,158,11,0.18), transparent 45%); }
 body.theme-gold::before { background: radial-gradient(circle at 15% 20%, rgba(245,158,11,0.25), transparent 45%), radial-gradient(circle at 85% 80%, rgba(234,179,8,0.2), transparent 45%); }
 body.theme-pink::before { background: radial-gradient(circle at 15% 20%, rgba(236,72,153,0.22), transparent 45%), radial-gradient(circle at 85% 80%, rgba(168,85,247,0.18), transparent 45%); }
-body.theme-rainbow::before {
-  background: conic-gradient(from 0deg at 50% 50%, rgba(239,68,68,0.15), rgba(245,158,11,0.15), rgba(34,197,94,0.15), rgba(6,182,212,0.15), rgba(59,130,246,0.15), rgba(168,85,247,0.15), rgba(239,68,68,0.15));
-  animation: rainbowSpin 20s linear infinite;
-}
+body.theme-rainbow::before { background: conic-gradient(from 0deg at 50% 50%, rgba(239,68,68,0.15), rgba(245,158,11,0.15), rgba(34,197,94,0.15), rgba(6,182,212,0.15), rgba(59,130,246,0.15), rgba(168,85,247,0.15), rgba(239,68,68,0.15)); animation: rainbowSpin 20s linear infinite; }
 @keyframes rainbowSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-.particle-bg {
-  position: fixed; border-radius: 50%; pointer-events: none;
-  z-index: -1; opacity: 0.4; animation: floatUp linear infinite; will-change: transform;
-}
-@keyframes floatUp {
-  0% { transform: translate3d(0, 100vh, 0); opacity: 0; }
-  10% { opacity: 0.5; }
-  90% { opacity: 0.5; }
-  100% { transform: translate3d(0, -10vh, 0); opacity: 0; }
-}
-
+.particle-bg { position: fixed; border-radius: 50%; pointer-events: none; z-index: -1; opacity: 0.4; animation: floatUp linear infinite; will-change: transform; }
+@keyframes floatUp { 0% { transform: translate3d(0, 100vh, 0); opacity: 0; } 10% { opacity: 0.5; } 90% { opacity: 0.5; } 100% { transform: translate3d(0, -10vh, 0); opacity: 0; } }
 .glass { background: rgba(15,23,42,0.7); }
 body.light-bg .glass { background: rgba(255,255,255,0.75); }
-
-.custom-checkbox {
-  appearance: none; -webkit-appearance: none; width: 26px; height: 26px;
-  border: 2px solid #475569; border-radius: 8px; cursor: pointer;
-  display: grid; place-content: center; transition: transform 0.2s, background 0.2s, border 0.2s, box-shadow 0.2s;
-}
+.custom-checkbox { appearance: none; -webkit-appearance: none; width: 26px; height: 26px; border: 2px solid #475569; border-radius: 8px; cursor: pointer; display: grid; place-content: center; transition: transform 0.2s, background 0.2s, border 0.2s, box-shadow 0.2s; }
 .custom-checkbox:hover { border-color: #22c55e; }
 .custom-checkbox:checked { background: linear-gradient(135deg, #22c55e, #16a34a); border-color: #22c55e; box-shadow: 0 0 10px rgba(34,197,94,0.6); }
 .custom-checkbox:checked::before { content: "✔"; font-size: 15px; color: white; font-weight: 900; }
-
 .task-card { position: relative; transition: transform 0.25s, box-shadow 0.25s; overflow: hidden; }
 .task-card.rarity-common { border-left: 4px solid #22c55e; }
 .task-card.rarity-rare { border-left: 4px solid #3b82f6; }
@@ -82,22 +62,18 @@ body.light-bg .glass { background: rgba(255,255,255,0.75); }
 .task-card.completed.rarity-rare { box-shadow: 0 0 20px rgba(59,130,246,0.35); }
 .task-card.completed.rarity-epic { box-shadow: 0 0 20px rgba(168,85,247,0.35); }
 .task-card.completed.rarity-legendary { box-shadow: 0 0 20px rgba(245,158,11,0.4); }
-
 .rarity-tag { font-size: 9px; font-weight: 800; padding: 2px 8px; border-radius: 999px; letter-spacing: 0.8px; text-transform: uppercase; }
 .rarity-tag.common { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.4); }
 .rarity-tag.rare { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.4); }
 .rarity-tag.epic { background: rgba(168,85,247,0.15); color: #c084fc; border: 1px solid rgba(168,85,247,0.4); }
 .rarity-tag.legendary { background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.4); }
-
 .xp-bar-outer { position: relative; background: rgba(15,23,42,0.8); border-radius: 999px; height: 8px; overflow: hidden; border: 1px solid rgba(59,130,246,0.3); }
 .xp-bar-fill { height: 100%; background: linear-gradient(90deg, #06b6d4, #3b82f6, #a855f7); border-radius: 999px; transition: width 0.5s ease-out; box-shadow: 0 0 10px rgba(59,130,246,0.6); }
 .xp-bar-fill.shine { animation: xpShine 3s linear infinite; background-size: 200% auto; }
 @keyframes xpShine { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
-
 .rank-badge { position: relative; overflow: hidden; transition: all 0.4s ease; }
 .rank-badge.shine::after { content: ""; position: absolute; inset: 0; background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.5) 50%, transparent 70%); background-size: 250% auto; animation: shineSweep 3s linear infinite; pointer-events: none; }
 @keyframes shineSweep { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
-
 .modal-overlay { background: rgba(0,0,0,0.85); }
 .levelup-rays { position: absolute; inset: -50%; background: conic-gradient(from 0deg, transparent 0deg, rgba(255,215,0,0.4) 15deg, transparent 30deg, transparent 45deg, rgba(255,215,0,0.4) 60deg, transparent 75deg, transparent 90deg, rgba(255,215,0,0.4) 105deg, transparent 120deg, transparent 135deg, rgba(255,215,0,0.4) 150deg, transparent 165deg, transparent 180deg, rgba(255,215,0,0.4) 195deg, transparent 210deg, transparent 225deg, rgba(255,215,0,0.4) 240deg, transparent 255deg, transparent 270deg, rgba(255,215,0,0.4) 285deg, transparent 300deg, transparent 315deg, rgba(255,215,0,0.4) 330deg, transparent 345deg); animation: rotateRays 8s linear infinite; pointer-events: none; opacity: 0.5; }
 @keyframes rotateRays { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -107,35 +83,27 @@ body.light-bg .glass { background: rgba(255,255,255,0.75); }
 .animate-prestige { animation: prestigePop 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
 .badge-glow { animation: badgeGlow 1.5s ease-in-out infinite; }
 @keyframes badgeGlow { 0%,100% { box-shadow: 0 0 10px currentColor; } 50% { box-shadow: 0 0 30px currentColor, 0 0 50px currentColor; } }
-
 .confetti-piece { position: fixed; top: -10vh; font-size: 24px; pointer-events: none; z-index: 9999; animation: confettiFall linear forwards; will-change: transform; }
 @keyframes confettiFall { 0% { transform: translate3d(0, -20vh, 0) rotate(0deg); opacity: 1; } 100% { transform: translate3d(0, 115vh, 0) rotate(720deg); opacity: 0; } }
-
 .xp-float { position: fixed; font-weight: 900; font-size: 20px; pointer-events: none; z-index: 9998; animation: xpFloatUp 1.3s ease-out forwards; text-shadow: 0 0 10px currentColor; will-change: transform, opacity; }
 @keyframes xpFloatUp { 0% { transform: translate3d(0,0,0) scale(0.5); opacity: 0; } 20% { transform: translate3d(0,-15px,0) scale(1.2); opacity: 1; } 100% { transform: translate3d(0,-90px,0) scale(1); opacity: 0; } }
-
 .burst-particle { position: fixed; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9997; will-change: transform, opacity; }
 @keyframes burstOut { 0% { transform: translate3d(0,0,0) scale(1); opacity: 1; } 100% { transform: translate3d(var(--tx), var(--ty), 0) scale(0); opacity: 0; } }
-
 .avatar-ring { position: relative; background: linear-gradient(135deg, #3b82f6, #a855f7, #06b6d4); border-radius: 9999px; padding: 2.5px; }
 .avatar-inner { border-radius: 9999px; background: #0f172a; display: grid; place-content: center; font-size: 22px; font-weight: 900; }
 body.light-bg .avatar-inner { background: #eef2ff; }
-
 .day-tab { transition: transform 0.25s, box-shadow 0.25s; position: relative; overflow: hidden; }
 .day-tab.active { transform: scale(1.04); box-shadow: 0 6px 25px rgba(59,130,246,0.3); }
-
 .btn-action { transition: transform 0.15s; }
 .btn-action:active { transform: scale(0.94); }
-
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(100,116,139,0.4); border-radius: 4px; }
-
 .store-item { transition: all 0.25s; cursor: pointer; }
 .store-item:active { transform: scale(0.96); }
 .store-item.owned { opacity: 0.85; }
 .store-item.current { border-color: #22c55e !important; box-shadow: 0 0 15px rgba(34,197,94,0.4); }
-.theme-preview { width: 60px; height: 60px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.2); }
+.theme-preview { width: 60px; height: 60px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.2); flex-shrink: 0; }
 .theme-preview.t-default { background: linear-gradient(135deg, #1e3a8a, #3b82f6, #06b6d4); }
 .theme-preview.t-purple { background: linear-gradient(135deg, #581c87, #a855f7, #ec4899); }
 .theme-preview.t-green { background: linear-gradient(135deg, #14532d, #22c55e, #06b6d4); }
@@ -143,20 +111,10 @@ body.light-bg .avatar-inner { background: #eef2ff; }
 .theme-preview.t-gold { background: linear-gradient(135deg, #78350f, #f59e0b, #eab308); }
 .theme-preview.t-pink { background: linear-gradient(135deg, #831843, #ec4899, #a855f7); }
 .theme-preview.t-rainbow { background: conic-gradient(from 0deg, #ef4444, #f59e0b, #22c55e, #06b6d4, #3b82f6, #a855f7, #ef4444); }
-
-@keyframes chestShake {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  25% { transform: translateY(-3px) rotate(-3deg); }
-  75% { transform: translateY(-3px) rotate(3deg); }
-}
+@keyframes chestShake { 0%, 100% { transform: translateY(0) rotate(0deg); } 25% { transform: translateY(-3px) rotate(-3deg); } 75% { transform: translateY(-3px) rotate(3deg); } }
 .chest-shake { animation: chestShake 0.5s infinite; }
-@keyframes chestOpen {
-  0% { transform: scale(1) rotate(0deg); }
-  50% { transform: scale(1.4) rotate(15deg); }
-  100% { transform: scale(1) rotate(0deg); }
-}
+@keyframes chestOpen { 0% { transform: scale(1) rotate(0deg); } 50% { transform: scale(1.4) rotate(15deg); } 100% { transform: scale(1) rotate(0deg); } }
 .chest-open { animation: chestOpen 0.6s ease-out; }
-
 .store-tab { transition: all 0.2s; }
 .store-tab.active { background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; box-shadow: 0 4px 15px rgba(59,130,246,0.4); }
 </style>
@@ -181,8 +139,8 @@ body.light-bg .avatar-inner { background: #eef2ff; }
         <div id="rankBadge" class="rank-badge flex items-center gap-1.5 bg-slate-500/10 border border-slate-500/30 px-2.5 py-1.5 rounded-xl text-xs font-bold">
           <span id="rankEmoji">🌱</span><span id="rankName" class="hidden sm:inline">Iniciante</span>
         </div>
-        <button id="storeBtn" title="Loja" class="btn-action p-2 rounded-xl bg-amber-500/15 text-amber-400 border border-amber-500/30 hover:bg-amber-500/25 transition-all">🛒</button>
-        <button id="themeToggleBtn" title="Tema claro/escuro" class="btn-action p-2 rounded-xl bg-slate-800 hover:bg-slate-700 transition-all"><span id="themeIcon">🌙</span></button>
+        <button id="storeBtn" type="button" title="Loja" class="btn-action p-2 rounded-xl bg-amber-500/15 text-amber-400 border border-amber-500/30 hover:bg-amber-500/25 transition-all">🛒</button>
+        <button id="themeToggleBtn" type="button" title="Tema" class="btn-action p-2 rounded-xl bg-slate-800 hover:bg-slate-700 transition-all"><span id="themeIcon">🌙</span></button>
       </div>
     </div>
 
@@ -226,8 +184,8 @@ body.light-bg .avatar-inner { background: #eef2ff; }
         <p id="selectedDaySubtitle" class="text-[11px] text-slate-400">Nível 0 — 10 missões</p>
       </div>
       <div class="flex items-center gap-2 w-full sm:w-auto">
-        <button id="resetDayBtn" class="btn-action flex-1 sm:flex-none px-3 py-1.5 text-[11px] font-bold rounded-xl bg-rose-500/15 text-rose-400 hover:bg-rose-500/25 border border-rose-500/30">🔄 Dia</button>
-        <button id="resetWeekBtn" class="btn-action flex-1 sm:flex-none px-3 py-1.5 text-[11px] font-bold rounded-xl bg-slate-500/15 text-slate-300 hover:bg-slate-500/25 border border-slate-500/30">🗑️ Semana</button>
+        <button id="resetDayBtn" type="button" class="btn-action flex-1 sm:flex-none px-3 py-1.5 text-[11px] font-bold rounded-xl bg-rose-500/15 text-rose-400 hover:bg-rose-500/25 border border-rose-500/30">🔄 Dia</button>
+        <button id="resetWeekBtn" type="button" class="btn-action flex-1 sm:flex-none px-3 py-1.5 text-[11px] font-bold rounded-xl bg-slate-500/15 text-slate-300 hover:bg-slate-500/25 border border-slate-500/30">🗑️ Semana</button>
       </div>
     </div>
     <div class="w-full bg-slate-800 h-3 rounded-full overflow-hidden border border-slate-700 relative z-10">
@@ -245,23 +203,22 @@ body.light-bg .avatar-inner { background: #eef2ff; }
 <footer class="mt-auto glass border-t border-slate-800 py-5 px-4">
   <div class="max-w-4xl mx-auto text-center flex flex-col items-center gap-2">
     <blockquote id="quoteText" class="text-xs sm:text-sm italic text-slate-400 font-medium">"A consistência supera o talento quando o talento não é consistente."</blockquote>
-    <button id="newQuoteBtn" class="text-[11px] font-bold px-3 py-1.5 rounded-lg bg-blue-500/15 text-blue-400 hover:bg-blue-500/25 border border-blue-500/30 transition">✨ Nova Frase</button>
+    <button id="newQuoteBtn" type="button" class="text-[11px] font-bold px-3 py-1.5 rounded-lg bg-blue-500/15 text-blue-400 hover:bg-blue-500/25 border border-blue-500/30 transition">✨ Nova Frase</button>
     <p class="text-[10px] text-slate-500 mt-1">Painel de Rotina do Criador © 2026</p>
   </div>
 </footer>
 
-<!-- MODAL LEVEL UP -->
 <div id="levelUpModal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
   <div id="levelUpCard" class="relative rounded-3xl p-6 sm:p-8 max-w-md w-full text-white text-center shadow-2xl overflow-hidden">
-    <div id="modalBg" class="absolute inset-0 bg-gradient-to-br from-purple-700 via-blue-700 to-indigo-800"></div>
-    <div id="modalBgOverlay" class="absolute inset-0 opacity-40 bg-gradient-to-tr from-yellow-400 via-transparent to-pink-500"></div>
+    <div class="absolute inset-0 bg-gradient-to-br from-purple-700 via-blue-700 to-indigo-800"></div>
+    <div class="absolute inset-0 opacity-40 bg-gradient-to-tr from-yellow-400 via-transparent to-pink-500"></div>
     <div class="levelup-rays"></div>
     <div class="relative z-10">
       <div id="modalEmoji" class="text-7xl mb-2 inline-block drop-shadow-2xl">🏆</div>
       <h2 id="modalTitle" class="text-3xl font-black mb-1 tracking-tight drop-shadow-lg">LEVEL UP!</h2>
       <p id="modalSubtitle" class="text-base mb-4 font-bold opacity-95">Você subiu para o <span id="newLevelText" class="font-black">Nível 1</span>!</p>
       <div id="prestigeBadgeBox" class="hidden mb-4">
-        <div id="prestigeBadgeInner" class="inline-block px-6 py-4 rounded-2xl bg-white/15 border-2 border-white/40">
+        <div class="inline-block px-6 py-4 rounded-2xl bg-white/15 border-2 border-white/40">
           <div class="text-5xl mb-1" id="prestigeBadgeEmoji">🥉</div>
           <div class="text-xl font-black tracking-wide" id="prestigeBadgeName">BRONZE</div>
         </div>
@@ -274,49 +231,43 @@ body.light-bg .avatar-inner { background: #eef2ff; }
         <p>📝 <span id="newDiary">1</span> páginas de diário</p>
         <p>📵 <span id="newNoPhone">1</span> h sem celular</p>
       </div>
-      <button id="levelUpCloseBtn" class="btn-action w-full py-3 bg-white text-purple-700 rounded-2xl font-black hover:bg-slate-100 transition shadow-2xl text-sm tracking-wide">🔥 ACEITAR DESAFIO</button>
+      <button id="levelUpCloseBtn" type="button" class="btn-action w-full py-3 bg-white text-purple-700 rounded-2xl font-black hover:bg-slate-100 transition shadow-2xl text-sm tracking-wide">🔥 ACEITAR DESAFIO</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL CONFIRM -->
 <div id="confirmModal" class="hidden fixed inset-0 z-[60] modal-overlay flex items-center justify-center p-4">
   <div class="rounded-3xl p-6 max-w-sm w-full bg-slate-900 border border-slate-700 text-center shadow-2xl">
     <div class="text-5xl mb-2" id="confirmEmoji">⚠️</div>
     <h3 id="confirmTitle" class="text-lg font-black mb-2 text-white">Tem certeza?</h3>
     <p id="confirmMsg" class="text-xs text-slate-400 mb-5">Essa ação não pode ser desfeita.</p>
     <div class="flex gap-2">
-      <button id="confirmCancelBtn" class="btn-action flex-1 py-2.5 rounded-xl bg-slate-800 text-slate-300 font-bold text-sm hover:bg-slate-700">Cancelar</button>
-      <button id="confirmOkBtn" class="btn-action flex-1 py-2.5 rounded-xl bg-rose-600 text-white font-black text-sm hover:bg-rose-700">Confirmar</button>
+      <button id="confirmCancelBtn" type="button" class="btn-action flex-1 py-2.5 rounded-xl bg-slate-800 text-slate-300 font-bold text-sm hover:bg-slate-700">Cancelar</button>
+      <button id="confirmOkBtn" type="button" class="btn-action flex-1 py-2.5 rounded-xl bg-rose-600 text-white font-black text-sm hover:bg-rose-700">Confirmar</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL LOJA -->
-<div id="storeModal" class="hidden fixed inset-0 z-[70] modal-overlay flex items-center justify-center p-3 overflow-y-auto">
+<div id="storeModal" class="hidden fixed inset-0 z-[70] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="rounded-3xl p-5 max-w-lg w-full bg-slate-900 border border-slate-700 shadow-2xl my-auto">
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-xl font-black text-white">🛒 Loja</h2>
-      <button id="storeCloseBtn" class="btn-action p-2 rounded-xl bg-slate-800 text-slate-300 text-sm">✕</button>
+      <button id="storeCloseBtn" type="button" class="btn-action p-2 rounded-xl bg-slate-800 text-slate-300 text-sm">✕</button>
     </div>
-
     <div class="flex items-center justify-center gap-2 bg-amber-500/15 border border-amber-500/40 rounded-2xl py-2 mb-4">
       <span class="text-2xl">🪙</span>
       <span id="storeCoins" class="text-xl font-black text-amber-400">0</span>
       <span class="text-xs text-amber-400/70 font-bold">moedas</span>
     </div>
-
     <div class="flex gap-1.5 mb-4">
-      <button class="store-tab active flex-1 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-black" data-tab="avatars">👤 Avatares</button>
-      <button class="store-tab flex-1 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-black" data-tab="themes">🎨 Temas</button>
-      <button class="store-tab flex-1 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-black" data-tab="chest">🎁 Baú</button>
+      <button type="button" class="store-tab active flex-1 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-black" data-tab="avatars">👤 Avatares</button>
+      <button type="button" class="store-tab flex-1 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-black" data-tab="themes">🎨 Temas</button>
+      <button type="button" class="store-tab flex-1 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-black" data-tab="chest">🎁 Baú</button>
     </div>
-
     <div id="storeContent" class="max-h-[60vh] overflow-y-auto pr-1"></div>
   </div>
 </div>
 
-<!-- MODAL RESULTADO BAÚ -->
 <div id="chestResultModal" class="hidden fixed inset-0 z-[80] modal-overlay flex items-center justify-center p-4">
   <div class="rounded-3xl p-8 max-w-sm w-full bg-gradient-to-br from-amber-600 via-yellow-600 to-orange-600 border-2 border-yellow-400 shadow-2xl text-center text-white relative overflow-hidden">
     <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_50%_50%,white,transparent_70%)]"></div>
@@ -324,7 +275,7 @@ body.light-bg .avatar-inner { background: #eef2ff; }
       <div id="chestResultEmoji" class="text-7xl mb-3">🎁</div>
       <h3 class="text-2xl font-black mb-1" id="chestResultTitle">Você ganhou!</h3>
       <p id="chestResultText" class="text-lg font-bold mb-5">Algo incrível</p>
-      <button id="chestResultCloseBtn" class="w-full py-3 rounded-2xl bg-white text-amber-700 font-black text-sm">🎉 Legal!</button>
+      <button id="chestResultCloseBtn" type="button" class="w-full py-3 rounded-2xl bg-white text-amber-700 font-black text-sm">🎉 Legal!</button>
     </div>
   </div>
 </div>
@@ -332,6 +283,9 @@ body.light-bg .avatar-inner { background: #eef2ff; }
 <button id="installAppBtn" class="hidden fixed bottom-5 right-5 z-50 bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-4 py-3 rounded-2xl shadow-2xl font-bold text-sm flex items-center gap-2 active:scale-95 transition-all">⬇️ Instalar App</button>
 
 <script>
+/* ======================================================
+   CONSTANTES
+====================================================== */
 const DAYS = [
   { id: 0, name: 'Domingo', short: 'Dom' }, { id: 1, name: 'Segunda', short: 'Seg' },
   { id: 2, name: 'Terça', short: 'Ter' }, { id: 3, name: 'Quarta', short: 'Qua' },
@@ -362,7 +316,6 @@ const QUOTES = [
   "O melhor momento para começar foi há anos. O segundo melhor é agora.",
   "Disciplina é escolher entre o que você quer agora e o que você mais quer."
 ];
-
 const AVATARS_SHOP = [
   { emoji: '⚡', price: 0, name: 'Raio' }, { emoji: '🚀', price: 0, name: 'Foguete' },
   { emoji: '🔥', price: 0, name: 'Fogo' }, { emoji: '💪', price: 0, name: 'Força' },
@@ -374,7 +327,6 @@ const AVATARS_SHOP = [
   { emoji: '🧙', price: 400, name: 'Mago' }, { emoji: '🦅', price: 500, name: 'Águia' },
   { emoji: '👽', price: 600, name: 'Alien' }, { emoji: '💎', price: 800, name: 'Diamante' }
 ];
-
 const THEMES_SHOP = [
   { id: 'default', name: 'Azul Padrão', price: 0 },
   { id: 'purple', name: 'Roxo Místico', price: 100 },
@@ -384,7 +336,6 @@ const THEMES_SHOP = [
   { id: 'gold', name: 'Dourado Real', price: 300 },
   { id: 'rainbow', name: 'Arco-Íris', price: 500 }
 ];
-
 const CHEST_PRICE = 100;
 const CHEST_REWARDS = [
   { type: 'coins', weight: 35, min: 30, max: 150 },
@@ -394,6 +345,9 @@ const CHEST_REWARDS = [
   { type: 'jackpot', weight: 5 }
 ];
 
+/* ======================================================
+   HELPERS
+====================================================== */
 function getLevelGoals(level) {
   return { videos: 3 + Math.floor(level / 4), water: 2000, study: 1800 + level * 120, diaryPages: 1 + Math.floor(level / 4), noPhone: 3600 + level * 240 };
 }
@@ -406,6 +360,7 @@ function getRank(p) {
   return { name: base.name + (cycle > 0 ? ' ' + toRoman(cycle + 1) : ''), emoji: base.emoji, color: base.color, tier: cycle };
 }
 
+/* ÁUDIO */
 let audioCtx = null;
 function getAudioCtx() {
   if (!audioCtx) { try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { return null; } }
@@ -445,11 +400,16 @@ function spawnBgParticles() {
   }
 }
 
+/* ======================================================
+   ESTADO GLOBAL
+====================================================== */
 let currentDayIndex = new Date().getDay();
-let appData = loadAppData();
+let appData = null;
 let timerInterval = null;
 let noPhoneInterval = null;
 let isProcessingLevelUp = false;
+let confirmCallback = null;
+let currentStoreTab = 'avatars';
 
 function newDayData(studySecs, noPhoneSecs) {
   return {
@@ -502,17 +462,18 @@ function loadAppData() {
       if (!parsed.unlockedThemes) parsed.unlockedThemes = ['default'];
       return parsed;
     }
-  } catch(e) {}
+  } catch(e) { console.error('Erro load:', e); }
   return def;
 }
 
-function saveAppData() { try { localStorage.setItem('rotina_criador_v2', JSON.stringify(appData)); } catch(e) {} }
+function saveAppData() { try { localStorage.setItem('rotina_criador_v2', JSON.stringify(appData)); } catch(e) { console.error('Erro save:', e); } }
 
+/* ======================================================
+   TEMA
+====================================================== */
 function applyThemeStyle() {
   ['theme-purple','theme-green','theme-red','theme-gold','theme-pink','theme-rainbow'].forEach(c => document.body.classList.remove(c));
-  if (appData.themeStyle && appData.themeStyle !== 'default') {
-    document.body.classList.add('theme-' + appData.themeStyle);
-  }
+  if (appData.themeStyle && appData.themeStyle !== 'default') document.body.classList.add('theme-' + appData.themeStyle);
 }
 function initTheme() {
   const icon = document.getElementById('themeIcon');
@@ -529,11 +490,10 @@ function initTheme() {
   }
   applyThemeStyle();
 }
-document.getElementById('themeToggleBtn').addEventListener('click', () => {
-  appData.theme = appData.theme === 'dark' ? 'light' : 'dark';
-  initTheme(); saveAppData(); soundClick();
-});
 
+/* ======================================================
+   NAVEGAÇÃO DOS DIAS
+====================================================== */
 function renderDaysNav() {
   const c = document.getElementById('daysNavContainer');
   c.innerHTML = '';
@@ -544,6 +504,7 @@ function renderDaysNav() {
     const isToday = day.id === new Date().getDay();
     const isPerfect = completed === TOTAL_TASKS;
     const btn = document.createElement('button');
+    btn.type = 'button';
     btn.className = `day-tab flex flex-col items-center justify-center p-3 rounded-2xl border ${isCurrent ? 'active bg-gradient-to-br from-blue-500 to-blue-700 text-white border-blue-400' : 'glass text-slate-300 border-slate-700/80'}`;
     btn.innerHTML = `
       ${isToday ? '<span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-cyan-400 rounded-full border-2 border-slate-900"></span>' : ''}
@@ -573,6 +534,9 @@ function loadDayData(dayId) {
   updateNoPhoneDisplay();
 }
 
+/* ======================================================
+   RENDER TAREFAS
+====================================================== */
 function renderTasks(dd, goals) {
   const grid = document.getElementById('tasksGrid');
   grid.innerHTML = '';
@@ -625,9 +589,9 @@ function renderTasks(dd, goals) {
       html += `<div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 text-center">
         <div id="timerDisplay" class="text-xl font-mono font-black text-blue-400 mb-2">${formatTime(dd.timerSeconds ?? goals.study)}</div>
         <div class="flex justify-center gap-1.5">
-          <button id="timerStartBtn" class="btn-action px-2.5 py-1 bg-blue-500 text-white rounded-lg text-[11px] font-bold">▶</button>
-          <button id="timerPauseBtn" class="btn-action px-2.5 py-1 bg-amber-500 text-white rounded-lg text-[11px] font-bold">⏸</button>
-          <button id="timerResetBtn" class="btn-action px-2.5 py-1 bg-slate-700 text-slate-200 rounded-lg text-[11px] font-bold">↺</button>
+          <button id="timerStartBtn" type="button" class="btn-action px-2.5 py-1 bg-blue-500 text-white rounded-lg text-[11px] font-bold">▶</button>
+          <button id="timerPauseBtn" type="button" class="btn-action px-2.5 py-1 bg-amber-500 text-white rounded-lg text-[11px] font-bold">⏸</button>
+          <button id="timerResetBtn" type="button" class="btn-action px-2.5 py-1 bg-slate-700 text-slate-200 rounded-lg text-[11px] font-bold">↺</button>
         </div></div>`;
     } else if (c.type === 'reading') {
       html += `<input type="text" data-field="readingText" placeholder="Livro e páginas..." value="${dd.readingText || ''}" class="w-full text-[11px] p-2 rounded-xl bg-slate-950/60 border border-slate-800 text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">`;
@@ -642,8 +606,8 @@ function renderTasks(dd, goals) {
           <div id="waterProgressBar" class="bg-gradient-to-r from-cyan-400 to-blue-500 h-full transition-all duration-300" style="width:${pct}%"></div>
         </div>
         <div class="flex gap-1.5">
-          <button id="waterMinusBtn" class="btn-action flex-1 py-1.5 bg-rose-500/15 text-rose-400 text-[11px] font-bold rounded-lg border border-rose-500/30">-250</button>
-          <button id="waterPlusBtn" class="btn-action flex-1 py-1.5 bg-cyan-500 text-white text-[11px] font-bold rounded-lg">+250</button>
+          <button id="waterMinusBtn" type="button" class="btn-action flex-1 py-1.5 bg-rose-500/15 text-rose-400 text-[11px] font-bold rounded-lg border border-rose-500/30">-250</button>
+          <button id="waterPlusBtn" type="button" class="btn-action flex-1 py-1.5 bg-cyan-500 text-white text-[11px] font-bold rounded-lg">+250</button>
         </div></div>`;
     } else if (c.type === 'diary') {
       html += `<textarea data-field="diaryText" rows="3" placeholder="Escreva sua página..." class="w-full text-[11px] p-2 rounded-xl bg-slate-950/60 border border-slate-800 text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none">${dd.diaryText || ''}</textarea>`;
@@ -651,9 +615,9 @@ function renderTasks(dd, goals) {
       html += `<div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 text-center">
         <div id="noPhoneDisplay" class="text-xl font-mono font-black text-purple-400 mb-2">${formatTime(dd.noPhoneSeconds ?? goals.noPhone)}</div>
         <div class="flex justify-center gap-1.5">
-          <button id="noPhoneStartBtn" class="btn-action px-2.5 py-1 bg-purple-500 text-white rounded-lg text-[11px] font-bold">▶</button>
-          <button id="noPhonePauseBtn" class="btn-action px-2.5 py-1 bg-amber-500 text-white rounded-lg text-[11px] font-bold">⏸</button>
-          <button id="noPhoneResetBtn" class="btn-action px-2.5 py-1 bg-slate-700 text-slate-200 rounded-lg text-[11px] font-bold">↺</button>
+          <button id="noPhoneStartBtn" type="button" class="btn-action px-2.5 py-1 bg-purple-500 text-white rounded-lg text-[11px] font-bold">▶</button>
+          <button id="noPhonePauseBtn" type="button" class="btn-action px-2.5 py-1 bg-amber-500 text-white rounded-lg text-[11px] font-bold">⏸</button>
+          <button id="noPhoneResetBtn" type="button" class="btn-action px-2.5 py-1 bg-slate-700 text-slate-200 rounded-lg text-[11px] font-bold">↺</button>
         </div></div>`;
     } else if (c.type === 'sleep') {
       const sl = appData.sleepSchedule;
@@ -680,6 +644,7 @@ function renderTasks(dd, goals) {
 }
 function formatTime(s) { const m = Math.floor(s / 60), sec = s % 60; return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`; }
 
+/* EFEITOS */
 function burstParticles(x, y, color) {
   for (let i = 0; i < 8; i++) {
     const p = document.createElement('div');
@@ -726,6 +691,7 @@ function launchConfetti(qty, emojis) {
   }
 }
 
+/* TAREFAS - ESTADO */
 function setTaskState(i, newState, rar, rect) {
   const dd = appData.days[currentDayIndex];
   const was = dd.tasks[i];
@@ -821,11 +787,13 @@ function bindTaskEvents() {
   if (wk) wk.addEventListener('change', e => { appData.sleepSchedule.wakeup = e.target.value; saveAppData(); });
 }
 
+/* XP/COINS */
 function addXP(a) { appData.xp = (appData.xp || 0) + a; const n = xpNeededForLevel(appData.level); if (appData.xp > n) appData.xp = n; updateLevelUI(); }
 function removeXP(a) { appData.xp = Math.max(0, (appData.xp || 0) - a); updateLevelUI(); }
 function addCoins(a) { appData.coins = (appData.coins || 0) + a; updateLevelUI(); }
 function removeCoins(a) { appData.coins = Math.max(0, (appData.coins || 0) - a); updateLevelUI(); }
 
+/* TIMERS */
 function startStudyTimer(goals) {
   const dd = appData.days[currentDayIndex];
   if (dd.timerSeconds === undefined || dd.timerSeconds === null) dd.timerSeconds = goals.study;
@@ -846,7 +814,7 @@ function startStudyTimer(goals) {
     }
   }, 1000);
 }
-function pauseStudyTimer() { if (timerInterval) { clearInterval(timerInterval); timerInterval = null; } appData.days[currentDayIndex].timerRunning = false; saveAppData(); }
+function pauseStudyTimer() { if (timerInterval) { clearInterval(timerInterval); timerInterval = null; } if (appData) appData.days[currentDayIndex].timerRunning = false; saveAppData(); }
 function updateTimerDisplay() { const el = document.getElementById('timerDisplay'); if (el) el.textContent = formatTime(appData.days[currentDayIndex].timerSeconds ?? getLevelGoals(appData.level).study); }
 
 function startNoPhoneTimer(goals) {
@@ -869,10 +837,11 @@ function startNoPhoneTimer(goals) {
     }
   }, 1000);
 }
-function pauseNoPhoneTimer() { if (noPhoneInterval) { clearInterval(noPhoneInterval); noPhoneInterval = null; } appData.days[currentDayIndex].noPhoneRunning = false; saveAppData(); }
+function pauseNoPhoneTimer() { if (noPhoneInterval) { clearInterval(noPhoneInterval); noPhoneInterval = null; } if (appData) appData.days[currentDayIndex].noPhoneRunning = false; saveAppData(); }
 function updateNoPhoneDisplay() { const el = document.getElementById('noPhoneDisplay'); if (el) el.textContent = formatTime(appData.days[currentDayIndex].noPhoneSeconds ?? getLevelGoals(appData.level).noPhone); }
 function pauseAllTimers() { pauseStudyTimer(); pauseNoPhoneTimer(); }
 
+/* PROGRESSO */
 function updateProgress() {
   const dd = appData.days[currentDayIndex];
   const completed = dd.tasks.filter(Boolean).length;
@@ -893,6 +862,7 @@ function updateWeekProgress() {
   if (perfect === 7 && !isProcessingLevelUp) triggerLevelUp();
 }
 
+/* LEVEL UP */
 function triggerLevelUp() {
   if (isProcessingLevelUp) return;
   isProcessingLevelUp = true;
@@ -951,17 +921,14 @@ function triggerLevelUp() {
     setTimeout(() => b.classList.remove('badge-glow'), 4000);
   }, 600);
 }
-document.getElementById('levelUpCloseBtn').addEventListener('click', () => {
-  document.getElementById('levelUpModal').classList.add('hidden');
-  isProcessingLevelUp = false;
-  renderDaysNav(); loadDayData(currentDayIndex); updateWeekProgress(); soundClick();
-});
 
+/* UI NÍVEL */
 function updateLevelUI() {
   document.getElementById('levelBadge').textContent = appData.level;
   document.getElementById('streakDisplay').textContent = '🔥 ' + (appData.streak || 0);
   document.getElementById('coinsDisplay').textContent = '🪙 ' + (appData.coins || 0);
-  document.getElementById('storeCoins').textContent = appData.coins || 0;
+  const storeCoinsEl = document.getElementById('storeCoins');
+  if (storeCoinsEl) storeCoinsEl.textContent = appData.coins || 0;
   const needed = xpNeededForLevel(appData.level);
   const pct = Math.min(100, Math.round(((appData.xp || 0) / needed) * 100));
   const fill = document.getElementById('xpBarFill');
@@ -984,7 +951,7 @@ function updateLevelUI() {
   }
 }
 
-let confirmCallback = null;
+/* CONFIRM */
 function showConfirm(emoji, title, msg, cb) {
   document.getElementById('confirmEmoji').textContent = emoji;
   document.getElementById('confirmTitle').textContent = title;
@@ -992,69 +959,33 @@ function showConfirm(emoji, title, msg, cb) {
   document.getElementById('confirmModal').classList.remove('hidden');
   confirmCallback = cb;
 }
-document.getElementById('confirmCancelBtn').addEventListener('click', () => {
-  document.getElementById('confirmModal').classList.add('hidden');
-  confirmCallback = null; soundClick();
-});
-document.getElementById('confirmOkBtn').addEventListener('click', () => {
-  document.getElementById('confirmModal').classList.add('hidden');
-  if (confirmCallback) confirmCallback();
-  confirmCallback = null;
-});
 
-document.getElementById('resetDayBtn').addEventListener('click', () => {
-  showConfirm('🔄', 'Resetar Dia?', 'Todas as tarefas deste dia serão apagadas.', () => {
-    const g = getLevelGoals(appData.level);
-    pauseAllTimers();
-    appData.days[currentDayIndex] = newDayData(g.study, g.noPhone);
-    saveAppData(); loadDayData(currentDayIndex); renderDaysNav(); soundClick();
-  });
-});
-document.getElementById('resetWeekBtn').addEventListener('click', () => {
-  showConfirm('🗑️', 'Resetar Semana?', 'Todo o progresso da semana será apagado.', () => {
-    const g = getLevelGoals(appData.level);
-    pauseAllTimers();
-    DAYS.forEach(d => { appData.days[d.id] = newDayData(g.study, g.noPhone); });
-    saveAppData(); loadDayData(currentDayIndex); renderDaysNav(); soundClick();
-  });
-});
-
-document.getElementById('newQuoteBtn').addEventListener('click', () => {
-  appData.quoteIndex = (appData.quoteIndex + 1) % QUOTES.length;
-  document.getElementById('quoteText').textContent = `"${QUOTES[appData.quoteIndex]}"`;
-  saveAppData(); soundClick();
-});
-
-let currentStoreTab = 'avatars';
-const storeModal = document.getElementById('storeModal');
-const storeContent = document.getElementById('storeContent');
-
-document.getElementById('storeBtn').addEventListener('click', () => {
+/* ======================================================
+   LOJA
+====================================================== */
+function openStore() {
   soundClick();
   updateLevelUI();
   renderStore();
-  storeModal.classList.remove('hidden');
-});
-document.getElementById('storeCloseBtn').addEventListener('click', () => {
-  storeModal.classList.add('hidden'); soundClick();
-});
-document.querySelectorAll('.store-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.store-tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    currentStoreTab = tab.getAttribute('data-tab');
-    renderStore(); soundClick();
-  });
-});
-
+  const sm = document.getElementById('storeModal');
+  sm.classList.remove('hidden');
+  sm.style.display = 'flex';
+}
+function closeStore() {
+  const sm = document.getElementById('storeModal');
+  sm.classList.add('hidden');
+  sm.style.display = 'none';
+  soundClick();
+}
 function renderStore() {
+  const storeContent = document.getElementById('storeContent');
   storeContent.innerHTML = '';
   if (currentStoreTab === 'avatars') renderAvatarsTab();
   else if (currentStoreTab === 'themes') renderThemesTab();
   else renderChestTab();
 }
-
 function renderAvatarsTab() {
+  const storeContent = document.getElementById('storeContent');
   const grid = document.createElement('div');
   grid.className = 'grid grid-cols-3 gap-2';
   AVATARS_SHOP.forEach(item => {
@@ -1066,8 +997,8 @@ function renderAvatarsTab() {
       <div class="text-4xl mb-1">${item.emoji}</div>
       <div class="text-[10px] text-slate-400 font-bold mb-1">${item.name}</div>
       ${isCurrent ? '<div class="text-[10px] font-black text-emerald-400">✓ EM USO</div>' :
-        owned ? '<button class="use-avatar-btn w-full text-[10px] font-black py-1 rounded-lg bg-blue-500/20 text-blue-300 border border-blue-500/30">USAR</button>' :
-        `<button class="buy-avatar-btn w-full text-[10px] font-black py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30">🪙 ${item.price}</button>`}
+        owned ? '<button type="button" class="use-avatar-btn w-full text-[10px] font-black py-1 rounded-lg bg-blue-500/20 text-blue-300 border border-blue-500/30">USAR</button>' :
+        `<button type="button" class="buy-avatar-btn w-full text-[10px] font-black py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30">🪙 ${item.price}</button>`}
     `;
     if (!isCurrent && owned) {
       div.querySelector('.use-avatar-btn').addEventListener('click', e => {
@@ -1099,8 +1030,8 @@ function renderAvatarsTab() {
   });
   storeContent.appendChild(grid);
 }
-
 function renderThemesTab() {
+  const storeContent = document.getElementById('storeContent');
   const list = document.createElement('div');
   list.className = 'space-y-2';
   THEMES_SHOP.forEach(item => {
@@ -1115,8 +1046,8 @@ function renderThemesTab() {
         <div class="text-[10px] text-slate-400">${isCurrent ? '✓ Em uso' : owned ? 'Desbloqueado' : 'Não desbloqueado'}</div>
       </div>
       ${isCurrent ? '' :
-        owned ? '<button class="use-theme-btn text-[11px] font-black px-3 py-1.5 rounded-xl bg-blue-500/20 text-blue-300 border border-blue-500/30">USAR</button>' :
-        `<button class="buy-theme-btn text-[11px] font-black px-3 py-1.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30">🪙 ${item.price}</button>`}
+        owned ? '<button type="button" class="use-theme-btn text-[11px] font-black px-3 py-1.5 rounded-xl bg-blue-500/20 text-blue-300 border border-blue-500/30">USAR</button>' :
+        `<button type="button" class="buy-theme-btn text-[11px] font-black px-3 py-1.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30">🪙 ${item.price}</button>`}
     `;
     if (!isCurrent && owned) {
       div.querySelector('.use-theme-btn').addEventListener('click', () => {
@@ -1144,21 +1075,20 @@ function renderThemesTab() {
   });
   storeContent.appendChild(list);
 }
-
 function renderChestTab() {
+  const storeContent = document.getElementById('storeContent');
   const div = document.createElement('div');
   div.className = 'text-center py-4';
   div.innerHTML = `
     <div id="chestVisual" class="text-8xl mb-3">🎁</div>
     <h3 class="text-lg font-black text-white mb-1">Baú Misterioso</h3>
     <p class="text-xs text-slate-400 mb-5 px-4">Pode vir moedas, XP, avatares ou temas raros! Uma surpresa a cada abertura.</p>
-    <button id="openChestBtn" class="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-600 text-white font-black text-sm shadow-xl">
+    <button type="button" id="openChestBtn" class="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-600 text-white font-black text-sm shadow-xl">
       🪙 ABRIR POR ${CHEST_PRICE} MOEDAS
     </button>
     <p class="text-[10px] text-slate-500 mt-3">Suas moedas: 🪙 ${appData.coins || 0}</p>
   `;
   storeContent.appendChild(div);
-
   document.getElementById('openChestBtn').addEventListener('click', () => {
     if ((appData.coins || 0) < CHEST_PRICE) {
       soundError(); vibrate([50,30,50]);
@@ -1168,11 +1098,9 @@ function renderChestTab() {
     }
     appData.coins -= CHEST_PRICE;
     saveAppData(); updateLevelUI();
-
     const chest = document.getElementById('chestVisual');
     chest.classList.add('chest-shake');
     soundChest();
-
     setTimeout(() => {
       chest.classList.remove('chest-shake');
       chest.classList.add('chest-open');
@@ -1184,7 +1112,6 @@ function renderChestTab() {
     }, 1200);
   });
 }
-
 function openChest() {
   const totalWeight = CHEST_REWARDS.reduce((a, r) => a + r.weight, 0);
   let roll = Math.random() * totalWeight;
@@ -1193,10 +1120,8 @@ function openChest() {
     if (roll < r.weight) { reward = r; break; }
     roll -= r.weight;
   }
-
   let emoji = '🎁', title = 'Você ganhou!', text = '';
   let confettiEmojis = ['🎉','✨','🎁'];
-
   if (reward.type === 'coins') {
     const amount = Math.floor(reward.min + Math.random() * (reward.max - reward.min));
     appData.coins += amount;
@@ -1215,9 +1140,8 @@ function openChest() {
       emoji = won.emoji; text = `Avatar "${won.name}" desbloqueado!`;
       confettiEmojis = ['👤','✨',won.emoji];
     } else {
-      const amount = 100;
-      appData.coins += amount;
-      emoji = '🪙'; text = `Já tem todos! +${amount} moedas.`;
+      appData.coins += 100;
+      emoji = '🪙'; text = `Já tem todos! +100 moedas.`;
     }
   } else if (reward.type === 'theme') {
     const locked = THEMES_SHOP.filter(t => !appData.unlockedThemes.includes(t.id) && t.price > 0);
@@ -1227,35 +1151,32 @@ function openChest() {
       emoji = '🎨'; text = `Tema "${won.name}" desbloqueado!`;
       confettiEmojis = ['🎨','✨','🌈'];
     } else {
-      const amount = 150;
-      appData.coins += amount;
-      emoji = '🪙'; text = `Já tem todos! +${amount} moedas.`;
+      appData.coins += 150;
+      emoji = '🪙'; text = `Já tem todos! +150 moedas.`;
     }
   } else {
-    const amount = 500;
-    appData.coins += amount;
-    emoji = '💎'; title = '🎉 JACKPOT!'; text = `+${amount} moedas!!!`;
+    appData.coins += 500;
+    emoji = '💎'; title = '🎉 JACKPOT!'; text = `+500 moedas!!!`;
     confettiEmojis = ['💎','💰','🎉','👑','✨','🪙'];
   }
-
   saveAppData(); updateLevelUI();
   soundLevelUp();
   vibrate([50,30,50,30,100]);
   launchConfetti(60, confettiEmojis);
-
   document.getElementById('chestResultEmoji').textContent = emoji;
   document.getElementById('chestResultTitle').textContent = title;
   document.getElementById('chestResultText').textContent = text;
   document.getElementById('chestResultModal').classList.remove('hidden');
 }
 
-document.getElementById('chestResultCloseBtn').addEventListener('click', () => {
-  document.getElementById('chestResultModal').classList.add('hidden');
-  soundClick();
-  renderChestTab();
-});
-
+/* ======================================================
+   INIT - Liga todos os botões
+====================================================== */
 function initApp() {
+  // Carregar dados
+  appData = loadAppData();
+
+  // Efeitos visuais
   spawnBgParticles();
   initTheme();
   updateLevelUI();
@@ -1263,7 +1184,87 @@ function initApp() {
   renderDaysNav();
   loadDayData(currentDayIndex);
   if (QUOTES[appData.quoteIndex]) document.getElementById('quoteText').textContent = `"${QUOTES[appData.quoteIndex]}"`;
+
+  // ============ BOTÕES DO HEADER ============
+  document.getElementById('themeToggleBtn').addEventListener('click', () => {
+    appData.theme = appData.theme === 'dark' ? 'light' : 'dark';
+    initTheme(); saveAppData(); soundClick();
+  });
+  document.getElementById('storeBtn').addEventListener('click', openStore);
+  document.getElementById('storeCloseBtn').addEventListener('click', closeStore);
+
+  // ============ TABS DA LOJA ============
+  document.querySelectorAll('.store-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.store-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      currentStoreTab = tab.getAttribute('data-tab');
+      renderStore(); soundClick();
+    });
+  });
+
+  // ============ BOTÕES DE RESET ============
+  document.getElementById('resetDayBtn').addEventListener('click', () => {
+    showConfirm('🔄', 'Resetar Dia?', 'Todas as tarefas deste dia serão apagadas.', () => {
+      const g = getLevelGoals(appData.level);
+      pauseAllTimers();
+      appData.days[currentDayIndex] = newDayData(g.study, g.noPhone);
+      saveAppData(); loadDayData(currentDayIndex); renderDaysNav(); soundClick();
+    });
+  });
+  document.getElementById('resetWeekBtn').addEventListener('click', () => {
+    showConfirm('🗑️', 'Resetar Semana?', 'Todo o progresso da semana será apagado.', () => {
+      const g = getLevelGoals(appData.level);
+      pauseAllTimers();
+      DAYS.forEach(d => { appData.days[d.id] = newDayData(g.study, g.noPhone); });
+      saveAppData(); loadDayData(currentDayIndex); renderDaysNav(); soundClick();
+    });
+  });
+
+  // ============ FRASE ============
+  document.getElementById('newQuoteBtn').addEventListener('click', () => {
+    appData.quoteIndex = (appData.quoteIndex + 1) % QUOTES.length;
+    document.getElementById('quoteText').textContent = `"${QUOTES[appData.quoteIndex]}"`;
+    saveAppData(); soundClick();
+  });
+
+  // ============ MODAL LEVEL UP CLOSE ============
+  document.getElementById('levelUpCloseBtn').addEventListener('click', () => {
+    document.getElementById('levelUpModal').classList.add('hidden');
+    isProcessingLevelUp = false;
+    renderDaysNav(); loadDayData(currentDayIndex); updateWeekProgress(); soundClick();
+  });
+
+  // ============ CONFIRM MODAL ============
+  document.getElementById('confirmCancelBtn').addEventListener('click', () => {
+    document.getElementById('confirmModal').classList.add('hidden');
+    confirmCallback = null; soundClick();
+  });
+  document.getElementById('confirmOkBtn').addEventListener('click', () => {
+    document.getElementById('confirmModal').classList.add('hidden');
+    if (confirmCallback) confirmCallback();
+    confirmCallback = null;
+  });
+
+  // ============ CHEST RESULT CLOSE ============
+  document.getElementById('chestResultCloseBtn').addEventListener('click', () => {
+    document.getElementById('chestResultModal').classList.add('hidden');
+    soundClick();
+    renderChestTab();
+  });
+
+  // ============ AVATAR CLICK (troca) ============
+  document.getElementById('avatarInner').addEventListener('click', () => {
+    const AVATARS = appData.unlockedAvatars || ['⚡'];
+    const i = AVATARS.indexOf(appData.avatar);
+    appData.avatar = AVATARS[(i + 1) % AVATARS.length];
+    document.getElementById('avatarInner').textContent = appData.avatar;
+    saveAppData(); soundClick(); vibrate(20);
+  });
+
+  console.log('✅ App inicializado!');
 }
+
 document.addEventListener('DOMContentLoaded', initApp);
 </script>
 
