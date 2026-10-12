@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Painel de Rotina do Criador</title>
 
-<!-- PWA Meta Tags -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0f172a">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -13,22 +12,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Rotina Criador">
 
-<!-- Tailwind CSS CDN -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
     darkMode: 'class',
-    theme: {
-      extend: {
-        colors: {
-          darkBg: '#0f172a',
-          darkCard: '#1e293b',
-          lightBg: '#f1f5f9',
-          lightCard: '#ffffff'
-        },
-        fontFamily: { sans: ['Inter', 'sans-serif'] }
-      }
-    }
+    theme: { extend: {
+      colors: { darkBg: '#0f172a', darkCard: '#1e293b', lightBg: '#f1f5f9', lightCard: '#ffffff' },
+      fontFamily: { sans: ['Inter', 'sans-serif'] }
+    }}
   }
 </script>
 
@@ -48,13 +39,78 @@
   }
   .custom-checkbox:checked { background-color: #22c55e; border-color: #22c55e; }
   .custom-checkbox:checked::before { content: "✔"; font-size: 14px; color: white; font-weight: bold; }
-  .custom-checkbox:disabled { opacity: 0.5; cursor: not-allowed; }
-  @keyframes levelUp {
-    0% { transform: scale(0.5); opacity: 0; }
-    50% { transform: scale(1.1); opacity: 1; }
-    100% { transform: scale(1); opacity: 1; }
+
+  /* ====== ANIMAÇÕES ====== */
+  @keyframes levelUpPop {
+    0% { transform: scale(0.2) rotate(-15deg); opacity: 0; }
+    50% { transform: scale(1.15) rotate(8deg); opacity: 1; }
+    70% { transform: scale(0.95) rotate(-4deg); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
   }
-  .animate-levelup { animation: levelUp 0.6s ease-out; }
+  @keyframes prestigePop {
+    0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+    60% { transform: scale(1.3) rotate(20deg); opacity: 1; }
+    80% { transform: scale(0.9) rotate(-10deg); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+  @keyframes glowBadge {
+    0%, 100% { box-shadow: 0 0 8px currentColor; }
+    50% { box-shadow: 0 0 25px currentColor, 0 0 40px currentColor; }
+  }
+  @keyframes confettiFall {
+    0% { transform: translateY(-20vh) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+  @keyframes shineSweep {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  @keyframes pulseRing {
+    0% { transform: scale(0.8); opacity: 0.8; }
+    100% { transform: scale(2.5); opacity: 0; }
+  }
+
+  .animate-levelup { animation: levelUpPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+  .animate-prestige { animation: prestigePop 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+  .badge-glow { animation: glowBadge 1.5s ease-in-out infinite; }
+
+  .rank-badge {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  .rank-badge::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.5) 50%, transparent 70%);
+    background-size: 200% auto;
+    animation: shineSweep 2.5s linear infinite;
+    pointer-events: none;
+  }
+
+  .confetti-piece {
+    position: fixed;
+    top: -10vh;
+    font-size: 24px;
+    pointer-events: none;
+    z-index: 9999;
+    animation: confettiFall 3s linear forwards;
+  }
+
+  .pulse-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    border: 2px solid currentColor;
+    animation: pulseRing 1.2s ease-out infinite;
+    pointer-events: none;
+  }
+
+  .modal-overlay {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
 </style>
 </head>
 <body class="bg-lightBg dark:bg-darkBg text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
@@ -66,11 +122,17 @@
       <h1 class="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent flex items-center gap-2">
         ⚡ Painel de Rotina do Criador
       </h1>
-      <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Minha rotina diária — Nível <span id="levelHeader">1</span></p>
+      <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Minha rotina diária — Nível <span id="levelHeader">0</span>/15</p>
     </div>
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-2 flex-wrap justify-center">
+      <!-- Patente (Badge) -->
+      <div id="rankBadge" class="rank-badge flex items-center gap-2 bg-slate-500/10 border border-slate-500/30 px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 font-bold text-sm">
+        <span id="rankEmoji">🌱</span>
+        <span id="rankName">Iniciante</span>
+      </div>
+      <!-- Nível -->
       <div class="flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 px-3 py-1.5 rounded-xl text-purple-600 dark:text-purple-400 font-bold text-sm">
-        <span>🎮</span><span>Nível</span><span id="levelBadge">1</span>
+        <span>🎮</span><span>Nv</span><span id="levelBadge">0</span><span class="opacity-60">/15</span>
       </div>
       <button id="themeToggleBtn" aria-label="Alternar Tema" class="p-2.5 rounded-xl bg-slate-200 dark:bg-slate-700 hover:scale-105 transition-all shadow-sm">
         <span id="themeIcon" class="text-lg">🌙</span>
@@ -93,12 +155,10 @@
 <!-- MAIN -->
 <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6 sm:px-6 flex flex-col gap-6">
 
-  <!-- SELETOR DE DIAS -->
   <nav aria-label="Dias da Semana" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 sm:gap-3">
     <div id="daysNavContainer" class="contents"></div>
   </nav>
 
-  <!-- CARD DO DIA -->
   <section class="bg-white dark:bg-darkCard rounded-2xl p-5 sm:p-6 shadow-lg border border-slate-200 dark:border-slate-800 relative overflow-hidden">
     <div id="congratsBanner" class="hidden mb-4 p-4 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 text-white font-medium flex items-center justify-between shadow-md">
       <span class="flex items-center gap-2 text-sm sm:text-base">🎉 Dia perfeito! Todos os <span id="totalTasksBanner">10</span> objetivos concluídos!</span>
@@ -129,11 +189,7 @@
     </div>
   </section>
 
-  <!-- GRID DE TAREFAS -->
-  <section aria-label="Lista de Tarefas" id="tasksGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-    <!-- Preenchido via JS -->
-  </section>
-
+  <section aria-label="Lista de Tarefas" id="tasksGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></section>
 </main>
 
 <!-- RODAPÉ -->
@@ -149,23 +205,40 @@
   </div>
 </footer>
 
-<!-- MODAL LEVEL UP -->
-<div id="levelUpModal" class="hidden fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
-  <div class="bg-gradient-to-br from-purple-600 to-blue-600 rounded-3xl p-8 max-w-md w-full text-white text-center shadow-2xl animate-levelup">
-    <div class="text-7xl mb-3">🏆</div>
-    <h2 class="text-3xl font-black mb-2">LEVEL UP!</h2>
-    <p class="text-lg mb-4">Você subiu para o <span id="newLevelText" class="font-black">Nível 2</span>!</p>
-    <div class="bg-white/20 rounded-2xl p-4 mb-5 text-left text-sm space-y-1">
-      <p class="font-bold mb-2">🎯 Novas metas:</p>
-      <p>📹 <span id="newVideos">4</span> vídeos por dia</p>
-      <p>💧 <span id="newWater">2,5</span> L de água</p>
-      <p>📚 <span id="newStudy">40</span> min de estudo</p>
-      <p>📝 <span id="newDiary">2</span> páginas de diário</p>
-      <p>📵 <span id="newNoPhone">1,5</span> h sem celular</p>
+<!-- MODAL LEVEL UP / PRESTÍGIO -->
+<div id="levelUpModal" class="hidden fixed inset-0 z-50 bg-black/80 modal-overlay flex items-center justify-center p-4">
+  <div id="levelUpCard" class="relative rounded-3xl p-8 max-w-md w-full text-white text-center shadow-2xl overflow-hidden">
+    <!-- Fundo animado -->
+    <div id="modalBg" class="absolute inset-0 bg-gradient-to-br from-purple-600 to-blue-600"></div>
+    <div id="modalBgOverlay" class="absolute inset-0 opacity-40 bg-gradient-to-tr from-yellow-400 via-transparent to-pink-500"></div>
+
+    <!-- Conteúdo -->
+    <div class="relative z-10">
+      <div id="modalEmoji" class="text-7xl mb-3 inline-block">🏆</div>
+      <h2 id="modalTitle" class="text-3xl font-black mb-2 tracking-tight">LEVEL UP!</h2>
+      <p id="modalSubtitle" class="text-lg mb-4 font-semibold">Você subiu para o <span id="newLevelText" class="font-black">Nível 1</span>!</p>
+
+      <!-- Badge da nova patente (aparece só no prestígio) -->
+      <div id="prestigeBadgeBox" class="hidden mb-5">
+        <div id="prestigeBadgeInner" class="inline-block px-6 py-4 rounded-2xl bg-white/20 backdrop-blur border-2 border-white/40">
+          <div class="text-5xl mb-1" id="prestigeBadgeEmoji">🥉</div>
+          <div class="text-xl font-black tracking-wide" id="prestigeBadgeName">BRONZE</div>
+        </div>
+      </div>
+
+      <div class="bg-white/15 backdrop-blur rounded-2xl p-4 mb-5 text-left text-sm space-y-1.5 border border-white/20">
+        <p class="font-bold mb-2 text-base">🎯 Novas metas:</p>
+        <p>📹 <span id="newVideos">3</span> vídeos por dia</p>
+        <p>💧 <span id="newWater">2</span> L de água</p>
+        <p>📚 <span id="newStudy">30</span> min de estudo</p>
+        <p>📝 <span id="newDiary">1</span> páginas de diário</p>
+        <p>📵 <span id="newNoPhone">1</span> h sem celular</p>
+      </div>
+
+      <button id="levelUpCloseBtn" class="w-full py-3 bg-white text-purple-700 rounded-2xl font-bold hover:bg-slate-100 transition shadow-lg text-base">
+        🔥 Aceitar Desafio
+      </button>
     </div>
-    <button id="levelUpCloseBtn" class="w-full py-3 bg-white text-purple-600 rounded-2xl font-bold hover:bg-slate-100 transition">
-      🔥 Aceitar Desafio
-    </button>
   </div>
 </div>
 
@@ -189,6 +262,19 @@ const DAYS = [
 ];
 
 const TOTAL_TASKS = 10;
+const MAX_LEVEL = 15;
+
+// Patentes com emoji e cor
+const RANKS = [
+  { name: 'Bronze',   emoji: '🥉', color: '#cd7f32' },
+  { name: 'Prata',    emoji: '🥈', color: '#c0c0c0' },
+  { name: 'Ouro',     emoji: '🥇', color: '#ffd700' },
+  { name: 'Platina',  emoji: '💎', color: '#b9f2ff' },
+  { name: 'Diamante', emoji: '💠', color: '#a5f3fc' },
+  { name: 'Mestre',   emoji: '🏆', color: '#fbbf24' },
+  { name: 'Lenda',    emoji: '👑', color: '#f59e0b' },
+  { name: 'Mítico',   emoji: '🔥', color: '#ef4444' }
+];
 
 const QUOTES = [
   "A consistência supera o talento quando o talento não é consistente.",
@@ -201,16 +287,38 @@ const QUOTES = [
 ];
 
 /* ======================================================
-   METAS POR NÍVEL (progressão infinita)
+   SISTEMA DE METAS (moderado)
 ====================================================== */
 function getLevelGoals(level) {
-  const l = Math.max(1, level) - 1;
   return {
-    videos: 3 + l,           // Nv1: 3 | Nv2: 4 | Nv3: 5 ...
-    water: 2000 + l * 500,   // Nv1: 2L | Nv2: 2.5L ...
-    study: 1800 + l * 600,   // Nv1: 30min | Nv2: 40min ...
-    diaryPages: 1 + l,       // Nv1: 1 | Nv2: 2 ...
-    noPhone: 60 + l * 30     // Nv1: 1h | Nv2: 1.5h ...
+    videos: 3 + Math.floor(level / 4),      // Nv0:3 ... Nv15:6
+    water: 2000,                            // Fixo 2L
+    study: 1800 + level * 120,              // Nv0:30min ... Nv15:60min
+    diaryPages: 1 + Math.floor(level / 4),  // Nv0:1 ... Nv15:4
+    noPhone: 3600 + level * 240             // Nv0:1h ... Nv15:2h
+  };
+}
+
+function toRoman(n) {
+  const map = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X',
+               'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX'];
+  return map[n] || String(n);
+}
+
+function getRank(prestiges) {
+  if (!prestiges || prestiges === 0) {
+    return { name: 'Iniciante', emoji: '🌱', color: '#64748b', tier: 0 };
+  }
+  const totalRanks = RANKS.length;
+  const cycle = Math.floor((prestiges - 1) / totalRanks);
+  const idx = (prestiges - 1) % totalRanks;
+  const base = RANKS[idx];
+  const roman = cycle > 0 ? ' ' + toRoman(cycle + 1) : '';
+  return {
+    name: base.name + roman,
+    emoji: base.emoji,
+    color: base.color,
+    tier: cycle
   };
 }
 
@@ -229,7 +337,8 @@ function loadAppData() {
   const defaultData = {
     theme: 'dark',
     quoteIndex: 0,
-    level: 1,
+    level: 0,
+    prestiges: 0,
     sleepSchedule: { bedtime: '22:00', wakeup: '06:00' },
     days: {}
   };
@@ -253,12 +362,11 @@ function loadAppData() {
     const saved = localStorage.getItem('rotina_criador_v2');
     if (saved) {
       const parsed = JSON.parse(saved);
+      if (!parsed.days) parsed.days = {};
       DAYS.forEach(d => {
-        if (!parsed.days || !parsed.days[d.id]) {
-          if (!parsed.days) parsed.days = {};
+        if (!parsed.days[d.id]) {
           parsed.days[d.id] = defaultData.days[d.id];
         } else {
-          // Garantir campos novos
           const dd = parsed.days[d.id];
           if (!dd.tasks || dd.tasks.length < TOTAL_TASKS) {
             const old = dd.tasks || [];
@@ -272,7 +380,8 @@ function loadAppData() {
         }
       });
       if (!parsed.sleepSchedule) parsed.sleepSchedule = defaultData.sleepSchedule;
-      if (!parsed.level) parsed.level = 1;
+      if (parsed.level === undefined) parsed.level = 0;
+      if (parsed.prestiges === undefined) parsed.prestiges = 0;
       return parsed;
     }
   } catch (e) { console.error('Erro ao carregar:', e); }
@@ -363,7 +472,7 @@ function loadDayData(dayId) {
 }
 
 /* ======================================================
-   RENDERIZAR CARDS DE TAREFAS
+   RENDERIZAR CARDS
 ====================================================== */
 function renderTasks(dayData, goals) {
   const grid = document.getElementById('tasksGrid');
@@ -391,11 +500,9 @@ function renderTasks(dayData, goals) {
     card.className = 'bg-white dark:bg-darkCard rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col justify-between hover:shadow-md transition-shadow';
     const checked = dayData.tasks[cfg.i];
 
-    let html = `
-      <div>
-        <div class="flex items-center justify-between mb-3">
-          <span class="text-3xl">${cfg.emoji}</span>
-    `;
+    let html = `<div>
+      <div class="flex items-center justify-between mb-3">
+        <span class="text-3xl">${cfg.emoji}</span>`;
 
     if (cfg.type === 'checkbox') {
       html += `<input type="checkbox" data-index="${cfg.i}" class="custom-checkbox task-checkbox" ${checked ? 'checked' : ''}>`;
@@ -404,78 +511,70 @@ function renderTasks(dayData, goals) {
     }
 
     html += `</div>
-        <h3 class="font-bold text-base text-slate-900 dark:text-white mb-1">${cfg.title}</h3>
-        <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">${cfg.desc}</p>`;
+      <h3 class="font-bold text-base text-slate-900 dark:text-white mb-1">${cfg.title}</h3>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">${cfg.desc}</p>`;
 
-    // CONTEÚDO ESPECÍFICO
     if (cfg.type === 'subvideos') {
       html += `<div class="bg-slate-50 dark:bg-slate-900/40 p-3 rounded-xl border border-slate-100 dark:border-slate-800 space-y-2">`;
       for (let s = 0; s < cfg.count; s++) {
         const subChecked = dayData.subvideos[s] || false;
-        html += `
-          <label class="flex items-center gap-2.5 text-xs font-medium cursor-pointer">
-            <input type="checkbox" data-sub="${s}" class="custom-checkbox subvideo-checkbox !w-5 !h-5" ${subChecked ? 'checked' : ''}>
-            <span>Vídeo ${s + 1}</span>
-          </label>`;
+        html += `<label class="flex items-center gap-2.5 text-xs font-medium cursor-pointer">
+          <input type="checkbox" data-sub="${s}" class="custom-checkbox subvideo-checkbox !w-5 !h-5" ${subChecked ? 'checked' : ''}>
+          <span>Vídeo ${s + 1}</span>
+        </label>`;
       }
       html += `</div>`;
     } else if (cfg.type === 'instagram') {
       html += `<textarea data-field="instagramNotes" rows="2" placeholder="Anotações do Instagram..." class="w-full text-xs p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none">${dayData.instagramNotes || ''}</textarea>`;
     } else if (cfg.type === 'timer') {
-      html += `
-        <div class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-center">
-          <div id="timerDisplay" class="text-2xl font-mono font-bold text-blue-500 mb-2">${formatTime(dayData.timerSeconds ?? goals.study)}</div>
-          <div class="flex justify-center gap-2">
-            <button id="timerStartBtn" class="px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-xs font-semibold">Iniciar</button>
-            <button id="timerPauseBtn" class="px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-xs font-semibold">Pausar</button>
-            <button id="timerResetBtn" class="px-3 py-1 bg-slate-300 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-lg text-xs font-semibold">Zerar</button>
-          </div>
-        </div>`;
+      html += `<div class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-center">
+        <div id="timerDisplay" class="text-2xl font-mono font-bold text-blue-500 mb-2">${formatTime(dayData.timerSeconds ?? goals.study)}</div>
+        <div class="flex justify-center gap-2">
+          <button id="timerStartBtn" class="px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-xs font-semibold">Iniciar</button>
+          <button id="timerPauseBtn" class="px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-xs font-semibold">Pausar</button>
+          <button id="timerResetBtn" class="px-3 py-1 bg-slate-300 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-lg text-xs font-semibold">Zerar</button>
+        </div>
+      </div>`;
     } else if (cfg.type === 'reading') {
       html += `<input type="text" data-field="readingText" placeholder="Livro e páginas lidas..." value="${dayData.readingText || ''}" class="w-full text-xs p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">`;
     } else if (cfg.type === 'water') {
       const pct = Math.min(100, Math.round(((dayData.water || 0) / goals.water) * 100));
-      html += `
-        <div class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
-          <div class="flex justify-between items-center mb-2">
-            <span class="text-xs font-semibold">Progresso</span>
-            <span id="waterMlText" class="text-xs font-bold text-cyan-500">${dayData.water || 0} / ${goals.water} ml</span>
-          </div>
-          <div class="w-full bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden mb-3">
-            <div id="waterProgressBar" class="bg-cyan-500 h-full transition-all duration-300" style="width:${pct}%"></div>
-          </div>
-          <div class="flex gap-2">
-            <button id="waterMinusBtn" class="flex-1 py-1.5 bg-rose-500/10 text-rose-600 text-xs font-bold rounded-lg border border-rose-500/20">-250 ml</button>
-            <button id="waterPlusBtn" class="flex-1 py-1.5 bg-cyan-500 text-white text-xs font-bold rounded-lg">+250 ml</button>
-          </div>
-        </div>`;
+      html += `<div class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-xs font-semibold">Progresso</span>
+          <span id="waterMlText" class="text-xs font-bold text-cyan-500">${dayData.water || 0} / ${goals.water} ml</span>
+        </div>
+        <div class="w-full bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden mb-3">
+          <div id="waterProgressBar" class="bg-cyan-500 h-full transition-all duration-300" style="width:${pct}%"></div>
+        </div>
+        <div class="flex gap-2">
+          <button id="waterMinusBtn" class="flex-1 py-1.5 bg-rose-500/10 text-rose-600 text-xs font-bold rounded-lg border border-rose-500/20">-250 ml</button>
+          <button id="waterPlusBtn" class="flex-1 py-1.5 bg-cyan-500 text-white text-xs font-bold rounded-lg">+250 ml</button>
+        </div>
+      </div>`;
     } else if (cfg.type === 'diary') {
       html += `<textarea data-field="diaryText" rows="4" placeholder="Escreva sua página de diário aqui..." class="w-full text-xs p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none">${dayData.diaryText || ''}</textarea>`;
     } else if (cfg.type === 'nophone') {
-      html += `
-        <div class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-center">
-          <div id="noPhoneDisplay" class="text-2xl font-mono font-bold text-purple-500 mb-2">${formatTime(dayData.noPhoneSeconds ?? goals.noPhone)}</div>
-          <div class="flex justify-center gap-2">
-            <button id="noPhoneStartBtn" class="px-3 py-1 bg-purple-500 hover:bg-purple-600 text-white rounded-lg text-xs font-semibold">Iniciar</button>
-            <button id="noPhonePauseBtn" class="px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-xs font-semibold">Pausar</button>
-            <button id="noPhoneResetBtn" class="px-3 py-1 bg-slate-300 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-lg text-xs font-semibold">Zerar</button>
-          </div>
-          <p class="text-[10px] text-slate-400 mt-2">Foque em tarefas offline.</p>
-        </div>`;
+      html += `<div class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-center">
+        <div id="noPhoneDisplay" class="text-2xl font-mono font-bold text-purple-500 mb-2">${formatTime(dayData.noPhoneSeconds ?? goals.noPhone)}</div>
+        <div class="flex justify-center gap-2">
+          <button id="noPhoneStartBtn" class="px-3 py-1 bg-purple-500 hover:bg-purple-600 text-white rounded-lg text-xs font-semibold">Iniciar</button>
+          <button id="noPhonePauseBtn" class="px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-xs font-semibold">Pausar</button>
+          <button id="noPhoneResetBtn" class="px-3 py-1 bg-slate-300 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-lg text-xs font-semibold">Zerar</button>
+        </div>
+      </div>`;
     } else if (cfg.type === 'sleep') {
       const sleep = appData.sleepSchedule;
-      html += `
-        <div class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
-          <div class="flex justify-between items-center text-xs">
-            <span class="font-semibold text-slate-600 dark:text-slate-300">🌙 Dormir</span>
-            <input type="time" id="bedtimeInput" value="${sleep.bedtime}" class="text-xs px-2 py-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-          </div>
-          <div class="flex justify-between items-center text-xs">
-            <span class="font-semibold text-slate-600 dark:text-slate-300">☀️ Acordar</span>
-            <input type="time" id="wakeupInput" value="${sleep.wakeup}" class="text-xs px-2 py-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-          </div>
-          <p class="text-[10px] text-slate-400 text-center pt-1">Marque ✅ quando cumprir o horário.</p>
-        </div>`;
+      html += `<div class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+        <div class="flex justify-between items-center text-xs">
+          <span class="font-semibold text-slate-600 dark:text-slate-300">🌙 Dormir</span>
+          <input type="time" id="bedtimeInput" value="${sleep.bedtime}" class="text-xs px-2 py-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+        </div>
+        <div class="flex justify-between items-center text-xs">
+          <span class="font-semibold text-slate-600 dark:text-slate-300">☀️ Acordar</span>
+          <input type="time" id="wakeupInput" value="${sleep.wakeup}" class="text-xs px-2 py-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+        </div>
+      </div>`;
     }
 
     html += `</div>
@@ -491,9 +590,6 @@ function renderTasks(dayData, goals) {
   bindTaskEvents();
 }
 
-/* ======================================================
-   UTILITÁRIOS
-====================================================== */
 function formatTime(secs) {
   const m = Math.floor(secs / 60);
   const s = secs % 60;
@@ -507,7 +603,6 @@ function bindTaskEvents() {
   const day = appData.days[currentDayIndex];
   const goals = getLevelGoals(appData.level);
 
-  // Checkboxes principais
   document.querySelectorAll('.task-checkbox').forEach(cb => {
     cb.addEventListener('change', e => {
       const i = parseInt(e.target.getAttribute('data-index'));
@@ -518,7 +613,6 @@ function bindTaskEvents() {
     });
   });
 
-  // Sub-vídeos
   document.querySelectorAll('.subvideo-checkbox').forEach(cb => {
     cb.addEventListener('change', e => {
       const s = parseInt(e.target.getAttribute('data-sub'));
@@ -531,7 +625,6 @@ function bindTaskEvents() {
     });
   });
 
-  // Campos de texto
   document.querySelectorAll('[data-field]').forEach(el => {
     el.addEventListener('input', e => {
       day[e.target.getAttribute('data-field')] = e.target.value;
@@ -539,7 +632,6 @@ function bindTaskEvents() {
     });
   });
 
-  // Água
   const wp = document.getElementById('waterPlusBtn');
   const wm = document.getElementById('waterMinusBtn');
   if (wp) wp.addEventListener('click', () => {
@@ -557,7 +649,6 @@ function bindTaskEvents() {
     renderDaysNav();
   });
 
-  // Timer de estudo
   const ts = document.getElementById('timerStartBtn');
   const tp = document.getElementById('timerPauseBtn');
   const tr = document.getElementById('timerResetBtn');
@@ -572,7 +663,6 @@ function bindTaskEvents() {
     renderDaysNav();
   });
 
-  // Timer sem celular
   const ns = document.getElementById('noPhoneStartBtn');
   const np = document.getElementById('noPhonePauseBtn');
   const nr = document.getElementById('noPhoneResetBtn');
@@ -587,7 +677,6 @@ function bindTaskEvents() {
     renderDaysNav();
   });
 
-  // Horário de sono
   const bt = document.getElementById('bedtimeInput');
   const wk = document.getElementById('wakeupInput');
   if (bt) bt.addEventListener('change', e => {
@@ -674,16 +763,10 @@ function updateNoPhoneDisplay() {
   if (el) el.textContent = formatTime(appData.days[currentDayIndex].noPhoneSeconds ?? getLevelGoals(appData.level).noPhone);
 }
 
-/* ======================================================
-   PAUSAR TUDO AO TROCAR DE DIA
-====================================================== */
-function pauseAllTimers() {
-  pauseStudyTimer();
-  pauseNoPhoneTimer();
-}
+function pauseAllTimers() { pauseStudyTimer(); pauseNoPhoneTimer(); }
 
 /* ======================================================
-   PROGRESSO DO DIA
+   PROGRESSO
 ====================================================== */
 function updateProgress() {
   const day = appData.days[currentDayIndex];
@@ -702,9 +785,6 @@ function updateProgress() {
   updateWeekProgress();
 }
 
-/* ======================================================
-   PROGRESSO DA SEMANA + LEVEL UP
-====================================================== */
 function updateWeekProgress() {
   let perfectDays = 0;
   DAYS.forEach(d => {
@@ -715,19 +795,70 @@ function updateWeekProgress() {
   document.getElementById('weekProgressBar').style.width = pct + '%';
   document.getElementById('weekProgressText').textContent = `${perfectDays}/7 dias perfeitos`;
 
-  // Se completou a semana → LEVEL UP
-  if (perfectDays === 7) {
-    triggerLevelUp();
-  }
+  if (perfectDays === 7) triggerLevelUp();
 }
 
-function triggerLevelUp() {
-  const oldLevel = appData.level;
-  const newLevel = oldLevel + 1;
-  const newGoals = getLevelGoals(newLevel);
+/* ======================================================
+   LEVEL UP / PRESTÍGIO
+====================================================== */
+let isProcessingLevelUp = false;
 
-  // Atualiza modal
-  document.getElementById('newLevelText').textContent = 'Nível ' + newLevel;
+function triggerLevelUp() {
+  if (isProcessingLevelUp) return;
+  isProcessingLevelUp = true;
+
+  const oldLevel = appData.level;
+  let isPrestige = false;
+
+  if (oldLevel < MAX_LEVEL) {
+    appData.level = oldLevel + 1;
+  } else {
+    appData.level = 0;
+    appData.prestiges = (appData.prestiges || 0) + 1;
+    isPrestige = true;
+  }
+
+  const newGoals = getLevelGoals(appData.level);
+  const rank = getRank(appData.prestiges || 0);
+
+  // Configurar modal
+  const card = document.getElementById('levelUpCard');
+  const modalEmoji = document.getElementById('modalEmoji');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalSubtitle = document.getElementById('modalSubtitle');
+  const badgeBox = document.getElementById('prestigeBadgeBox');
+
+  card.classList.remove('animate-levelup', 'animate-prestige');
+  void card.offsetWidth;
+
+  if (isPrestige) {
+    // PRESTÍGIO
+    card.classList.add('animate-prestige');
+    modalEmoji.textContent = '👑';
+    modalTitle.textContent = '⭐ PRESTÍGIO!';
+    modalTitle.className = 'text-3xl font-black mb-2 tracking-tight bg-gradient-to-r from-yellow-300 to-orange-400 bg-clip-text text-transparent';
+    modalSubtitle.innerHTML = `Você evoluiu para uma nova patente!`;
+    badgeBox.classList.remove('hidden');
+    document.getElementById('prestigeBadgeEmoji').textContent = rank.emoji;
+    document.getElementById('prestigeBadgeName').textContent = rank.name.toUpperCase();
+    document.getElementById('prestigeBadgeName').style.color = rank.color;
+    document.getElementById('newLevelText').textContent = 'Nível 0';
+
+    // Confete especial
+    launchConfetti(60, ['👑', '⭐', '🏆', '✨', '🎉', '🥇']);
+  } else {
+    // LEVEL UP NORMAL
+    card.classList.add('animate-levelup');
+    modalEmoji.textContent = '🏆';
+    modalTitle.textContent = 'LEVEL UP!';
+    modalTitle.className = 'text-3xl font-black mb-2 tracking-tight';
+    modalSubtitle.innerHTML = `Você subiu para o <span class="font-black">Nível ${appData.level}</span>!`;
+    badgeBox.classList.add('hidden');
+    document.getElementById('newLevelText').textContent = 'Nível ' + appData.level;
+
+    launchConfetti(30, ['🎉', '✨', '🔥', '⭐', '💪']);
+  }
+
   document.getElementById('newVideos').textContent = newGoals.videos;
   document.getElementById('newWater').textContent = (newGoals.water / 1000).toFixed(1).replace('.0', '');
   document.getElementById('newStudy').textContent = Math.floor(newGoals.study / 60);
@@ -736,36 +867,81 @@ function triggerLevelUp() {
 
   document.getElementById('levelUpModal').classList.remove('hidden');
 
-  // Aplica novo nível + reseta a semana
-  appData.level = newLevel;
+  // Resetar semana
   DAYS.forEach(d => {
     appData.days[d.id] = {
       tasks: new Array(TOTAL_TASKS).fill(false),
       subvideos: [false, false, false],
       water: 0,
-      instagramNotes: '',
-      readingText: '',
-      diaryText: '',
-      timerSeconds: newGoals.study,
-      timerRunning: false,
-      noPhoneSeconds: newGoals.noPhone,
-      noPhoneRunning: false,
+      instagramNotes: '', readingText: '', diaryText: '',
+      timerSeconds: newGoals.study, timerRunning: false,
+      noPhoneSeconds: newGoals.noPhone, noPhoneRunning: false,
       sleepOk: false
     };
   });
   saveAppData();
   updateLevelUI();
+
+  // Animar badge de patente
+  setTimeout(() => {
+    const badge = document.getElementById('rankBadge');
+    badge.classList.add('badge-glow');
+    setTimeout(() => badge.classList.remove('badge-glow'), 4000);
+  }, 600);
 }
 
+/* ======================================================
+   CONFETES
+====================================================== */
+function launchConfetti(qty, emojis) {
+  const container = document.body;
+  for (let i = 0; i < qty; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    piece.style.left = Math.random() * 100 + 'vw';
+    piece.style.animationDelay = Math.random() * 1.5 + 's';
+    piece.style.animationDuration = (2.5 + Math.random() * 1.5) + 's';
+    piece.style.fontSize = (16 + Math.random() * 20) + 'px';
+    container.appendChild(piece);
+    setTimeout(() => piece.remove(), 5000);
+  }
+}
+
+/* ======================================================
+   UI DO NÍVEL / PATENTE
+====================================================== */
 function updateLevelUI() {
   document.getElementById('levelBadge').textContent = appData.level;
   document.getElementById('levelHeader').textContent = appData.level;
+
+  const rank = getRank(appData.prestiges || 0);
+  const rankBadge = document.getElementById('rankBadge');
+  const rankEmoji = document.getElementById('rankEmoji');
+  const rankName = document.getElementById('rankName');
+
+  rankEmoji.textContent = rank.emoji;
+  rankName.textContent = rank.name;
+  rankName.style.color = rank.color;
+
+  // Aplica cor ao badge conforme a patente
+  if (rank.tier > 0 || (appData.prestiges || 0) > 0) {
+    rankBadge.style.borderColor = rank.color + '99';
+    rankBadge.style.background = rank.color + '22';
+    rankBadge.style.color = rank.color;
+  } else {
+    rankBadge.style.borderColor = '';
+    rankBadge.style.background = '';
+    rankBadge.style.color = '';
+  }
 }
 
 document.getElementById('levelUpCloseBtn').addEventListener('click', () => {
   document.getElementById('levelUpModal').classList.add('hidden');
+  isProcessingLevelUp = false;
   renderDaysNav();
   loadDayData(currentDayIndex);
+  updateWeekProgress();
 });
 
 /* ======================================================
@@ -833,7 +1009,6 @@ function init() {
 document.addEventListener('DOMContentLoaded', init);
 </script>
 
-<!-- SERVICE WORKER + INSTALL -->
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
