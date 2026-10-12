@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MODO MONSTRO</title>
+<title>Modo Monstro</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0f172a">
 <link rel="apple-touch-icon" href="icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Rotina Criador">
+<meta name="apple-mobile-web-app-title" content="Monstro">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
 tailwind.config = { darkMode: 'class', theme: { extend: {
@@ -22,37 +22,72 @@ tailwind.config = { darkMode: 'class', theme: { extend: {
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 * { -webkit-tap-highlight-color: transparent; }
-body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: #0a0f1e; min-height: 100vh; }
+body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: #0a0f1e; min-height: 100vh; position: relative; }
 body.light-bg { background: #eef2ff; }
+
+.bg-eye-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -4;
+  background-image: url('bg-eye.jpg');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  opacity: 0.22;
+  pointer-events: none;
+  filter: brightness(1.1) contrast(1.25) saturate(1.3);
+  animation: eyeBreathe 5s ease-in-out infinite, eyeBlink 8s ease-in-out infinite;
+  will-change: opacity, filter, transform;
+  transform-origin: center 30%;
+}
+@keyframes eyeBreathe {
+  0%, 100% { opacity: 0.15; filter: brightness(1) contrast(1.25) saturate(1.2); }
+  50% { opacity: 0.35; filter: brightness(1.5) contrast(1.4) saturate(1.5); }
+}
+@keyframes eyeBlink {
+  0%, 88%, 100% { transform: scaleY(1); }
+  91% { transform: scaleY(0.05); }
+  94% { transform: scaleY(1); }
+}
+body.light-bg .bg-eye-layer { opacity: 0.12; }
+
 body::before {
   content: ""; position: fixed; inset: 0;
-  background: radial-gradient(circle at 15% 20%, rgba(59,130,246,0.15), transparent 45%),
-              radial-gradient(circle at 85% 80%, rgba(168,85,247,0.15), transparent 45%);
-  z-index: -3; pointer-events: none; transition: background 0.6s ease;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(59,130,246,0.20), transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(168,85,247,0.18), transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(6,182,212,0.12), transparent 60%);
+  z-index: -3; pointer-events: none;
 }
 body::after {
   content: ""; position: fixed; inset: 0;
-  background-image: linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
-  background-size: 40px 40px; z-index: -2; pointer-events: none;
-  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
-  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  background-image:
+    linear-gradient(rgba(59,130,246,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,0.05) 1px, transparent 1px),
+    radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.55) 100%);
+  background-size: 40px 40px, 40px 40px, 100% 100%;
+  z-index: -2; pointer-events: none;
 }
-body.theme-purple::before { background: radial-gradient(circle at 15% 20%, rgba(168,85,247,0.22), transparent 45%), radial-gradient(circle at 85% 80%, rgba(236,72,153,0.18), transparent 45%); }
-body.theme-green::before { background: radial-gradient(circle at 15% 20%, rgba(34,197,94,0.22), transparent 45%), radial-gradient(circle at 85% 80%, rgba(6,182,212,0.18), transparent 45%); }
-body.theme-red::before { background: radial-gradient(circle at 15% 20%, rgba(239,68,68,0.22), transparent 45%), radial-gradient(circle at 85% 80%, rgba(245,158,11,0.18), transparent 45%); }
-body.theme-gold::before { background: radial-gradient(circle at 15% 20%, rgba(245,158,11,0.25), transparent 45%), radial-gradient(circle at 85% 80%, rgba(234,179,8,0.2), transparent 45%); }
-body.theme-pink::before { background: radial-gradient(circle at 15% 20%, rgba(236,72,153,0.22), transparent 45%), radial-gradient(circle at 85% 80%, rgba(168,85,247,0.18), transparent 45%); }
+
+body.theme-purple::before { background: radial-gradient(circle at 15% 20%, rgba(168,85,247,0.28), transparent 45%), radial-gradient(circle at 85% 80%, rgba(236,72,153,0.22), transparent 45%); }
+body.theme-green::before { background: radial-gradient(circle at 15% 20%, rgba(34,197,94,0.25), transparent 45%), radial-gradient(circle at 85% 80%, rgba(6,182,212,0.22), transparent 45%); }
+body.theme-red::before { background: radial-gradient(circle at 15% 20%, rgba(239,68,68,0.25), transparent 45%), radial-gradient(circle at 85% 80%, rgba(245,158,11,0.2), transparent 45%); }
+body.theme-gold::before { background: radial-gradient(circle at 15% 20%, rgba(245,158,11,0.28), transparent 45%), radial-gradient(circle at 85% 80%, rgba(234,179,8,0.22), transparent 45%); }
+body.theme-pink::before { background: radial-gradient(circle at 15% 20%, rgba(236,72,153,0.25), transparent 45%), radial-gradient(circle at 85% 80%, rgba(168,85,247,0.2), transparent 45%); }
 body.theme-rainbow::before { background: conic-gradient(from 0deg at 50% 50%, rgba(239,68,68,0.15), rgba(245,158,11,0.15), rgba(34,197,94,0.15), rgba(6,182,212,0.15), rgba(59,130,246,0.15), rgba(168,85,247,0.15), rgba(239,68,68,0.15)); animation: rainbowSpin 20s linear infinite; }
 @keyframes rainbowSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-.particle-bg { position: fixed; border-radius: 50%; pointer-events: none; z-index: -1; opacity: 0.4; animation: floatUp linear infinite; will-change: transform; }
-@keyframes floatUp { 0% { transform: translate3d(0, 100vh, 0); opacity: 0; } 10% { opacity: 0.5; } 90% { opacity: 0.5; } 100% { transform: translate3d(0, -10vh, 0); opacity: 0; } }
-.glass { background: rgba(15,23,42,0.7); }
-body.light-bg .glass { background: rgba(255,255,255,0.75); }
+
+.particle-bg { position: fixed; border-radius: 50%; pointer-events: none; z-index: -1; opacity: 0.5; animation: floatUp linear infinite; will-change: transform; }
+@keyframes floatUp { 0% { transform: translate3d(0, 100vh, 0); opacity: 0; } 10% { opacity: 0.6; } 90% { opacity: 0.6; } 100% { transform: translate3d(0, -10vh, 0); opacity: 0; } }
+
+.glass { background: rgba(15,23,42,0.72); border: 1px solid rgba(59,130,246,0.18); }
+body.light-bg .glass { background: rgba(255,255,255,0.8); }
+
 .custom-checkbox { appearance: none; -webkit-appearance: none; width: 26px; height: 26px; border: 2px solid #475569; border-radius: 8px; cursor: pointer; display: grid; place-content: center; transition: transform 0.2s, background 0.2s, border 0.2s, box-shadow 0.2s; }
 .custom-checkbox:hover { border-color: #22c55e; }
 .custom-checkbox:checked { background: linear-gradient(135deg, #22c55e, #16a34a); border-color: #22c55e; box-shadow: 0 0 10px rgba(34,197,94,0.6); }
 .custom-checkbox:checked::before { content: "✔"; font-size: 15px; color: white; font-weight: 900; }
+
 .task-card { position: relative; transition: transform 0.25s, box-shadow 0.25s; overflow: hidden; }
 .task-card.rarity-common { border-left: 4px solid #22c55e; }
 .task-card.rarity-rare { border-left: 4px solid #3b82f6; }
@@ -62,20 +97,24 @@ body.light-bg .glass { background: rgba(255,255,255,0.75); }
 .task-card.completed.rarity-rare { box-shadow: 0 0 20px rgba(59,130,246,0.35); }
 .task-card.completed.rarity-epic { box-shadow: 0 0 20px rgba(168,85,247,0.35); }
 .task-card.completed.rarity-legendary { box-shadow: 0 0 20px rgba(245,158,11,0.4); }
+
 .rarity-tag { font-size: 9px; font-weight: 800; padding: 2px 8px; border-radius: 999px; letter-spacing: 0.8px; text-transform: uppercase; }
 .rarity-tag.common { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.4); }
 .rarity-tag.rare { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.4); }
 .rarity-tag.epic { background: rgba(168,85,247,0.15); color: #c084fc; border: 1px solid rgba(168,85,247,0.4); }
 .rarity-tag.legendary { background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.4); }
-.xp-bar-outer { position: relative; background: rgba(15,23,42,0.8); border-radius: 999px; height: 8px; overflow: hidden; border: 1px solid rgba(59,130,246,0.3); }
-.xp-bar-fill { height: 100%; background: linear-gradient(90deg, #06b6d4, #3b82f6, #a855f7); border-radius: 999px; transition: width 0.5s ease-out; box-shadow: 0 0 10px rgba(59,130,246,0.6); }
+
+.xp-bar-outer { position: relative; background: rgba(15,23,42,0.8); border-radius: 999px; height: 8px; overflow: hidden; border: 1px solid rgba(59,130,246,0.4); }
+.xp-bar-fill { height: 100%; background: linear-gradient(90deg, #06b6d4, #3b82f6, #a855f7); border-radius: 999px; transition: width 0.5s ease-out; box-shadow: 0 0 10px rgba(59,130,246,0.7); }
 .xp-bar-fill.shine { animation: xpShine 3s linear infinite; background-size: 200% auto; }
 @keyframes xpShine { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+
 .rank-badge { position: relative; overflow: hidden; transition: all 0.4s ease; }
 .rank-badge.shine::after { content: ""; position: absolute; inset: 0; background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.5) 50%, transparent 70%); background-size: 250% auto; animation: shineSweep 3s linear infinite; pointer-events: none; }
 @keyframes shineSweep { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
-.modal-overlay { background: rgba(0,0,0,0.85); }
-.levelup-rays { position: absolute; inset: -50%; background: conic-gradient(from 0deg, transparent 0deg, rgba(255,215,0,0.4) 15deg, transparent 30deg, transparent 45deg, rgba(255,215,0,0.4) 60deg, transparent 75deg, transparent 90deg, rgba(255,215,0,0.4) 105deg, transparent 120deg, transparent 135deg, rgba(255,215,0,0.4) 150deg, transparent 165deg, transparent 180deg, rgba(255,215,0,0.4) 195deg, transparent 210deg, transparent 225deg, rgba(255,215,0,0.4) 240deg, transparent 255deg, transparent 270deg, rgba(255,215,0,0.4) 285deg, transparent 300deg, transparent 315deg, rgba(255,215,0,0.4) 330deg, transparent 345deg); animation: rotateRays 8s linear infinite; pointer-events: none; opacity: 0.5; }
+
+.modal-overlay { background: rgba(0,0,0,0.88); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.levelup-rays { position: absolute; inset: -50%; background: conic-gradient(from 0deg, transparent 0deg, rgba(0,229,255,0.5) 15deg, transparent 30deg, transparent 45deg, rgba(0,229,255,0.5) 60deg, transparent 75deg, transparent 90deg, rgba(0,229,255,0.5) 105deg, transparent 120deg, transparent 135deg, rgba(0,229,255,0.5) 150deg, transparent 165deg, transparent 180deg, rgba(0,229,255,0.5) 195deg, transparent 210deg, transparent 225deg, rgba(0,229,255,0.5) 240deg, transparent 255deg, transparent 270deg, rgba(0,229,255,0.5) 285deg, transparent 300deg, transparent 315deg, rgba(0,229,255,0.5) 330deg, transparent 345deg); animation: rotateRays 8s linear infinite; pointer-events: none; opacity: 0.55; }
 @keyframes rotateRays { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 @keyframes levelUpPop { 0% { transform: scale(0.2) rotate(-15deg); opacity: 0; } 55% { transform: scale(1.15) rotate(8deg); opacity: 1; } 75% { transform: scale(0.95) rotate(-4deg); } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
 @keyframes prestigePop { 0% { transform: scale(0) rotate(-180deg); opacity: 0; } 55% { transform: scale(1.25) rotate(20deg); opacity: 1; } 75% { transform: scale(0.92) rotate(-8deg); } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
@@ -83,22 +122,30 @@ body.light-bg .glass { background: rgba(255,255,255,0.75); }
 .animate-prestige { animation: prestigePop 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
 .badge-glow { animation: badgeGlow 1.5s ease-in-out infinite; }
 @keyframes badgeGlow { 0%,100% { box-shadow: 0 0 10px currentColor; } 50% { box-shadow: 0 0 30px currentColor, 0 0 50px currentColor; } }
+
 .confetti-piece { position: fixed; top: -10vh; font-size: 24px; pointer-events: none; z-index: 9999; animation: confettiFall linear forwards; will-change: transform; }
 @keyframes confettiFall { 0% { transform: translate3d(0, -20vh, 0) rotate(0deg); opacity: 1; } 100% { transform: translate3d(0, 115vh, 0) rotate(720deg); opacity: 0; } }
+
 .xp-float { position: fixed; font-weight: 900; font-size: 20px; pointer-events: none; z-index: 9998; animation: xpFloatUp 1.3s ease-out forwards; text-shadow: 0 0 10px currentColor; will-change: transform, opacity; }
 @keyframes xpFloatUp { 0% { transform: translate3d(0,0,0) scale(0.5); opacity: 0; } 20% { transform: translate3d(0,-15px,0) scale(1.2); opacity: 1; } 100% { transform: translate3d(0,-90px,0) scale(1); opacity: 0; } }
+
 .burst-particle { position: fixed; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9997; will-change: transform, opacity; }
 @keyframes burstOut { 0% { transform: translate3d(0,0,0) scale(1); opacity: 1; } 100% { transform: translate3d(var(--tx), var(--ty), 0) scale(0); opacity: 0; } }
-.avatar-ring { position: relative; background: linear-gradient(135deg, #3b82f6, #a855f7, #06b6d4); border-radius: 9999px; padding: 2.5px; }
+
+.avatar-ring { position: relative; background: linear-gradient(135deg, #3b82f6, #a855f7, #06b6d4); border-radius: 9999px; padding: 2.5px; box-shadow: 0 0 15px rgba(59,130,246,0.5); }
 .avatar-inner { border-radius: 9999px; background: #0f172a; display: grid; place-content: center; font-size: 22px; font-weight: 900; }
 body.light-bg .avatar-inner { background: #eef2ff; }
+
 .day-tab { transition: transform 0.25s, box-shadow 0.25s; position: relative; overflow: hidden; }
-.day-tab.active { transform: scale(1.04); box-shadow: 0 6px 25px rgba(59,130,246,0.3); }
+.day-tab.active { transform: scale(1.04); box-shadow: 0 6px 25px rgba(59,130,246,0.4), 0 0 20px rgba(59,130,246,0.3); border-color: #3b82f6; }
+
 .btn-action { transition: transform 0.15s; }
 .btn-action:active { transform: scale(0.94); }
+
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(100,116,139,0.4); border-radius: 4px; }
+
 .store-item { transition: all 0.25s; cursor: pointer; }
 .store-item:active { transform: scale(0.96); }
 .store-item.owned { opacity: 0.85; }
@@ -111,15 +158,64 @@ body.light-bg .avatar-inner { background: #eef2ff; }
 .theme-preview.t-gold { background: linear-gradient(135deg, #78350f, #f59e0b, #eab308); }
 .theme-preview.t-pink { background: linear-gradient(135deg, #831843, #ec4899, #a855f7); }
 .theme-preview.t-rainbow { background: conic-gradient(from 0deg, #ef4444, #f59e0b, #22c55e, #06b6d4, #3b82f6, #a855f7, #ef4444); }
+
 @keyframes chestShake { 0%, 100% { transform: translateY(0) rotate(0deg); } 25% { transform: translateY(-3px) rotate(-3deg); } 75% { transform: translateY(-3px) rotate(3deg); } }
 .chest-shake { animation: chestShake 0.5s infinite; }
 @keyframes chestOpen { 0% { transform: scale(1) rotate(0deg); } 50% { transform: scale(1.4) rotate(15deg); } 100% { transform: scale(1) rotate(0deg); } }
 .chest-open { animation: chestOpen 0.6s ease-out; }
+
 .store-tab { transition: all 0.2s; }
 .store-tab.active { background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; box-shadow: 0 4px 15px rgba(59,130,246,0.4); }
+
+/* ====== MODAL MISSÕES BÁSICAS - ESTILO SISTEMA SOLO LEVELING ====== */
+#missionsModal .missions-panel {
+  background: linear-gradient(180deg, rgba(10,20,40,0.98), rgba(5,10,25,0.98));
+  border: 2px solid rgba(59,130,246,0.6);
+  box-shadow: 0 0 40px rgba(59,130,246,0.4), inset 0 0 30px rgba(59,130,246,0.08);
+}
+#missionsModal .missions-title {
+  color: #60a5fa;
+  text-shadow: 0 0 12px rgba(59,130,246,0.9), 0 0 24px rgba(59,130,246,0.5);
+  letter-spacing: 3px;
+}
+#missionsModal .missions-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+  box-shadow: 0 0 8px #3b82f6;
+}
+.basic-task-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 14px;
+  background: rgba(15,23,42,0.6);
+  border: 1px solid rgba(59,130,246,0.25);
+  border-radius: 14px;
+  transition: all 0.2s;
+  margin-bottom: 8px;
+}
+.basic-task-row.done {
+  background: rgba(34,197,94,0.1);
+  border-color: rgba(34,197,94,0.5);
+  box-shadow: 0 0 12px rgba(34,197,94,0.25);
+}
+.basic-task-row.done .basic-task-name {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+.basic-task-name {
+  font-weight: 700;
+  font-size: 13px;
+  color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.basic-task-emoji { font-size: 22px; }
 </style>
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col">
+
+<!-- FUNDO SOLO LEVELING -->
+<div class="bg-eye-layer"></div>
 
 <header class="sticky top-0 z-40 glass border-b border-slate-800/80 shadow-lg">
   <div class="max-w-7xl mx-auto px-3 py-3 sm:px-6">
@@ -129,7 +225,7 @@ body.light-bg .avatar-inner { background: #eef2ff; }
           <div class="avatar-inner w-full h-full" id="avatarInner">⚡</div>
         </div>
         <div>
-          <h1 class="text-base sm:text-lg font-black bg-gradient-to-r from-blue-400 via-cyan-300 to-purple-400 bg-clip-text text-transparent">Rotina Criador</h1>
+          <h1 class="text-base sm:text-lg font-black bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent" style="text-shadow: 0 0 20px rgba(59,130,246,0.3);">Modo Monstro</h1>
           <div class="flex items-center gap-2 text-[10px] text-slate-400">
             <span id="streakDisplay">🔥 0</span><span>•</span><span id="coinsDisplay">🪙 0</span>
           </div>
@@ -139,6 +235,7 @@ body.light-bg .avatar-inner { background: #eef2ff; }
         <div id="rankBadge" class="rank-badge flex items-center gap-1.5 bg-slate-500/10 border border-slate-500/30 px-2.5 py-1.5 rounded-xl text-xs font-bold">
           <span id="rankEmoji">🌱</span><span id="rankName" class="hidden sm:inline">Iniciante</span>
         </div>
+        <button id="missionsBtn" type="button" title="Missões Básicas" class="btn-action p-2 rounded-xl bg-cyan-500/15 text-cyan-400 border border-cyan-500/40 hover:bg-cyan-500/25 transition-all">📋</button>
         <button id="storeBtn" type="button" title="Loja" class="btn-action p-2 rounded-xl bg-amber-500/15 text-amber-400 border border-amber-500/30 hover:bg-amber-500/25 transition-all">🛒</button>
         <button id="themeToggleBtn" type="button" title="Tema" class="btn-action p-2 rounded-xl bg-slate-800 hover:bg-slate-700 transition-all"><span id="themeIcon">🌙</span></button>
       </div>
@@ -204,14 +301,36 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   <div class="max-w-4xl mx-auto text-center flex flex-col items-center gap-2">
     <blockquote id="quoteText" class="text-xs sm:text-sm italic text-slate-400 font-medium">"A consistência supera o talento quando o talento não é consistente."</blockquote>
     <button id="newQuoteBtn" type="button" class="text-[11px] font-bold px-3 py-1.5 rounded-lg bg-blue-500/15 text-blue-400 hover:bg-blue-500/25 border border-blue-500/30 transition">✨ Nova Frase</button>
-    <p class="text-[10px] text-slate-500 mt-1">Painel de Rotina do Criador © 2026</p>
+    <p class="text-[10px] text-slate-500 mt-1">Modo Monstro © 2026</p>
   </div>
 </footer>
 
+<!-- MODAL MISSÕES BÁSICAS - SISTEMA SOLO LEVELING -->
+<div id="missionsModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
+  <div class="missions-panel rounded-3xl p-5 max-w-md w-full my-auto">
+    <div class="text-center mb-4">
+      <div class="text-3xl mb-1">⚔️</div>
+      <h2 class="missions-title text-xl font-black tracking-widest">SISTEMA</h2>
+      <div class="missions-line my-2"></div>
+      <p class="text-[10px] text-cyan-400/80 font-bold tracking-wider uppercase">Missões Diárias Básicas</p>
+    </div>
+
+    <div id="basicTasksList" class="max-h-[55vh] overflow-y-auto mb-3"></div>
+
+    <div class="flex items-center justify-between px-1 mb-3">
+      <span class="text-[11px] text-slate-400 font-bold">Progresso:</span>
+      <span id="basicProgress" class="text-[12px] font-black text-cyan-400">0 / 8</span>
+    </div>
+
+    <button id="missionsCloseBtn" type="button" class="w-full py-3 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-black text-sm shadow-xl tracking-wider">FECHAR</button>
+  </div>
+</div>
+
+<!-- MODAL LEVEL UP -->
 <div id="levelUpModal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
   <div id="levelUpCard" class="relative rounded-3xl p-6 sm:p-8 max-w-md w-full text-white text-center shadow-2xl overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-br from-purple-700 via-blue-700 to-indigo-800"></div>
-    <div class="absolute inset-0 opacity-40 bg-gradient-to-tr from-yellow-400 via-transparent to-pink-500"></div>
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-700 via-indigo-700 to-purple-800"></div>
+    <div class="absolute inset-0 opacity-40 bg-gradient-to-tr from-cyan-400 via-transparent to-pink-500"></div>
     <div class="levelup-rays"></div>
     <div class="relative z-10">
       <div id="modalEmoji" class="text-7xl mb-2 inline-block drop-shadow-2xl">🏆</div>
@@ -231,7 +350,7 @@ body.light-bg .avatar-inner { background: #eef2ff; }
         <p>📝 <span id="newDiary">1</span> páginas de diário</p>
         <p>📵 <span id="newNoPhone">1</span> h sem celular</p>
       </div>
-      <button id="levelUpCloseBtn" type="button" class="btn-action w-full py-3 bg-white text-purple-700 rounded-2xl font-black hover:bg-slate-100 transition shadow-2xl text-sm tracking-wide">🔥 ACEITAR DESAFIO</button>
+      <button id="levelUpCloseBtn" type="button" class="btn-action w-full py-3 bg-white text-blue-700 rounded-2xl font-black hover:bg-slate-100 transition shadow-2xl text-sm tracking-wide">🔥 ACEITAR DESAFIO</button>
     </div>
   </div>
 </div>
@@ -283,9 +402,7 @@ body.light-bg .avatar-inner { background: #eef2ff; }
 <button id="installAppBtn" class="hidden fixed bottom-5 right-5 z-50 bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-4 py-3 rounded-2xl shadow-2xl font-bold text-sm flex items-center gap-2 active:scale-95 transition-all">⬇️ Instalar App</button>
 
 <script>
-/* ======================================================
-   CONSTANTES
-====================================================== */
+/* ===== CONSTANTES ===== */
 const DAYS = [
   { id: 0, name: 'Domingo', short: 'Dom' }, { id: 1, name: 'Segunda', short: 'Seg' },
   { id: 2, name: 'Terça', short: 'Ter' }, { id: 3, name: 'Quarta', short: 'Qua' },
@@ -294,6 +411,16 @@ const DAYS = [
 ];
 const TOTAL_TASKS = 10;
 const MAX_LEVEL = 15;
+const BASIC_TASKS = [
+  { id: 'brush', emoji: '🦷', name: 'Escovar os dentes' },
+  { id: 'shower', emoji: '🚿', name: 'Tomar banho' },
+  { id: 'bed', emoji: '🛏️', name: 'Arrumar a cama' },
+  { id: 'clothes', emoji: '👕', name: 'Trocar de roupa' },
+  { id: 'breakfast', emoji: '🍳', name: 'Tomar café da manhã' },
+  { id: 'vitamin', emoji: '💊', name: 'Tomar vitamina/remédio' },
+  { id: 'skin', emoji: '🧴', name: 'Cuidar da pele' },
+  { id: 'organize', emoji: '🧹', name: 'Organizar o quarto' }
+];
 const RANKS = [
   { name: 'Bronze', emoji: '🥉', color: '#cd7f32' }, { name: 'Prata', emoji: '🥈', color: '#c0c0c0' },
   { name: 'Ouro', emoji: '🥇', color: '#ffd700' }, { name: 'Platina', emoji: '💎', color: '#b9f2ff' },
@@ -345,9 +472,7 @@ const CHEST_REWARDS = [
   { type: 'jackpot', weight: 5 }
 ];
 
-/* ======================================================
-   HELPERS
-====================================================== */
+/* ===== HELPERS ===== */
 function getLevelGoals(level) {
   return { videos: 3 + Math.floor(level / 4), water: 2000, study: 1800 + level * 120, diaryPages: 1 + Math.floor(level / 4), noPhone: 3600 + level * 240 };
 }
@@ -359,8 +484,12 @@ function getRank(p) {
   const base = RANKS[idx];
   return { name: base.name + (cycle > 0 ? ' ' + toRoman(cycle + 1) : ''), emoji: base.emoji, color: base.color, tier: cycle };
 }
+function getTodayKey() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
 
-/* ÁUDIO */
+/* ===== AUDIO ===== */
 let audioCtx = null;
 function getAudioCtx() {
   if (!audioCtx) { try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { return null; } }
@@ -376,6 +505,7 @@ function playTone(freq, dur, type = 'sine', vol = 0.15, delay = 0) {
   o.connect(g); g.connect(ctx.destination); o.start(t); o.stop(t + dur);
 }
 function soundCheck() { playTone(880, 0.08, 'sine', 0.12); playTone(1320, 0.1, 'sine', 0.09, 0.05); }
+function soundSystem() { playTone(660, 0.05, 'sine', 0.1); playTone(880, 0.08, 'sine', 0.12, 0.05); playTone(1320, 0.15, 'sine', 0.15, 0.13); }
 function soundLevelUp() { playTone(523.25, 0.15, 'triangle', 0.15, 0); playTone(659.25, 0.15, 'triangle', 0.15, 0.12); playTone(783.99, 0.15, 'triangle', 0.15, 0.24); playTone(1046.5, 0.4, 'triangle', 0.2, 0.36); }
 function soundPrestige() { playTone(523.25, 0.2, 'sine', 0.15, 0); playTone(659.25, 0.2, 'sine', 0.15, 0.15); playTone(783.99, 0.2, 'sine', 0.15, 0.3); playTone(1046.5, 0.2, 'sine', 0.18, 0.45); playTone(1318.5, 0.6, 'sine', 0.22, 0.6); }
 function soundWater() { playTone(1200, 0.05, 'sine', 0.1); playTone(900, 0.08, 'sine', 0.08, 0.04); }
@@ -386,23 +516,22 @@ function soundChest() { playTone(440, 0.1, 'sine', 0.12); playTone(554, 0.1, 'si
 function vibrate(p) { if (navigator.vibrate) { try { navigator.vibrate(p); } catch(e) {} } }
 
 function spawnBgParticles() {
-  const colors = ['#3b82f6', '#a855f7', '#06b6d4', '#22c55e'];
-  for (let i = 0; i < 8; i++) {
+  const colors = ['#06b6d4', '#3b82f6', '#a855f7', '#22d3ee'];
+  for (let i = 0; i < 12; i++) {
     const p = document.createElement('div');
     p.className = 'particle-bg';
     const size = 2 + Math.random() * 3;
     p.style.width = size + 'px'; p.style.height = size + 'px';
     p.style.left = Math.random() * 100 + 'vw';
     p.style.background = colors[i % colors.length];
+    p.style.boxShadow = `0 0 ${size * 3}px ${colors[i % colors.length]}`;
     p.style.animationDuration = (18 + Math.random() * 15) + 's';
     p.style.animationDelay = (Math.random() * 15) + 's';
     document.body.appendChild(p);
   }
 }
 
-/* ======================================================
-   ESTADO GLOBAL
-====================================================== */
+/* ===== ESTADO ===== */
 let currentDayIndex = new Date().getDay();
 let appData = null;
 let timerInterval = null;
@@ -427,6 +556,8 @@ function loadAppData() {
     avatar: '⚡', themeStyle: 'default',
     unlockedAvatars: ['⚡','🚀','🔥','💪'],
     unlockedThemes: ['default'],
+    basicTasks: {},
+    basicDate: '',
     sleepSchedule: { bedtime: '22:00', wakeup: '06:00' }, days: {}
   };
   DAYS.forEach(d => { def.days[d.id] = newDayData(1800, 3600); });
@@ -447,7 +578,6 @@ function loadAppData() {
           if (dd.diaryText === undefined) dd.diaryText = '';
           if (dd.noPhoneSeconds === undefined) dd.noPhoneSeconds = 3600;
           if (dd.noPhoneRunning === undefined) dd.noPhoneRunning = false;
-          if (dd.sleepOk === undefined) dd.sleepOk = false;
         }
       });
       if (!parsed.sleepSchedule) parsed.sleepSchedule = def.sleepSchedule;
@@ -460,6 +590,8 @@ function loadAppData() {
       if (!parsed.themeStyle) parsed.themeStyle = 'default';
       if (!parsed.unlockedAvatars) parsed.unlockedAvatars = ['⚡','🚀','🔥','💪'];
       if (!parsed.unlockedThemes) parsed.unlockedThemes = ['default'];
+      if (!parsed.basicTasks) parsed.basicTasks = {};
+      if (!parsed.basicDate) parsed.basicDate = '';
       return parsed;
     }
   } catch(e) { console.error('Erro load:', e); }
@@ -468,9 +600,76 @@ function loadAppData() {
 
 function saveAppData() { try { localStorage.setItem('rotina_criador_v2', JSON.stringify(appData)); } catch(e) { console.error('Erro save:', e); } }
 
-/* ======================================================
-   TEMA
-====================================================== */
+/* ===== MISSÕES BÁSICAS ===== */
+function ensureBasicTasksToday() {
+  const today = getTodayKey();
+  if (appData.basicDate !== today) {
+    appData.basicTasks = {};
+    BASIC_TASKS.forEach(t => { appData.basicTasks[t.id] = false; });
+    appData.basicDate = today;
+    saveAppData();
+  }
+}
+function toggleBasicTask(taskId) {
+  ensureBasicTasksToday();
+  const was = appData.basicTasks[taskId];
+  appData.basicTasks[taskId] = !was;
+  if (!was) {
+    addXP(5);
+    addCoins(2);
+    soundSystem();
+    vibrate([15,10,20]);
+  } else {
+    removeXP(5);
+    removeCoins(2);
+    soundClick();
+    vibrate(15);
+  }
+  saveAppData();
+  renderBasicTasks();
+}
+function renderBasicTasks() {
+  ensureBasicTasksToday();
+  const list = document.getElementById('basicTasksList');
+  if (!list) return;
+  list.innerHTML = '';
+  let done = 0;
+  BASIC_TASKS.forEach(t => {
+    const isDone = appData.basicTasks[t.id];
+    if (isDone) done++;
+    const row = document.createElement('div');
+    row.className = 'basic-task-row' + (isDone ? ' done' : '');
+    row.innerHTML = `
+      <div class="basic-task-name">
+        <span class="basic-task-emoji">${t.emoji}</span>
+        <span>${t.name}</span>
+      </div>
+      <div style="width:28px;height:28px;border-radius:8px;border:2px solid ${isDone ? '#22c55e' : '#475569'};display:grid;place-content:center;background:${isDone ? 'linear-gradient(135deg,#22c55e,#16a34a)' : 'transparent'};color:white;font-weight:900;font-size:14px;box-shadow:${isDone ? '0 0 12px rgba(34,197,94,0.6)' : 'none'};">
+        ${isDone ? '✔' : ''}
+      </div>
+    `;
+    row.addEventListener('click', () => toggleBasicTask(t.id));
+    list.appendChild(row);
+  });
+  document.getElementById('basicProgress').textContent = `${done} / ${BASIC_TASKS.length}`;
+}
+function openMissions() {
+  ensureBasicTasksToday();
+  renderBasicTasks();
+  soundSystem();
+  vibrate([20,10,30]);
+  const m = document.getElementById('missionsModal');
+  m.classList.remove('hidden');
+  m.style.display = 'flex';
+}
+function closeMissions() {
+  const m = document.getElementById('missionsModal');
+  m.classList.add('hidden');
+  m.style.display = 'none';
+  soundClick();
+}
+
+/* ===== TEMA ===== */
 function applyThemeStyle() {
   ['theme-purple','theme-green','theme-red','theme-gold','theme-pink','theme-rainbow'].forEach(c => document.body.classList.remove(c));
   if (appData.themeStyle && appData.themeStyle !== 'default') document.body.classList.add('theme-' + appData.themeStyle);
@@ -491,9 +690,7 @@ function initTheme() {
   applyThemeStyle();
 }
 
-/* ======================================================
-   NAVEGAÇÃO DOS DIAS
-====================================================== */
+/* ===== NAVEGAÇÃO DIAS ===== */
 function renderDaysNav() {
   const c = document.getElementById('daysNavContainer');
   c.innerHTML = '';
@@ -505,9 +702,9 @@ function renderDaysNav() {
     const isPerfect = completed === TOTAL_TASKS;
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = `day-tab flex flex-col items-center justify-center p-3 rounded-2xl border ${isCurrent ? 'active bg-gradient-to-br from-blue-500 to-blue-700 text-white border-blue-400' : 'glass text-slate-300 border-slate-700/80'}`;
+    btn.className = `day-tab flex flex-col items-center justify-center p-3 rounded-2xl border ${isCurrent ? 'active bg-gradient-to-br from-blue-600 to-cyan-600 text-white border-cyan-400' : 'glass text-slate-300 border-slate-700/80'}`;
     btn.innerHTML = `
-      ${isToday ? '<span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-cyan-400 rounded-full border-2 border-slate-900"></span>' : ''}
+      ${isToday ? '<span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-cyan-400 rounded-full border-2 border-slate-900" style="box-shadow:0 0 8px #22d3ee;"></span>' : ''}
       ${isPerfect ? '<span class="absolute -top-1 -left-1 text-xs">⭐</span>' : ''}
       <span class="text-[10px] uppercase tracking-wider opacity-80 font-bold">${day.short}</span>
       <span class="text-xs font-black mt-0.5">${day.name}</span>
@@ -534,9 +731,6 @@ function loadDayData(dayId) {
   updateNoPhoneDisplay();
 }
 
-/* ======================================================
-   RENDER TAREFAS
-====================================================== */
 function renderTasks(dd, goals) {
   const grid = document.getElementById('tasksGrid');
   grid.innerHTML = '';
@@ -561,7 +755,7 @@ function renderTasks(dd, goals) {
     const rar = RARITY[TASK_RARITY[c.i]];
     const checked = dd.tasks[c.i];
     const card = document.createElement('div');
-    card.className = `task-card rarity-${TASK_RARITY[c.i]} ${checked ? 'completed' : ''} glass rounded-2xl p-4 shadow-lg border border-slate-800/80 flex flex-col justify-between`;
+    card.className = `task-card rarity-${TASK_RARITY[c.i]} ${checked ? 'completed' : ''} glass rounded-2xl p-4 shadow-lg flex flex-col justify-between`;
 
     let html = `<div>
       <div class="flex items-center justify-between mb-2">
@@ -644,7 +838,6 @@ function renderTasks(dd, goals) {
 }
 function formatTime(s) { const m = Math.floor(s / 60), sec = s % 60; return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`; }
 
-/* EFEITOS */
 function burstParticles(x, y, color) {
   for (let i = 0; i < 8; i++) {
     const p = document.createElement('div');
@@ -691,7 +884,6 @@ function launchConfetti(qty, emojis) {
   }
 }
 
-/* TAREFAS - ESTADO */
 function setTaskState(i, newState, rar, rect) {
   const dd = appData.days[currentDayIndex];
   const was = dd.tasks[i];
@@ -787,13 +979,11 @@ function bindTaskEvents() {
   if (wk) wk.addEventListener('change', e => { appData.sleepSchedule.wakeup = e.target.value; saveAppData(); });
 }
 
-/* XP/COINS */
 function addXP(a) { appData.xp = (appData.xp || 0) + a; const n = xpNeededForLevel(appData.level); if (appData.xp > n) appData.xp = n; updateLevelUI(); }
 function removeXP(a) { appData.xp = Math.max(0, (appData.xp || 0) - a); updateLevelUI(); }
 function addCoins(a) { appData.coins = (appData.coins || 0) + a; updateLevelUI(); }
 function removeCoins(a) { appData.coins = Math.max(0, (appData.coins || 0) - a); updateLevelUI(); }
 
-/* TIMERS */
 function startStudyTimer(goals) {
   const dd = appData.days[currentDayIndex];
   if (dd.timerSeconds === undefined || dd.timerSeconds === null) dd.timerSeconds = goals.study;
@@ -841,7 +1031,6 @@ function pauseNoPhoneTimer() { if (noPhoneInterval) { clearInterval(noPhoneInter
 function updateNoPhoneDisplay() { const el = document.getElementById('noPhoneDisplay'); if (el) el.textContent = formatTime(appData.days[currentDayIndex].noPhoneSeconds ?? getLevelGoals(appData.level).noPhone); }
 function pauseAllTimers() { pauseStudyTimer(); pauseNoPhoneTimer(); }
 
-/* PROGRESSO */
 function updateProgress() {
   const dd = appData.days[currentDayIndex];
   const completed = dd.tasks.filter(Boolean).length;
@@ -862,7 +1051,6 @@ function updateWeekProgress() {
   if (perfect === 7 && !isProcessingLevelUp) triggerLevelUp();
 }
 
-/* LEVEL UP */
 function triggerLevelUp() {
   if (isProcessingLevelUp) return;
   isProcessingLevelUp = true;
@@ -922,7 +1110,6 @@ function triggerLevelUp() {
   }, 600);
 }
 
-/* UI NÍVEL */
 function updateLevelUI() {
   document.getElementById('levelBadge').textContent = appData.level;
   document.getElementById('streakDisplay').textContent = '🔥 ' + (appData.streak || 0);
@@ -951,7 +1138,6 @@ function updateLevelUI() {
   }
 }
 
-/* CONFIRM */
 function showConfirm(emoji, title, msg, cb) {
   document.getElementById('confirmEmoji').textContent = emoji;
   document.getElementById('confirmTitle').textContent = title;
@@ -960,9 +1146,6 @@ function showConfirm(emoji, title, msg, cb) {
   confirmCallback = cb;
 }
 
-/* ======================================================
-   LOJA
-====================================================== */
 function openStore() {
   soundClick();
   updateLevelUI();
@@ -1082,7 +1265,7 @@ function renderChestTab() {
   div.innerHTML = `
     <div id="chestVisual" class="text-8xl mb-3">🎁</div>
     <h3 class="text-lg font-black text-white mb-1">Baú Misterioso</h3>
-    <p class="text-xs text-slate-400 mb-5 px-4">Pode vir moedas, XP, avatares ou temas raros! Uma surpresa a cada abertura.</p>
+    <p class="text-xs text-slate-400 mb-5 px-4">Pode vir moedas, XP, avatares ou temas raros!</p>
     <button type="button" id="openChestBtn" class="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-600 text-white font-black text-sm shadow-xl">
       🪙 ABRIR POR ${CHEST_PRICE} MOEDAS
     </button>
@@ -1169,14 +1352,11 @@ function openChest() {
   document.getElementById('chestResultModal').classList.remove('hidden');
 }
 
-/* ======================================================
-   INIT - Liga todos os botões
-====================================================== */
+/* ===== INIT ===== */
 function initApp() {
-  // Carregar dados
   appData = loadAppData();
+  ensureBasicTasksToday();
 
-  // Efeitos visuais
   spawnBgParticles();
   initTheme();
   updateLevelUI();
@@ -1185,15 +1365,15 @@ function initApp() {
   loadDayData(currentDayIndex);
   if (QUOTES[appData.quoteIndex]) document.getElementById('quoteText').textContent = `"${QUOTES[appData.quoteIndex]}"`;
 
-  // ============ BOTÕES DO HEADER ============
   document.getElementById('themeToggleBtn').addEventListener('click', () => {
     appData.theme = appData.theme === 'dark' ? 'light' : 'dark';
     initTheme(); saveAppData(); soundClick();
   });
   document.getElementById('storeBtn').addEventListener('click', openStore);
   document.getElementById('storeCloseBtn').addEventListener('click', closeStore);
+  document.getElementById('missionsBtn').addEventListener('click', openMissions);
+  document.getElementById('missionsCloseBtn').addEventListener('click', closeMissions);
 
-  // ============ TABS DA LOJA ============
   document.querySelectorAll('.store-tab').forEach(tab => {
     tab.addEventListener('click', () => {
       document.querySelectorAll('.store-tab').forEach(t => t.classList.remove('active'));
@@ -1203,7 +1383,6 @@ function initApp() {
     });
   });
 
-  // ============ BOTÕES DE RESET ============
   document.getElementById('resetDayBtn').addEventListener('click', () => {
     showConfirm('🔄', 'Resetar Dia?', 'Todas as tarefas deste dia serão apagadas.', () => {
       const g = getLevelGoals(appData.level);
@@ -1221,21 +1400,18 @@ function initApp() {
     });
   });
 
-  // ============ FRASE ============
   document.getElementById('newQuoteBtn').addEventListener('click', () => {
     appData.quoteIndex = (appData.quoteIndex + 1) % QUOTES.length;
     document.getElementById('quoteText').textContent = `"${QUOTES[appData.quoteIndex]}"`;
     saveAppData(); soundClick();
   });
 
-  // ============ MODAL LEVEL UP CLOSE ============
   document.getElementById('levelUpCloseBtn').addEventListener('click', () => {
     document.getElementById('levelUpModal').classList.add('hidden');
     isProcessingLevelUp = false;
     renderDaysNav(); loadDayData(currentDayIndex); updateWeekProgress(); soundClick();
   });
 
-  // ============ CONFIRM MODAL ============
   document.getElementById('confirmCancelBtn').addEventListener('click', () => {
     document.getElementById('confirmModal').classList.add('hidden');
     confirmCallback = null; soundClick();
@@ -1246,14 +1422,12 @@ function initApp() {
     confirmCallback = null;
   });
 
-  // ============ CHEST RESULT CLOSE ============
   document.getElementById('chestResultCloseBtn').addEventListener('click', () => {
     document.getElementById('chestResultModal').classList.add('hidden');
     soundClick();
     renderChestTab();
   });
 
-  // ============ AVATAR CLICK (troca) ============
   document.getElementById('avatarInner').addEventListener('click', () => {
     const AVATARS = appData.unlockedAvatars || ['⚡'];
     const i = AVATARS.indexOf(appData.avatar);
@@ -1262,7 +1436,7 @@ function initApp() {
     saveAppData(); soundClick(); vibrate(20);
   });
 
-  console.log('✅ App inicializado!');
+  console.log('✅ Modo Monstro inicializado!');
 }
 
 document.addEventListener('DOMContentLoaded', initApp);
