@@ -1,834 +1,864 @@
 <!DOCTYPE html>
 <html lang="pt-BR" class="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de Rotina do Criador</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel de Rotina do Criador</title>
 
-    <!-- PWA Meta Tags -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0f172a">
-    <link rel="apple-touch-icon" href="icon-192.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Rotina Criador">
+<!-- PWA Meta Tags -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f172a">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Rotina Criador">
 
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        darkBg: '#0f172a',
-                        darkCard: '#1e293b',
-                        lightBg: '#f1f5f9',
-                        lightCard: '#ffffff',
-                        accentBlue: '#3b82f6',
-                        accentGreen: '#22c55e',
-                        accentOrange: '#f59e0b',
-                        accentWater: '#0ea5e9'
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          darkBg: '#0f172a',
+          darkCard: '#1e293b',
+          lightBg: '#f1f5f9',
+          lightCard: '#ffffff'
+        },
+        fontFamily: { sans: ['Inter', 'sans-serif'] }
+      }
+    }
+  }
+</script>
 
-    <!-- Google Fonts: Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Tailwind Scrollbar / Utilities -->
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        .glass {
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
-        /* Custom Checkbox */
-        .custom-checkbox {
-            appearance: none;
-            -webkit-appearance: none;
-            width: 24px;
-            height: 24px;
-            border: 2px solid #64748b;
-            border-radius: 6px;
-            outline: none;
-            cursor: pointer;
-            display: grid;
-            place-content: center;
-            transition: all 0.2s ease-in-out;
-        }
-        .custom-checkbox:checked {
-            background-color: #22c55e;
-            border-color: #22c55e;
-        }
-        .custom-checkbox:checked::before {
-            content: "✔";
-            font-size: 14px;
-            color: white;
-            font-weight: bold;
-        }
-    </style>
+<style>
+  body { font-family: 'Inter', sans-serif; }
+  .glass { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+  .custom-checkbox {
+    appearance: none; -webkit-appearance: none;
+    width: 24px; height: 24px;
+    border: 2px solid #64748b; border-radius: 6px;
+    cursor: pointer; display: grid; place-content: center;
+    transition: all 0.2s ease-in-out;
+  }
+  .custom-checkbox:checked { background-color: #22c55e; border-color: #22c55e; }
+  .custom-checkbox:checked::before { content: "✔"; font-size: 14px; color: white; font-weight: bold; }
+  .custom-checkbox:disabled { opacity: 0.5; cursor: not-allowed; }
+  @keyframes levelUp {
+    0% { transform: scale(0.5); opacity: 0; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .animate-levelup { animation: levelUp 0.6s ease-out; }
+</style>
 </head>
 <body class="bg-lightBg dark:bg-darkBg text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
 
-    <!-- Cabeçalho Fixo (Sticky) -->
-    <header class="sticky top-0 z-40 bg-white/80 dark:bg-darkCard/80 glass border-b border-slate-200 dark:border-slate-800 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 py-3 sm:px-6 flex flex-col sm:flex-row justify-between items-center gap-3">
-            <div>
-                <h1 class="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent flex items-center gap-2">
-                    ⚡ Painel de Rotina do Criador
-                </h1>
-                <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Minha rotina diária sem datas — Foco e consistência</p>
-            </div>
-            <div class="flex items-center gap-3">
-                <!-- Contador de Dias Perfeitos -->
-                <div class="flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 px-3 py-1.5 rounded-xl text-amber-600 dark:text-amber-400 font-semibold text-sm">
-                    <span>🏆</span>
-                    <span id="perfectDaysCount">0</span>
-                    <span class="text-xs font-normal opacity-80">Dias Perfeitos</span>
-                </div>
-                <!-- Botão Tema -->
-                <button id="themeToggleBtn" aria-label="Alternar Tema" class="p-2.5 rounded-xl bg-slate-200 dark:bg-slate-700 hover:scale-105 transition-all shadow-sm">
-                    <span id="themeIcon" class="text-lg">🌙</span>
-                </button>
-            </div>
-        </div>
-    </header>
+<!-- HEADER -->
+<header class="sticky top-0 z-40 bg-white/80 dark:bg-darkCard/80 glass border-b border-slate-200 dark:border-slate-800 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 py-3 sm:px-6 flex flex-col sm:flex-row justify-between items-center gap-3">
+    <div>
+      <h1 class="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent flex items-center gap-2">
+        ⚡ Painel de Rotina do Criador
+      </h1>
+      <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Minha rotina diária — Nível <span id="levelHeader">1</span></p>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 px-3 py-1.5 rounded-xl text-purple-600 dark:text-purple-400 font-bold text-sm">
+        <span>🎮</span><span>Nível</span><span id="levelBadge">1</span>
+      </div>
+      <button id="themeToggleBtn" aria-label="Alternar Tema" class="p-2.5 rounded-xl bg-slate-200 dark:bg-slate-700 hover:scale-105 transition-all shadow-sm">
+        <span id="themeIcon" class="text-lg">🌙</span>
+      </button>
+    </div>
+  </div>
 
-    <!-- Conteúdo Principal -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6 sm:px-6 flex flex-col gap-6">
+  <!-- BARRA DE PROGRESSO SEMANAL -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 pb-3">
+    <div class="flex justify-between items-center mb-1.5">
+      <span class="text-xs font-semibold text-slate-600 dark:text-slate-300">📊 Progresso da Semana</span>
+      <span id="weekProgressText" class="text-xs font-bold text-blue-500">0/7 dias perfeitos</span>
+    </div>
+    <div class="w-full bg-slate-200 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
+      <div id="weekProgressBar" class="bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-400 h-full w-0 transition-all duration-700 ease-out"></div>
+    </div>
+  </div>
+</header>
 
-        <!-- Seletor de Dias da Semana -->
-        <nav aria-label="Dias da Semana" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 sm:gap-3">
-            <!-- Gerado via JS para incluir badges X/7 -->
-            <div id="daysNavContainer" class="contents"></div>
-        </nav>
+<!-- MAIN -->
+<main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6 sm:px-6 flex flex-col gap-6">
 
-        <!-- Card Principal do Dia Selecionado -->
-        <section aria-labelledby="selectedDayTitle" class="bg-white dark:bg-darkCard rounded-2xl p-5 sm:p-6 shadow-lg border border-slate-200 dark:border-slate-800 relative overflow-hidden">
-            <!-- Banner Parabéns (Oculto por padrão) -->
-            <div id="congratsBanner" class="hidden mb-4 p-4 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 text-white font-medium flex items-center justify-between shadow-md animate-pulse">
-                <span class="flex items-center gap-2 text-sm sm:text-base">🎉 Parabéns! Você concluiu 100% das tarefas deste dia! Continue assim!</span>
-                <span class="text-2xl">🔥</span>
-            </div>
+  <!-- SELETOR DE DIAS -->
+  <nav aria-label="Dias da Semana" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 sm:gap-3">
+    <div id="daysNavContainer" class="contents"></div>
+  </nav>
 
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
-                <div>
-                    <h2 id="selectedDayTitle" class="text-xl sm:text-2xl font-bold capitalize text-slate-900 dark:text-white">Domingo</h2>
-                    <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400" id="selectedDaySubtitle">Gerencie suas 7 tarefas diárias</p>
-                </div>
-                <div class="flex items-center gap-2 w-full sm:w-auto">
-                    <button id="resetDayBtn" class="flex-1 sm:flex-none px-4 py-2 text-xs sm:text-sm font-medium rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 hover:bg-rose-500/20 transition-all border border-rose-500/20">
-                        🔄 Resetar Dia
-                    </button>
-                    <button id="resetWeekBtn" class="flex-1 sm:flex-none px-4 py-2 text-xs sm:text-sm font-medium rounded-xl bg-slate-500/10 text-slate-600 dark:text-slate-300 hover:bg-slate-500/20 transition-all border border-slate-300 dark:border-slate-700">
-                        🗑️ Resetar Semana
-                    </button>
-                </div>
-            </div>
+  <!-- CARD DO DIA -->
+  <section class="bg-white dark:bg-darkCard rounded-2xl p-5 sm:p-6 shadow-lg border border-slate-200 dark:border-slate-800 relative overflow-hidden">
+    <div id="congratsBanner" class="hidden mb-4 p-4 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 text-white font-medium flex items-center justify-between shadow-md">
+      <span class="flex items-center gap-2 text-sm sm:text-base">🎉 Dia perfeito! Todos os <span id="totalTasksBanner">10</span> objetivos concluídos!</span>
+      <span class="text-2xl">🔥</span>
+    </div>
 
-            <!-- Barra de Progresso Animada -->
-            <div class="w-full bg-slate-200 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
-                <div id="progressBar" class="bg-gradient-to-r from-blue-500 to-emerald-500 h-full w-0 transition-all duration-500 ease-out"></div>
-            </div>
-            <div class="flex justify-between items-center mt-2 text-xs text-slate-500 dark:text-slate-400 font-medium">
-                <span id="progressText">0 de 7 tarefas concluídas</span>
-                <span id="progressPercent">0%</span>
-            </div>
-        </section>
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+      <div>
+        <h2 id="selectedDayTitle" class="text-xl sm:text-2xl font-bold capitalize text-slate-900 dark:text-white">Domingo</h2>
+        <p id="selectedDaySubtitle" class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Gerencie suas tarefas diárias</p>
+      </div>
+      <div class="flex items-center gap-2 w-full sm:w-auto">
+        <button id="resetDayBtn" class="flex-1 sm:flex-none px-4 py-2 text-xs sm:text-sm font-medium rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 hover:bg-rose-500/20 transition-all border border-rose-500/20">
+          🔄 Resetar Dia
+        </button>
+        <button id="resetWeekBtn" class="flex-1 sm:flex-none px-4 py-2 text-xs sm:text-sm font-medium rounded-xl bg-slate-500/10 text-slate-600 dark:text-slate-300 hover:bg-slate-500/20 transition-all border border-slate-300 dark:border-slate-700">
+          🗑️ Resetar Semana
+        </button>
+      </div>
+    </div>
 
-        <!-- Grid de Cards de Tarefas (1 col mobile, 2 tablet, 3 desktop) -->
-        <section aria-label="Lista de Tarefas" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+    <div class="w-full bg-slate-200 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
+      <div id="progressBar" class="bg-gradient-to-r from-blue-500 to-emerald-500 h-full w-0 transition-all duration-500 ease-out"></div>
+    </div>
+    <div class="flex justify-between items-center mt-2 text-xs text-slate-500 dark:text-slate-400 font-medium">
+      <span id="progressText">0 de 10 tarefas concluídas</span>
+      <span id="progressPercent">0%</span>
+    </div>
+  </section>
 
-            <!-- Card 1: Minerar vídeos bons -->
-            <div class="bg-white dark:bg-darkCard rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col justify-between hover:shadow-md transition-shadow">
-                <div>
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="text-3xl">🎬</span>
-                        <input type="checkbox" id="task-0" class="custom-checkbox task-checkbox" data-index="0">
-                    </div>
-                    <h3 class="font-bold text-base text-slate-900 dark:text-white mb-1">Minerar vídeos bons</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">Busque referências, ideias e conteúdos virais para inspirar suas próximas produções.</p>
-                </div>
-                <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400">
-                    <span>Prioridade Alta</span>
-                    <span class="task-status-badge font-medium text-slate-500 dark:text-slate-400">Pendente</span>
-                </div>
-            </div>
+  <!-- GRID DE TAREFAS -->
+  <section aria-label="Lista de Tarefas" id="tasksGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+    <!-- Preenchido via JS -->
+  </section>
 
-            <!-- Card 2: Fazer pelo menos 3 vídeos -->
-            <div class="bg-white dark:bg-darkCard rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col justify-between hover:shadow-md transition-shadow">
-                <div>
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="text-3xl">📹</span>
-                        <input type="checkbox" id="task-1" class="custom-checkbox task-checkbox" data-index="1" disabled title="Conclua as 3 sub-tarefas abaixo">
-                    </div>
-                    <h3 class="font-bold text-base text-slate-900 dark:text-white mb-1">Fazer pelo menos 3 vídeos</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Grave e produza 3 vídeos curtos. Marque os sub-itens abaixo para concluir:</p>
-                    
-                    <!-- Sub-checkboxes -->
-                    <div class="space-y-2 bg-slate-50 dark:bg-slate-900/40 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
-                        <label class="flex items-center gap-2.5 text-xs font-medium cursor-pointer">
-                            <input type="checkbox" id="subvideo-0" class="subvideo-checkbox custom-checkbox !w-5 !h-5" data-sub="0">
-                            <span>Vídeo 1</span>
-                        </label>
-                        <label class="flex items-center gap-2.5 text-xs font-medium cursor-pointer">
-                            <input type="checkbox" id="subvideo-1" class="subvideo-checkbox custom-checkbox !w-5 !h-5" data-sub="1">
-                            <span>Vídeo 2</span>
-                        </label>
-                        <label class="flex items-center gap-2.5 text-xs font-medium cursor-pointer">
-                            <input type="checkbox" id="subvideo-2" class="subvideo-checkbox custom-checkbox !w-5 !h-5" data-sub="2">
-                            <span>Vídeo 3</span>
-                        </label>
-                    </div>
-                </div>
-                <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400">
-                    <span>Meta diária</span>
-                    <span id="subvideosCountText" class="font-medium text-blue-500">0/3 concluídos</span>
-                </div>
-            </div>
+</main>
 
-            <!-- Card 3: Fazer 1 vídeo longo -->
-            <div class="bg-white dark:bg-darkCard rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col justify-between hover:shadow-md transition-shadow">
-                <div>
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="text-3xl">🎥</span>
-                        <input type="checkbox" id="task-2" class="custom-checkbox task-checkbox" data-index="2">
-                    </div>
-                    <h3 class="font-bold text-base text-slate-900 dark:text-white mb-1">Fazer 1 vídeo longo</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">Desenvolva um conteúdo aprofundado para reter a audiência e gerar autoridade.</p>
-                </div>
-                <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400">
-                    <span>Conteúdo Master</span>
-                    <span class="task-status-badge font-medium text-slate-500 dark:text-slate-400">Pendente</span>
-                </div>
-            </div>
-
-            <!-- Card 4: Focar na conta do Instagram -->
-            <div class="bg-white dark:bg-darkCard rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col justify-between hover:shadow-md transition-shadow">
-                <div>
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="text-3xl">📱</span>
-                        <input type="checkbox" id="task-3" class="custom-checkbox task-checkbox" data-index="3">
-                    </div>
-                    <h3 class="font-bold text-base text-slate-900 dark:text-white mb-1">Focar no Instagram</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Melhore as probabilidades, interaja nos stories e otimize seu perfil.</p>
-                    
-                    <textarea id="instagramNotes" rows="2" placeholder="Anotações do Instagram (estratégias, ideias, métricas)..." class="w-full text-xs p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
-                </div>
-                <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400">
-                    <span>Engajamento</span>
-                    <span class="task-status-badge font-medium text-slate-500 dark:text-slate-400">Pendente</span>
-                </div>
-            </div>
-
-            <!-- Card 5: Estudar durante 30 minutos (Timer) -->
-            <div class="bg-white dark:bg-darkCard rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col justify-between hover:shadow-md transition-shadow">
-                <div>
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="text-3xl">📚</span>
-                        <input type="checkbox" id="task-4" class="custom-checkbox task-checkbox" data-index="4">
-                    </div>
-                    <h3 class="font-bold text-base text-slate-900 dark:text-white mb-1">Estudar 30 minutos</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Foque em aprendizado contínuo. Use o timer funcional abaixo:</p>
-
-                    <!-- Timer Widget -->
-                    <div class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-center">
-                        <div id="timerDisplay" class="text-2xl font-mono font-bold text-blue-500 mb-2">30:00</div>
-                        <div class="flex justify-center gap-2">
-                            <button id="timerStartBtn" class="px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-xs font-semibold transition-all">Iniciar</button>
-                            <button id="timerPauseBtn" class="px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-xs font-semibold transition-all">Pausar</button>
-                            <button id="timerResetBtn" class="px-3 py-1 bg-slate-300 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 rounded-lg text-xs font-semibold transition-all">Zerar</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400">
-                    <span>Desenvolvimento</span>
-                    <span class="task-status-badge font-medium text-slate-500 dark:text-slate-400">Pendente</span>
-                </div>
-            </div>
-
-            <!-- Card 6: Ler um pouco -->
-            <div class="bg-white dark:bg-darkCard rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col justify-between hover:shadow-md transition-shadow">
-                <div>
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="text-3xl">📖</span>
-                        <input type="checkbox" id="task-5" class="custom-checkbox task-checkbox" data-index="5">
-                    </div>
-                    <h3 class="font-bold text-base text-slate-900 dark:text-white mb-1">Ler um pouco</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Expanda sua mente com leitura diária.</p>
-
-                    <input type="text" id="readingInput" placeholder="Nome do livro e páginas lidas..." class="w-full text-xs p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-                <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400">
-                    <span>Conhecimento</span>
-                    <span class="task-status-badge font-medium text-slate-500 dark:text-slate-400">Pendente</span>
-                </div>
-            </div>
-
-            <!-- Card 7: Beber muita água -->
-            <div class="bg-white dark:bg-darkCard rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col justify-between hover:shadow-md transition-shadow md:col-span-2 lg:col-span-1">
-                <div>
-                    <div class="flex items-center justify-between mb-3">
-                        <span class="text-3xl">💧</span>
-                        <input type="checkbox" id="task-6" class="custom-checkbox task-checkbox" data-index="6" disabled title="Atinga 2000ml para marcar automaticamente">
-                    </div>
-                    <h3 class="font-bold text-base text-slate-900 dark:text-white mb-1">Beber muita água (Meta: 2L)</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Hidrate-se para manter o foco e a energia.</p>
-
-                    <!-- Contador de Água -->
-                    <div class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-xs font-semibold text-slate-600 dark:text-slate-300">Progresso</span>
-                            <span id="waterMlText" class="text-xs font-bold text-cyan-500">0 ml / 2000 ml</span>
-                        </div>
-                        <div class="w-full bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden mb-3">
-                            <div id="waterProgressBar" class="bg-cyan-500 h-full w-0 transition-all duration-300"></div>
-                        </div>
-                        <div class="flex gap-2">
-                            <button id="waterMinusBtn" class="flex-1 py-1.5 bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 text-xs font-bold rounded-lg transition-all border border-rose-500/20">-250 ml</button>
-                            <button id="waterPlusBtn" class="flex-1 py-1.5 bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-bold rounded-lg transition-all shadow-sm">+250 ml</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400">
-                    <span>Saúde e Foco</span>
-                    <span class="task-status-badge font-medium text-slate-500 dark:text-slate-400">Pendente</span>
-                </div>
-            </div>
-
-        </section>
-
-    </main>
-
-    <!-- Rodapé Motivacional -->
-    <footer class="mt-auto bg-white/50 dark:bg-darkCard/50 border-t border-slate-200 dark:border-slate-800 py-6 px-4">
-        <div class="max-w-4xl mx-auto text-center flex flex-col items-center gap-3">
-            <blockquote id="quoteText" class="text-sm sm:text-base italic text-slate-600 dark:text-slate-300 font-medium">
-                "A consistência supera o talento quando o talento não é consistente."
-            </blockquote>
-            <button id="newQuoteBtn" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 hover:bg-blue-500/20 transition-all flex items-center gap-1.5">
-                ✨ Nova Frase Motivacional
-            </button>
-            <p class="text-xs text-slate-400 mt-2">Painel de Rotina do Criador &copy; 2026 — Todos os dados salvos localmente.</p>
-        </div>
-    </footer>
-
-    <!-- Botão Flutuante de Instalação PWA -->
-    <button id="installAppBtn" class="hidden fixed bottom-6 right-6 z-50 bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-5 py-3 rounded-2xl shadow-xl font-bold text-sm flex items-center gap-2 hover:scale-105 active:scale-95 transition-all">
-        <span>⬇️ Instalar App</span>
+<!-- RODAPÉ -->
+<footer class="mt-auto bg-white/50 dark:bg-darkCard/50 border-t border-slate-200 dark:border-slate-800 py-6 px-4">
+  <div class="max-w-4xl mx-auto text-center flex flex-col items-center gap-3">
+    <blockquote id="quoteText" class="text-sm sm:text-base italic text-slate-600 dark:text-slate-300 font-medium">
+      "A consistência supera o talento quando o talento não é consistente."
+    </blockquote>
+    <button id="newQuoteBtn" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 hover:bg-blue-500/20 transition-all">
+      ✨ Nova Frase Motivacional
     </button>
+    <p class="text-xs text-slate-400 mt-2">Painel de Rotina do Criador © 2026</p>
+  </div>
+</footer>
 
-    <!-- Script da Aplicação -->
-    <script>
-        // Dias da Semana
-        const DAYS = [
-            { id: 0, name: 'Domingo', short: 'Dom' },
-            { id: 1, name: 'Segunda', short: 'Seg' },
-            { id: 2, name: 'Terça', short: 'Ter' },
-            { id: 3, name: 'Quarta', short: 'Qua' },
-            { id: 4, name: 'Quinta', short: 'Qui' },
-            { id: 5, name: 'Sexta', short: 'Sex' },
-            { id: 6, name: 'Sábado', short: 'Sáb' }
-        ];
+<!-- MODAL LEVEL UP -->
+<div id="levelUpModal" class="hidden fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
+  <div class="bg-gradient-to-br from-purple-600 to-blue-600 rounded-3xl p-8 max-w-md w-full text-white text-center shadow-2xl animate-levelup">
+    <div class="text-7xl mb-3">🏆</div>
+    <h2 class="text-3xl font-black mb-2">LEVEL UP!</h2>
+    <p class="text-lg mb-4">Você subiu para o <span id="newLevelText" class="font-black">Nível 2</span>!</p>
+    <div class="bg-white/20 rounded-2xl p-4 mb-5 text-left text-sm space-y-1">
+      <p class="font-bold mb-2">🎯 Novas metas:</p>
+      <p>📹 <span id="newVideos">4</span> vídeos por dia</p>
+      <p>💧 <span id="newWater">2,5</span> L de água</p>
+      <p>📚 <span id="newStudy">40</span> min de estudo</p>
+      <p>📝 <span id="newDiary">2</span> páginas de diário</p>
+      <p>📵 <span id="newNoPhone">1,5</span> h sem celular</p>
+    </div>
+    <button id="levelUpCloseBtn" class="w-full py-3 bg-white text-purple-600 rounded-2xl font-bold hover:bg-slate-100 transition">
+      🔥 Aceitar Desafio
+    </button>
+  </div>
+</div>
 
-        // Frases Motivacionais
-        const QUOTES = [
-            "A consistência supera o talento quando o talento não é consistente.",
-            "Feito é melhor do que perfeito quando feito com excelência.",
-            "O sucesso é a soma de pequenos esforços repetidos dia após dia.",
-            "Crie com paixão, entregue com propósito e mantenha a constância.",
-            "Sua audiência não quer perfeição, quer autenticidade e evolução.",
-            "O melhor momento para começar foi há anos. O segundo melhor é agora.",
-            "Disciplina é escolher entre o que você quer agora e o que você mais quer."
-        ];
+<!-- BOTÃO INSTALAR PWA -->
+<button id="installAppBtn" class="hidden fixed bottom-6 right-6 z-50 bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-5 py-3 rounded-2xl shadow-xl font-bold text-sm flex items-center gap-2 hover:scale-105 active:scale-95 transition-all">
+  ⬇️ Instalar App
+</button>
 
-        // Estado Global da Aplicação
-        let currentDayIndex = new Date().getDay(); // 0 a 6
-        let appData = loadAppData();
+<script>
+/* ======================================================
+   CONSTANTES
+====================================================== */
+const DAYS = [
+  { id: 0, name: 'Domingo', short: 'Dom' },
+  { id: 1, name: 'Segunda', short: 'Seg' },
+  { id: 2, name: 'Terça', short: 'Ter' },
+  { id: 3, name: 'Quarta', short: 'Qua' },
+  { id: 4, name: 'Quinta', short: 'Qui' },
+  { id: 5, name: 'Sexta', short: 'Sex' },
+  { id: 6, name: 'Sábado', short: 'Sáb' }
+];
 
-        // Elementos DOM
-        const daysNavContainer = document.getElementById('daysNavContainer');
-        const selectedDayTitle = document.getElementById('selectedDayTitle');
-        const selectedDaySubtitle = document.getElementById('selectedDaySubtitle');
-        const progressBar = document.getElementById('progressBar');
-        const progressText = document.getElementById('progressText');
-        const progressPercent = document.getElementById('progressPercent');
-        const congratsBanner = document.getElementById('congratsBanner');
-        const perfectDaysCount = document.getElementById('perfectDaysCount');
-        const themeToggleBtn = document.getElementById('themeToggleBtn');
-        const themeIcon = document.getElementById('themeIcon');
-        
-        // Elementos Interativos
-        const taskCheckboxes = document.querySelectorAll('.task-checkbox');
-        const subvideoCheckboxes = document.querySelectorAll('.subvideo-checkbox');
-        const subvideosCountText = document.getElementById('subvideosCountText');
-        const instagramNotes = document.getElementById('instagramNotes');
-        const readingInput = document.getElementById('readingInput');
-        
-        // Timer Elements
-        const timerDisplay = document.getElementById('timerDisplay');
-        const timerStartBtn = document.getElementById('timerStartBtn');
-        const timerPauseBtn = document.getElementById('timerPauseBtn');
-        const timerResetBtn = document.getElementById('timerResetBtn');
+const TOTAL_TASKS = 10;
 
-        // Water Elements
-        const waterMlText = document.getElementById('waterMlText');
-        const waterProgressBar = document.getElementById('waterProgressBar');
-        const waterPlusBtn = document.getElementById('waterPlusBtn');
-        const waterMinusBtn = document.getElementById('waterMinusBtn');
+const QUOTES = [
+  "A consistência supera o talento quando o talento não é consistente.",
+  "Feito é melhor do que perfeito quando feito com excelência.",
+  "O sucesso é a soma de pequenos esforços repetidos dia após dia.",
+  "Crie com paixão, entregue com propósito e mantenha a constância.",
+  "Sua audiência não quer perfeição, quer autenticidade e evolução.",
+  "O melhor momento para começar foi há anos. O segundo melhor é agora.",
+  "Disciplina é escolher entre o que você quer agora e o que você mais quer."
+];
 
-        // Reset Buttons
-        const resetDayBtn = document.getElementById('resetDayBtn');
-        const resetWeekBtn = document.getElementById('resetWeekBtn');
+/* ======================================================
+   METAS POR NÍVEL (progressão infinita)
+====================================================== */
+function getLevelGoals(level) {
+  const l = Math.max(1, level) - 1;
+  return {
+    videos: 3 + l,           // Nv1: 3 | Nv2: 4 | Nv3: 5 ...
+    water: 2000 + l * 500,   // Nv1: 2L | Nv2: 2.5L ...
+    study: 1800 + l * 600,   // Nv1: 30min | Nv2: 40min ...
+    diaryPages: 1 + l,       // Nv1: 1 | Nv2: 2 ...
+    noPhone: 60 + l * 30     // Nv1: 1h | Nv2: 1.5h ...
+  };
+}
 
-        // Quote Elements
-        const quoteText = document.getElementById('quoteText');
-        const newQuoteBtn = document.getElementById('newQuoteBtn');
+/* ======================================================
+   ESTADO GLOBAL
+====================================================== */
+let currentDayIndex = new Date().getDay();
+let appData = loadAppData();
+let timerInterval = null;
+let noPhoneInterval = null;
 
-        // Inicialização
-        function init() {
-            initTheme();
-            renderDaysNav();
-            loadDayData(currentDayIndex);
-            updatePerfectDaysCount();
-            setupEventListeners();
+/* ======================================================
+   CARREGAR / SALVAR
+====================================================== */
+function loadAppData() {
+  const defaultData = {
+    theme: 'dark',
+    quoteIndex: 0,
+    level: 1,
+    sleepSchedule: { bedtime: '22:00', wakeup: '06:00' },
+    days: {}
+  };
+  DAYS.forEach(d => {
+    defaultData.days[d.id] = {
+      tasks: new Array(TOTAL_TASKS).fill(false),
+      subvideos: [false, false, false],
+      water: 0,
+      instagramNotes: '',
+      readingText: '',
+      diaryText: '',
+      timerSeconds: 1800,
+      timerRunning: false,
+      noPhoneSeconds: 3600,
+      noPhoneRunning: false,
+      sleepOk: false
+    };
+  });
+
+  try {
+    const saved = localStorage.getItem('rotina_criador_v2');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      DAYS.forEach(d => {
+        if (!parsed.days || !parsed.days[d.id]) {
+          if (!parsed.days) parsed.days = {};
+          parsed.days[d.id] = defaultData.days[d.id];
+        } else {
+          // Garantir campos novos
+          const dd = parsed.days[d.id];
+          if (!dd.tasks || dd.tasks.length < TOTAL_TASKS) {
+            const old = dd.tasks || [];
+            dd.tasks = new Array(TOTAL_TASKS).fill(false);
+            old.forEach((v, i) => { if (i < TOTAL_TASKS) dd.tasks[i] = v; });
+          }
+          if (dd.diaryText === undefined) dd.diaryText = '';
+          if (dd.noPhoneSeconds === undefined) dd.noPhoneSeconds = 3600;
+          if (dd.noPhoneRunning === undefined) dd.noPhoneRunning = false;
+          if (dd.sleepOk === undefined) dd.sleepOk = false;
         }
+      });
+      if (!parsed.sleepSchedule) parsed.sleepSchedule = defaultData.sleepSchedule;
+      if (!parsed.level) parsed.level = 1;
+      return parsed;
+    }
+  } catch (e) { console.error('Erro ao carregar:', e); }
+  return defaultData;
+}
 
-        // Carregar / Salvar localStorage
-        function loadAppData() {
-            const defaultData = {
-                theme: 'dark',
-                quoteIndex: 0,
-                days: {}
-            };
-            DAYS.forEach(d => {
-                defaultData.days[d.id] = {
-                    tasks: [false, false, false, false, false, false, false], // 7 tarefas
-                    subvideos: [false, false, false],
-                    water: 0, // em ml
-                    instagramNotes: '',
-                    readingText: '',
-                    timerSeconds: 1800, // 30 minutos
-                    timerRunning: false
-                };
-            });
+function saveAppData() {
+  try { localStorage.setItem('rotina_criador_v2', JSON.stringify(appData)); }
+  catch (e) { console.error('Erro ao salvar:', e); }
+}
 
-            try {
-                const saved = localStorage.getItem('rotina_criador_data');
-                if (saved) {
-                    const parsed = JSON.parse(saved);
-                    // Garantir integridade de estruturas caso haja atualizações
-                    DAYS.forEach(d => {
-                        if (!parsed.days[d.id]) {
-                            parsed.days[d.id] = defaultData.days[d.id];
-                        }
-                    });
-                    return parsed;
-                }
-            } catch (e) {
-                console.error("Erro ao carregar localStorage", e);
-            }
-            return defaultData;
-        }
+/* ======================================================
+   TEMA
+====================================================== */
+function initTheme() {
+  const icon = document.getElementById('themeIcon');
+  if (appData.theme === 'light') {
+    document.documentElement.classList.remove('dark');
+    icon.textContent = '☀️';
+  } else {
+    document.documentElement.classList.add('dark');
+    icon.textContent = '🌙';
+  }
+}
+document.getElementById('themeToggleBtn').addEventListener('click', () => {
+  const icon = document.getElementById('themeIcon');
+  if (document.documentElement.classList.contains('dark')) {
+    document.documentElement.classList.remove('dark');
+    appData.theme = 'light'; icon.textContent = '☀️';
+  } else {
+    document.documentElement.classList.add('dark');
+    appData.theme = 'dark'; icon.textContent = '🌙';
+  }
+  saveAppData();
+});
 
-        function saveAppData() {
-            try {
-                localStorage.setItem('rotina_criador_data', JSON.stringify(appData));
-            } catch (e) {
-                console.error("Erro ao salvar localStorage", e);
-            }
-        }
+/* ======================================================
+   NAVEGAÇÃO DOS DIAS
+====================================================== */
+function renderDaysNav() {
+  const container = document.getElementById('daysNavContainer');
+  container.innerHTML = '';
+  DAYS.forEach(day => {
+    const dayData = appData.days[day.id];
+    const completed = dayData.tasks.filter(Boolean).length;
+    const isCurrent = day.id === currentDayIndex;
+    const isRealToday = day.id === new Date().getDay();
 
-        // Gerenciamento de Tema
-        function initTheme() {
-            if (appData.theme === 'light') {
-                document.documentElement.classList.remove('dark');
-                themeIcon.textContent = '☀️';
-            } else {
-                document.documentElement.classList.add('dark');
-                themeIcon.textContent = '🌙';
-            }
-        }
+    const btn = document.createElement('button');
+    btn.className = `flex flex-col items-center justify-center p-3 rounded-2xl border transition-all relative ${
+      isCurrent
+        ? 'bg-blue-500 text-white border-blue-500 shadow-md shadow-blue-500/20 font-bold'
+        : 'bg-white dark:bg-darkCard text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-800 hover:border-blue-400'
+    }`;
+    btn.innerHTML = `
+      ${isRealToday ? '<span class="absolute -top-1 -right-1 w-3 h-3 bg-cyan-400 rounded-full border-2 border-white dark:border-darkCard"></span>' : ''}
+      <span class="text-xs uppercase tracking-wider opacity-80">${day.short}</span>
+      <span class="text-sm font-bold mt-0.5">${day.name}</span>
+      <span class="text-[10px] mt-1 px-2 py-0.5 rounded-full ${isCurrent ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'}">${completed}/${TOTAL_TASKS}</span>
+    `;
+    btn.addEventListener('click', () => {
+      pauseAllTimers();
+      currentDayIndex = day.id;
+      renderDaysNav();
+      loadDayData(currentDayIndex);
+    });
+    container.appendChild(btn);
+  });
+}
 
-        themeToggleBtn.addEventListener('click', () => {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                appData.theme = 'light';
-                themeIcon.textContent = '☀️';
-            } else {
-                document.documentElement.classList.add('dark');
-                appData.theme = 'dark';
-                themeIcon.textContent = '🌙';
-            }
-            saveAppData();
-        });
+/* ======================================================
+   CARREGAR DADOS DO DIA
+====================================================== */
+function loadDayData(dayId) {
+  const dayData = appData.days[dayId];
+  const dayObj = DAYS.find(d => d.id === dayId);
+  const goals = getLevelGoals(appData.level);
 
-        // Renderizar Navegação de Dias
-        function renderDaysNav() {
-            daysNavContainer.innerHTML = '';
-            DAYS.forEach(day => {
-                const dayData = appData.days[day.id];
-                const completedCount = dayData.tasks.filter(Boolean).length;
-                const isCurrent = day.id === currentDayIndex;
-                const isRealToday = day.id === new Date().getDay();
+  document.getElementById('selectedDayTitle').textContent = dayObj.name;
+  document.getElementById('selectedDaySubtitle').textContent =
+    `Nível ${appData.level} — ${TOTAL_TASKS} missões diárias`;
 
-                const btn = document.createElement('button');
-                btn.className = `flex flex-col items-center justify-center p-3 rounded-2xl border transition-all relative ${
-                    isCurrent 
-                        ? 'bg-blue-500 text-white border-blue-500 shadow-md shadow-blue-500/20 font-bold' 
-                        : 'bg-white dark:bg-darkCard text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-800 hover:border-blue-400'
-                }`;
+  renderTasks(dayData, goals);
+  updateProgress();
+  updateTimerDisplay();
+  updateNoPhoneDisplay();
+  updateWaterUI();
+}
 
-                btn.innerHTML = `
-                    ${isRealToday ? '<span class="absolute -top-1 -right-1 w-3 h-3 bg-cyan-400 rounded-full border-2 border-white dark:border-darkCard" title="Hoje"></span>' : ''}
-                    <span class="text-xs uppercase tracking-wider opacity-80">${day.short}</span>
-                    <span class="text-sm font-bold mt-0.5">${day.name}</span>
-                    <span class="text-[10px] mt-1 px-2 py-0.5 rounded-full ${isCurrent ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'}">${completedCount}/7</span>
-                `;
+/* ======================================================
+   RENDERIZAR CARDS DE TAREFAS
+====================================================== */
+function renderTasks(dayData, goals) {
+  const grid = document.getElementById('tasksGrid');
+  grid.innerHTML = '';
 
-                btn.addEventListener('click', () => {
-                    saveCurrentTimerState(); // Salvar timer do dia anterior se rodando
-                    currentDayIndex = day.id;
-                    renderDaysNav();
-                    loadDayData(currentDayIndex);
-                });
+  const waterL = (goals.water / 1000).toFixed(1).replace('.0', '');
+  const studyMin = Math.floor(goals.study / 60);
+  const noPhoneH = (goals.noPhone / 60).toFixed(1).replace('.0', '');
 
-                daysNavContainer.appendChild(btn);
-            });
-        }
+  const tasksConfig = [
+    { i: 0, emoji: '🎬', title: 'Minerar vídeos bons', desc: 'Busque referências e ideias de conteúdo.', type: 'checkbox' },
+    { i: 1, emoji: '📹', title: `Fazer pelo menos ${goals.videos} vídeos`, desc: `Grave ${goals.videos} vídeos hoje.`, type: 'subvideos', count: goals.videos },
+    { i: 2, emoji: '🎥', title: 'Fazer 1 vídeo longo', desc: 'Conteúdo aprofundado para autoridade.', type: 'checkbox' },
+    { i: 3, emoji: '📱', title: 'Focar no Instagram', desc: 'Interaja, otimize o perfil, melhore as métricas.', type: 'instagram' },
+    { i: 4, emoji: '📚', title: `Estudar ${studyMin} minutos`, desc: 'Use o timer para focar.', type: 'timer' },
+    { i: 5, emoji: '📖', title: 'Ler um pouco', desc: 'Alimente a mente.', type: 'reading' },
+    { i: 6, emoji: '💧', title: `Beber ${waterL} L de água`, desc: 'Hidratação é foco.', type: 'water' },
+    { i: 7, emoji: '📝', title: `Escrever ${goals.diaryPages} página(s) de diário`, desc: 'Reflita e registre o dia.', type: 'diary' },
+    { i: 8, emoji: '📵', title: `Ficar ${noPhoneH}h sem celular`, desc: 'Use o timer para cronometrar.', type: 'nophone' },
+    { i: 9, emoji: '🌙', title: 'Dormir no horário', desc: 'Meta: dormir e acordar no horário programado.', type: 'sleep' }
+  ];
 
-        // Carregar Dados do Dia Selecionado
-        function loadDayData(dayId) {
-            const dayData = appData.days[dayId];
-            const dayObj = DAYS.find(d => d.id === dayId);
+  tasksConfig.forEach(cfg => {
+    const card = document.createElement('div');
+    card.className = 'bg-white dark:bg-darkCard rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col justify-between hover:shadow-md transition-shadow';
+    const checked = dayData.tasks[cfg.i];
 
-            selectedDayTitle.textContent = dayObj.name;
-            selectedDaySubtitle.textContent = `Gerencie suas 7 tarefas diárias — ${dayObj.name}`;
+    let html = `
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-3xl">${cfg.emoji}</span>
+    `;
 
-            // 1. Tarefas principais
-            taskCheckboxes.forEach((cb, idx) => {
-                cb.checked = dayData.tasks[idx];
-                updateCardStatusStyle(idx, dayData.tasks[idx]);
-            });
+    if (cfg.type === 'checkbox') {
+      html += `<input type="checkbox" data-index="${cfg.i}" class="custom-checkbox task-checkbox" ${checked ? 'checked' : ''}>`;
+    } else if (cfg.type !== 'subvideos' && cfg.type !== 'water') {
+      html += `<input type="checkbox" data-index="${cfg.i}" class="custom-checkbox task-checkbox" ${checked ? 'checked' : ''}>`;
+    }
 
-            // 2. Sub-vídeos
-            subvideoCheckboxes.forEach((cb, idx) => {
-                cb.checked = dayData.subvideos[idx];
-            });
-            updateSubvideosUI();
+    html += `</div>
+        <h3 class="font-bold text-base text-slate-900 dark:text-white mb-1">${cfg.title}</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">${cfg.desc}</p>`;
 
-            // 3. Instagram Notes
-            instagramNotes.value = dayData.instagramNotes || '';
+    // CONTEÚDO ESPECÍFICO
+    if (cfg.type === 'subvideos') {
+      html += `<div class="bg-slate-50 dark:bg-slate-900/40 p-3 rounded-xl border border-slate-100 dark:border-slate-800 space-y-2">`;
+      for (let s = 0; s < cfg.count; s++) {
+        const subChecked = dayData.subvideos[s] || false;
+        html += `
+          <label class="flex items-center gap-2.5 text-xs font-medium cursor-pointer">
+            <input type="checkbox" data-sub="${s}" class="custom-checkbox subvideo-checkbox !w-5 !h-5" ${subChecked ? 'checked' : ''}>
+            <span>Vídeo ${s + 1}</span>
+          </label>`;
+      }
+      html += `</div>`;
+    } else if (cfg.type === 'instagram') {
+      html += `<textarea data-field="instagramNotes" rows="2" placeholder="Anotações do Instagram..." class="w-full text-xs p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none">${dayData.instagramNotes || ''}</textarea>`;
+    } else if (cfg.type === 'timer') {
+      html += `
+        <div class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-center">
+          <div id="timerDisplay" class="text-2xl font-mono font-bold text-blue-500 mb-2">${formatTime(dayData.timerSeconds ?? goals.study)}</div>
+          <div class="flex justify-center gap-2">
+            <button id="timerStartBtn" class="px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-xs font-semibold">Iniciar</button>
+            <button id="timerPauseBtn" class="px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-xs font-semibold">Pausar</button>
+            <button id="timerResetBtn" class="px-3 py-1 bg-slate-300 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-lg text-xs font-semibold">Zerar</button>
+          </div>
+        </div>`;
+    } else if (cfg.type === 'reading') {
+      html += `<input type="text" data-field="readingText" placeholder="Livro e páginas lidas..." value="${dayData.readingText || ''}" class="w-full text-xs p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">`;
+    } else if (cfg.type === 'water') {
+      const pct = Math.min(100, Math.round(((dayData.water || 0) / goals.water) * 100));
+      html += `
+        <div class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-xs font-semibold">Progresso</span>
+            <span id="waterMlText" class="text-xs font-bold text-cyan-500">${dayData.water || 0} / ${goals.water} ml</span>
+          </div>
+          <div class="w-full bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden mb-3">
+            <div id="waterProgressBar" class="bg-cyan-500 h-full transition-all duration-300" style="width:${pct}%"></div>
+          </div>
+          <div class="flex gap-2">
+            <button id="waterMinusBtn" class="flex-1 py-1.5 bg-rose-500/10 text-rose-600 text-xs font-bold rounded-lg border border-rose-500/20">-250 ml</button>
+            <button id="waterPlusBtn" class="flex-1 py-1.5 bg-cyan-500 text-white text-xs font-bold rounded-lg">+250 ml</button>
+          </div>
+        </div>`;
+    } else if (cfg.type === 'diary') {
+      html += `<textarea data-field="diaryText" rows="4" placeholder="Escreva sua página de diário aqui..." class="w-full text-xs p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none">${dayData.diaryText || ''}</textarea>`;
+    } else if (cfg.type === 'nophone') {
+      html += `
+        <div class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-center">
+          <div id="noPhoneDisplay" class="text-2xl font-mono font-bold text-purple-500 mb-2">${formatTime(dayData.noPhoneSeconds ?? goals.noPhone)}</div>
+          <div class="flex justify-center gap-2">
+            <button id="noPhoneStartBtn" class="px-3 py-1 bg-purple-500 hover:bg-purple-600 text-white rounded-lg text-xs font-semibold">Iniciar</button>
+            <button id="noPhonePauseBtn" class="px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-xs font-semibold">Pausar</button>
+            <button id="noPhoneResetBtn" class="px-3 py-1 bg-slate-300 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-lg text-xs font-semibold">Zerar</button>
+          </div>
+          <p class="text-[10px] text-slate-400 mt-2">Foque em tarefas offline.</p>
+        </div>`;
+    } else if (cfg.type === 'sleep') {
+      const sleep = appData.sleepSchedule;
+      html += `
+        <div class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+          <div class="flex justify-between items-center text-xs">
+            <span class="font-semibold text-slate-600 dark:text-slate-300">🌙 Dormir</span>
+            <input type="time" id="bedtimeInput" value="${sleep.bedtime}" class="text-xs px-2 py-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+          </div>
+          <div class="flex justify-between items-center text-xs">
+            <span class="font-semibold text-slate-600 dark:text-slate-300">☀️ Acordar</span>
+            <input type="time" id="wakeupInput" value="${sleep.wakeup}" class="text-xs px-2 py-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+          </div>
+          <p class="text-[10px] text-slate-400 text-center pt-1">Marque ✅ quando cumprir o horário.</p>
+        </div>`;
+    }
 
-            // 4. Reading Input
-            readingInput.value = dayData.readingText || '';
+    html += `</div>
+      <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400">
+        <span>Nível ${appData.level}</span>
+        <span class="font-medium ${checked ? 'text-emerald-500' : 'text-slate-500 dark:text-slate-400'}">${checked ? 'Concluído' : 'Pendente'}</span>
+      </div>`;
 
-            // 5. Water
-            updateWaterUI();
+    card.innerHTML = html;
+    grid.appendChild(card);
+  });
 
-            // 6. Timer
-            updateTimerDisplay();
+  bindTaskEvents();
+}
 
-            // 7. Progresso
-            updateProgress();
-        }
+/* ======================================================
+   UTILITÁRIOS
+====================================================== */
+function formatTime(secs) {
+  const m = Math.floor(secs / 60);
+  const s = secs % 60;
+  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}
 
-        function updateCardStatusStyle(index, isChecked) {
-            const badge = document.querySelectorAll('.task-status-badge')[index];
-            if (badge) {
-                if (isChecked) {
-                    badge.textContent = 'Concluído';
-                    badge.className = 'task-status-badge font-medium text-emerald-500';
-                } else {
-                    badge.textContent = 'Pendente';
-                    badge.className = 'task-status-badge font-medium text-slate-500 dark:text-slate-400';
-                }
-            }
-        }
+/* ======================================================
+   EVENTOS
+====================================================== */
+function bindTaskEvents() {
+  const day = appData.days[currentDayIndex];
+  const goals = getLevelGoals(appData.level);
 
-        // Atualizar Progresso
-        function updateProgress() {
-            const dayData = appData.days[currentDayIndex];
-            const completedCount = dayData.tasks.filter(Boolean).length;
-            const percent = Math.round((completedCount / 7) * 100);
+  // Checkboxes principais
+  document.querySelectorAll('.task-checkbox').forEach(cb => {
+    cb.addEventListener('change', e => {
+      const i = parseInt(e.target.getAttribute('data-index'));
+      day.tasks[i] = e.target.checked;
+      saveAppData();
+      loadDayData(currentDayIndex);
+      renderDaysNav();
+    });
+  });
 
-            progressBar.style.width = `${percent}%`;
-            progressText.textContent = `${completedCount} de 7 tarefas concluídas`;
-            progressPercent.textContent = `${percent}%`;
+  // Sub-vídeos
+  document.querySelectorAll('.subvideo-checkbox').forEach(cb => {
+    cb.addEventListener('change', e => {
+      const s = parseInt(e.target.getAttribute('data-sub'));
+      day.subvideos[s] = e.target.checked;
+      const done = day.subvideos.filter(Boolean).length;
+      day.tasks[1] = done >= goals.videos;
+      saveAppData();
+      loadDayData(currentDayIndex);
+      renderDaysNav();
+    });
+  });
 
-            if (percent === 100) {
-                congratsBanner.classList.remove('hidden');
-            } else {
-                congratsBanner.classList.add('hidden');
-            }
+  // Campos de texto
+  document.querySelectorAll('[data-field]').forEach(el => {
+    el.addEventListener('input', e => {
+      day[e.target.getAttribute('data-field')] = e.target.value;
+      saveAppData();
+    });
+  });
 
-            updatePerfectDaysCount();
-            renderDaysNav(); // Atualizar badge na nav
-        }
+  // Água
+  const wp = document.getElementById('waterPlusBtn');
+  const wm = document.getElementById('waterMinusBtn');
+  if (wp) wp.addEventListener('click', () => {
+    day.water = Math.min(goals.water * 2, (day.water || 0) + 250);
+    if (day.water >= goals.water) day.tasks[6] = true;
+    saveAppData();
+    loadDayData(currentDayIndex);
+    renderDaysNav();
+  });
+  if (wm) wm.addEventListener('click', () => {
+    day.water = Math.max(0, (day.water || 0) - 250);
+    if (day.water < goals.water) day.tasks[6] = false;
+    saveAppData();
+    loadDayData(currentDayIndex);
+    renderDaysNav();
+  });
 
-        // Dias Perfeitos (7/7 concluidas)
-        function updatePerfectDaysCount() {
-            let count = 0;
-            DAYS.forEach(d => {
-                const completed = appData.days[d.id].tasks.filter(Boolean).length;
-                if (completed === 7) count++;
-            });
-            perfectDaysCount.textContent = count;
-        }
+  // Timer de estudo
+  const ts = document.getElementById('timerStartBtn');
+  const tp = document.getElementById('timerPauseBtn');
+  const tr = document.getElementById('timerResetBtn');
+  if (ts) ts.addEventListener('click', () => startStudyTimer(goals));
+  if (tp) tp.addEventListener('click', pauseStudyTimer);
+  if (tr) tr.addEventListener('click', () => {
+    pauseStudyTimer();
+    day.timerSeconds = goals.study;
+    day.tasks[4] = false;
+    saveAppData();
+    loadDayData(currentDayIndex);
+    renderDaysNav();
+  });
 
-        // Manipulação de Eventos e Inputs
-        function setupEventListeners() {
-            // Checkboxes principais (exceto 1 e 6 que são automáticos)
-            taskCheckboxes.forEach((cb, idx) => {
-                cb.addEventListener('change', (e) => {
-                    // Se for tarefa 1 (3 vídeos) ou tarefa 6 (água), impedir clique manual direto se regras automáticas aplicarem, mas permitir caso o usuário queira forçar
-                    appData.days[currentDayIndex].tasks[idx] = e.target.checked;
-                    updateCardStatusStyle(idx, e.target.checked);
-                    saveAppData();
-                    updateProgress();
-                });
-            });
+  // Timer sem celular
+  const ns = document.getElementById('noPhoneStartBtn');
+  const np = document.getElementById('noPhonePauseBtn');
+  const nr = document.getElementById('noPhoneResetBtn');
+  if (ns) ns.addEventListener('click', () => startNoPhoneTimer(goals));
+  if (np) np.addEventListener('click', pauseNoPhoneTimer);
+  if (nr) nr.addEventListener('click', () => {
+    pauseNoPhoneTimer();
+    day.noPhoneSeconds = goals.noPhone;
+    day.tasks[8] = false;
+    saveAppData();
+    loadDayData(currentDayIndex);
+    renderDaysNav();
+  });
 
-            // Sub-checkboxes de vídeos
-            subvideoCheckboxes.forEach((cb, idx) => {
-                cb.addEventListener('change', (e) => {
-                    appData.days[currentDayIndex].subvideos[idx] = e.target.checked;
-                    updateSubvideosUI();
-                    saveAppData();
-                });
-            });
+  // Horário de sono
+  const bt = document.getElementById('bedtimeInput');
+  const wk = document.getElementById('wakeupInput');
+  if (bt) bt.addEventListener('change', e => {
+    appData.sleepSchedule.bedtime = e.target.value;
+    saveAppData();
+  });
+  if (wk) wk.addEventListener('change', e => {
+    appData.sleepSchedule.wakeup = e.target.value;
+    saveAppData();
+  });
+}
 
-            // Instagram Notes
-            instagramNotes.addEventListener('input', (e) => {
-                appData.days[currentDayIndex].instagramNotes = e.target.value;
-                saveAppData();
-            });
+/* ======================================================
+   TIMER DE ESTUDO
+====================================================== */
+function startStudyTimer(goals) {
+  const day = appData.days[currentDayIndex];
+  if (day.timerSeconds === undefined || day.timerSeconds === null) day.timerSeconds = goals.study;
+  if (day.timerSeconds <= 0) return;
+  if (timerInterval) return;
+  day.timerRunning = true;
 
-            // Reading Input
-            readingInput.addEventListener('input', (e) => {
-                appData.days[currentDayIndex].readingText = e.target.value;
-                saveAppData();
-            });
+  timerInterval = setInterval(() => {
+    if (day.timerSeconds > 0) {
+      day.timerSeconds--;
+      const el = document.getElementById('timerDisplay');
+      if (el) el.textContent = formatTime(day.timerSeconds);
+      if (day.timerSeconds % 5 === 0) saveAppData();
+    } else {
+      clearInterval(timerInterval); timerInterval = null;
+      day.timerRunning = false;
+      day.tasks[4] = true;
+      saveAppData();
+      loadDayData(currentDayIndex);
+      renderDaysNav();
+      alert('🎉 Parabéns! Você concluiu seus minutos de estudo!');
+    }
+  }, 1000);
+}
+function pauseStudyTimer() {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  appData.days[currentDayIndex].timerRunning = false;
+  saveAppData();
+}
+function updateTimerDisplay() {
+  const el = document.getElementById('timerDisplay');
+  if (el) el.textContent = formatTime(appData.days[currentDayIndex].timerSeconds ?? getLevelGoals(appData.level).study);
+}
 
-            // Water buttons
-            waterPlusBtn.addEventListener('click', () => {
-                let currentWater = appData.days[currentDayIndex].water || 0;
-                currentWater = Math.min(5000, currentWater + 250);
-                appData.days[currentDayIndex].water = currentWater;
-                
-                // Regra automática: atingiu 2000ml -> marca tarefa 6
-                if (currentWater >= 2000) {
-                    appData.days[currentDayIndex].tasks[6] = true;
-                    document.getElementById('task-6').checked = true;
-                    updateCardStatusStyle(6, true);
-                }
-                
-                updateWaterUI();
-                saveAppData();
-                updateProgress();
-            });
+/* ======================================================
+   TIMER SEM CELULAR
+====================================================== */
+function startNoPhoneTimer(goals) {
+  const day = appData.days[currentDayIndex];
+  if (day.noPhoneSeconds === undefined || day.noPhoneSeconds === null) day.noPhoneSeconds = goals.noPhone;
+  if (day.noPhoneSeconds <= 0) return;
+  if (noPhoneInterval) return;
+  day.noPhoneRunning = true;
 
-            waterMinusBtn.addEventListener('click', () => {
-                let currentWater = appData.days[currentDayIndex].water || 0;
-                currentWater = Math.max(0, currentWater - 250);
-                appData.days[currentDayIndex].water = currentWater;
-                
-                if (currentWater < 2000) {
-                    appData.days[currentDayIndex].tasks[6] = false;
-                    document.getElementById('task-6').checked = false;
-                    updateCardStatusStyle(6, false);
-                }
+  noPhoneInterval = setInterval(() => {
+    if (day.noPhoneSeconds > 0) {
+      day.noPhoneSeconds--;
+      const el = document.getElementById('noPhoneDisplay');
+      if (el) el.textContent = formatTime(day.noPhoneSeconds);
+      if (day.noPhoneSeconds % 5 === 0) saveAppData();
+    } else {
+      clearInterval(noPhoneInterval); noPhoneInterval = null;
+      day.noPhoneRunning = false;
+      day.tasks[8] = true;
+      saveAppData();
+      loadDayData(currentDayIndex);
+      renderDaysNav();
+      alert('🔥 Você ficou o tempo necessário sem celular!');
+    }
+  }, 1000);
+}
+function pauseNoPhoneTimer() {
+  if (noPhoneInterval) { clearInterval(noPhoneInterval); noPhoneInterval = null; }
+  appData.days[currentDayIndex].noPhoneRunning = false;
+  saveAppData();
+}
+function updateNoPhoneDisplay() {
+  const el = document.getElementById('noPhoneDisplay');
+  if (el) el.textContent = formatTime(appData.days[currentDayIndex].noPhoneSeconds ?? getLevelGoals(appData.level).noPhone);
+}
 
-                updateWaterUI();
-                saveAppData();
-                updateProgress();
-            });
+/* ======================================================
+   PAUSAR TUDO AO TROCAR DE DIA
+====================================================== */
+function pauseAllTimers() {
+  pauseStudyTimer();
+  pauseNoPhoneTimer();
+}
 
-            // Timer Buttons
-            timerStartBtn.addEventListener('click', startTimer);
-            timerPauseBtn.addEventListener('click', pauseTimer);
-            timerResetBtn.addEventListener('click', resetTimer);
+/* ======================================================
+   PROGRESSO DO DIA
+====================================================== */
+function updateProgress() {
+  const day = appData.days[currentDayIndex];
+  const completed = day.tasks.filter(Boolean).length;
+  const pct = Math.round((completed / TOTAL_TASKS) * 100);
 
-            // Reset Day / Week
-            resetDayBtn.addEventListener('click', () => {
-                if (confirm("Tem certeza que deseja resetar todas as tarefas e dados deste dia?")) {
-                    appData.days[currentDayIndex] = {
-                        tasks: [false, false, false, false, false, false, false],
-                        subvideos: [false, false, false],
-                        water: 0,
-                        instagramNotes: '',
-                        readingText: '',
-                        timerSeconds: 1800,
-                        timerRunning: false
-                    };
-                    saveAppData();
-                    loadDayData(currentDayIndex);
-                }
-            });
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressText').textContent = `${completed} de ${TOTAL_TASKS} tarefas concluídas`;
+  document.getElementById('progressPercent').textContent = pct + '%';
+  document.getElementById('totalTasksBanner').textContent = TOTAL_TASKS;
 
-            resetWeekBtn.addEventListener('click', () => {
-                if (confirm("ATENÇÃO: Deseja resetar TODA A SEMANA? Todo o progresso será apagado.")) {
-                    DAYS.forEach(d => {
-                        appData.days[d.id] = {
-                            tasks: [false, false, false, false, false, false, false],
-                            subvideos: [false, false, false],
-                            water: 0,
-                            instagramNotes: '',
-                            readingText: '',
-                            timerSeconds: 1800,
-                            timerRunning: false
-                        };
-                    });
-                    saveAppData();
-                    loadDayData(currentDayIndex);
-                }
-            });
+  const banner = document.getElementById('congratsBanner');
+  if (pct === 100) banner.classList.remove('hidden');
+  else banner.classList.add('hidden');
 
-            // Quotes
-            newQuoteBtn.addEventListener('click', () => {
-                appData.quoteIndex = (appData.quoteIndex + 1) % QUOTES.length;
-                quoteText.textContent = `"${QUOTES[appData.quoteIndex]}"`;
-                saveAppData();
-            });
+  updateWeekProgress();
+}
 
-            // Inicializar quote salva
-            if (QUOTES[appData.quoteIndex]) {
-                quoteText.textContent = `"${QUOTES[appData.quoteIndex]}"`;
-            }
-        }
+/* ======================================================
+   PROGRESSO DA SEMANA + LEVEL UP
+====================================================== */
+function updateWeekProgress() {
+  let perfectDays = 0;
+  DAYS.forEach(d => {
+    if (appData.days[d.id].tasks.filter(Boolean).length === TOTAL_TASKS) perfectDays++;
+  });
 
-        // Lógica dos Sub-vídeos
-        function updateSubvideosUI() {
-            const sub = appData.days[currentDayIndex].subvideos;
-            const completedSubs = sub.filter(Boolean).length;
-            subvideosCountText.textContent = `${completedSubs}/3 concluídos`;
+  const pct = Math.round((perfectDays / 7) * 100);
+  document.getElementById('weekProgressBar').style.width = pct + '%';
+  document.getElementById('weekProgressText').textContent = `${perfectDays}/7 dias perfeitos`;
 
-            // Se 3 sub-vídeos concluídos -> marca tarefa principal 1 automaticamente
-            if (completedSubs === 3) {
-                appData.days[currentDayIndex].tasks[1] = true;
-                document.getElementById('task-1').checked = true;
-                updateCardStatusStyle(1, true);
-            } else {
-                appData.days[currentDayIndex].tasks[1] = false;
-                document.getElementById('task-1').checked = false;
-                updateCardStatusStyle(1, false);
-            }
-            updateProgress();
-        }
+  // Se completou a semana → LEVEL UP
+  if (perfectDays === 7) {
+    triggerLevelUp();
+  }
+}
 
-        // Lógica da Água
-        function updateWaterUI() {
-            const water = appData.days[currentDayIndex].water || 0;
-            waterMlText.textContent = `${water} ml / 2000 ml`;
-            const percent = Math.min(100, Math.round((water / 2000) * 100));
-            waterProgressBar.style.width = `${percent}%`;
-        }
+function triggerLevelUp() {
+  const oldLevel = appData.level;
+  const newLevel = oldLevel + 1;
+  const newGoals = getLevelGoals(newLevel);
 
-        // Lógica do Timer de Estudo (30 min = 1800s)
-        let timerInterval = null;
+  // Atualiza modal
+  document.getElementById('newLevelText').textContent = 'Nível ' + newLevel;
+  document.getElementById('newVideos').textContent = newGoals.videos;
+  document.getElementById('newWater').textContent = (newGoals.water / 1000).toFixed(1).replace('.0', '');
+  document.getElementById('newStudy').textContent = Math.floor(newGoals.study / 60);
+  document.getElementById('newDiary').textContent = newGoals.diaryPages;
+  document.getElementById('newNoPhone').textContent = (newGoals.noPhone / 60).toFixed(1).replace('.0', '');
 
-        function updateTimerDisplay() {
-            const secs = appData.days[currentDayIndex].timerSeconds ?? 1800;
-            const mins = Math.floor(secs / 60);
-            const remainderSecs = secs % 60;
-            timerDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(remainderSecs).padStart(2, '0')}`;
-        }
+  document.getElementById('levelUpModal').classList.remove('hidden');
 
-        function startTimer() {
-            if (timerInterval) return; // Já rodando
-            appData.days[currentDayIndex].timerRunning = true;
-            saveAppData();
+  // Aplica novo nível + reseta a semana
+  appData.level = newLevel;
+  DAYS.forEach(d => {
+    appData.days[d.id] = {
+      tasks: new Array(TOTAL_TASKS).fill(false),
+      subvideos: [false, false, false],
+      water: 0,
+      instagramNotes: '',
+      readingText: '',
+      diaryText: '',
+      timerSeconds: newGoals.study,
+      timerRunning: false,
+      noPhoneSeconds: newGoals.noPhone,
+      noPhoneRunning: false,
+      sleepOk: false
+    };
+  });
+  saveAppData();
+  updateLevelUI();
+}
 
-            timerInterval = setInterval(() => {
-                let secs = appData.days[currentDayIndex].timerSeconds;
-                if (secs > 0) {
-                    secs--;
-                    appData.days[currentDayIndex].timerSeconds = secs;
-                    updateTimerDisplay();
-                    saveAppData();
-                } else {
-                    clearInterval(timerInterval);
-                    timerInterval = null;
-                    appData.days[currentDayIndex].timerRunning = false;
-                    appData.days[currentDayIndex].tasks[4] = true; // Conclui tarefa de estudo
-                    document.getElementById('task-4').checked = true;
-                    updateCardStatusStyle(4, true);
-                    saveAppData();
-                    updateProgress();
-                    alert("Parabéns! Você concluiu seus 30 minutos de estudo!");
-                }
-            }, 1000);
-        }
+function updateLevelUI() {
+  document.getElementById('levelBadge').textContent = appData.level;
+  document.getElementById('levelHeader').textContent = appData.level;
+}
 
-        function pauseTimer() {
-            if (timerInterval) {
-                clearInterval(timerInterval);
-                timerInterval = null;
-            }
-            appData.days[currentDayIndex].timerRunning = false;
-            saveAppData();
-        }
+document.getElementById('levelUpCloseBtn').addEventListener('click', () => {
+  document.getElementById('levelUpModal').classList.add('hidden');
+  renderDaysNav();
+  loadDayData(currentDayIndex);
+});
 
-        function resetTimer() {
-            pauseTimer();
-            appData.days[currentDayIndex].timerSeconds = 1800;
-            updateTimerDisplay();
-            saveAppData();
-        }
+/* ======================================================
+   RESET
+====================================================== */
+document.getElementById('resetDayBtn').addEventListener('click', () => {
+  if (!confirm('Resetar todas as tarefas deste dia?')) return;
+  const goals = getLevelGoals(appData.level);
+  pauseAllTimers();
+  appData.days[currentDayIndex] = {
+    tasks: new Array(TOTAL_TASKS).fill(false),
+    subvideos: [false, false, false],
+    water: 0,
+    instagramNotes: '', readingText: '', diaryText: '',
+    timerSeconds: goals.study, timerRunning: false,
+    noPhoneSeconds: goals.noPhone, noPhoneRunning: false,
+    sleepOk: false
+  };
+  saveAppData();
+  loadDayData(currentDayIndex);
+  renderDaysNav();
+});
 
-        function saveCurrentTimerState() {
-            pauseTimer();
-        }
+document.getElementById('resetWeekBtn').addEventListener('click', () => {
+  if (!confirm('ATENÇÃO: Resetar TODA a semana? Todo o progresso será apagado.')) return;
+  const goals = getLevelGoals(appData.level);
+  pauseAllTimers();
+  DAYS.forEach(d => {
+    appData.days[d.id] = {
+      tasks: new Array(TOTAL_TASKS).fill(false),
+      subvideos: [false, false, false],
+      water: 0,
+      instagramNotes: '', readingText: '', diaryText: '',
+      timerSeconds: goals.study, timerRunning: false,
+      noPhoneSeconds: goals.noPhone, noPhoneRunning: false,
+      sleepOk: false
+    };
+  });
+  saveAppData();
+  loadDayData(currentDayIndex);
+  renderDaysNav();
+});
 
-        // Executar inicialização ao carregar o DOM
-        document.addEventListener('DOMContentLoaded', init);
-    </script>
+/* ======================================================
+   FRASES
+====================================================== */
+document.getElementById('newQuoteBtn').addEventListener('click', () => {
+  appData.quoteIndex = (appData.quoteIndex + 1) % QUOTES.length;
+  document.getElementById('quoteText').textContent = `"${QUOTES[appData.quoteIndex]}"`;
+  saveAppData();
+});
 
-    <!-- PWA Service Worker & Install Prompt Script -->
-    <script>
-        // Registrar Service Worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./service-worker.js')
-                    .then(reg => console.log('Service Worker registrado com sucesso:', reg.scope))
-                    .catch(err => console.error('Erro ao registrar Service Worker:', err));
-            });
-        }
+/* ======================================================
+   INICIALIZAÇÃO
+====================================================== */
+function init() {
+  initTheme();
+  updateLevelUI();
+  renderDaysNav();
+  loadDayData(currentDayIndex);
+  if (QUOTES[appData.quoteIndex]) {
+    document.getElementById('quoteText').textContent = `"${QUOTES[appData.quoteIndex]}"`;
+  }
+}
+document.addEventListener('DOMContentLoaded', init);
+</script>
 
-        // Capturar evento beforeinstallprompt
-        let deferredPrompt;
-        const installAppBtn = document.getElementById('installAppBtn');
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            installAppBtn.classList.remove('hidden');
-        });
-
-        installAppBtn.addEventListener('click', async () => {
-            if (!deferredPrompt) return;
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') {
-                console.log('Usuário aceitou a instalação do PWA');
-            }
-            deferredPrompt = null;
-            installAppBtn.classList.add('hidden');
-        });
-
-        window.addEventListener('appinstalled', () => {
-            installAppBtn.classList.add('hidden');
-            deferredPrompt = null;
-            console.log('PWA instalado com sucesso');
-        });
-    </script>
+<!-- SERVICE WORKER + INSTALL -->
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js')
+      .then(reg => console.log('SW ok:', reg.scope))
+      .catch(err => console.error('Erro SW:', err));
+  });
+}
+let deferredPrompt;
+const installAppBtn = document.getElementById('installAppBtn');
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault(); deferredPrompt = e;
+  installAppBtn.classList.remove('hidden');
+});
+installAppBtn.addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  installAppBtn.classList.add('hidden');
+});
+window.addEventListener('appinstalled', () => {
+  installAppBtn.classList.add('hidden');
+  deferredPrompt = null;
+});
+</script>
 </body>
 </html>
