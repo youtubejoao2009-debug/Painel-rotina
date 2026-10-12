@@ -133,93 +133,50 @@ body.light-bg .avatar-inner { background: #eef2ff; }
 .roulette-wheel { width: 100%; height: 100%; border-radius: 50%; background: conic-gradient(#ef4444 0deg 30deg, #f59e0b 30deg 60deg, #eab308 60deg 90deg, #22c55e 90deg 120deg, #06b6d4 120deg 150deg, #3b82f6 150deg 180deg, #8b5cf6 180deg 210deg, #ec4899 210deg 240deg, #ef4444 240deg 270deg, #f59e0b 270deg 300deg, #eab308 300deg 330deg, #22c55e 330deg 360deg); border: 6px solid #1e293b; box-shadow: 0 0 30px rgba(59,130,246,0.4), inset 0 0 20px rgba(0,0,0,0.4); position: relative; transition: transform 4s cubic-bezier(0.17, 0.67, 0.15, 1); will-change: transform; }
 .roulette-pointer { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 14px solid transparent; border-right: 14px solid transparent; border-top: 24px solid #fbbf24; filter: drop-shadow(0 0 8px #fbbf24); z-index: 3; }
 .roulette-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(circle, #1e293b, #0f172a); border: 3px solid #fbbf24; display: grid; place-content: center; font-size: 26px; z-index: 2; box-shadow: 0 0 20px rgba(251,191,36,0.5); }
-
-/* ====== ACTION CHIPS ====== */
-.action-chip {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 2px; min-width: 58px; padding: 6px 8px;
-  border-radius: 12px; border: 1px solid;
-  font-size: 18px; line-height: 1;
-  transition: transform 0.15s, background 0.2s;
-  flex-shrink: 0;
-}
+.action-chip { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-width: 58px; padding: 6px 8px; border-radius: 12px; border: 1px solid; font-size: 18px; line-height: 1; transition: transform 0.15s, background 0.2s; flex-shrink: 0; }
 .action-chip:active { transform: scale(0.94); }
 .chip-label { font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.3px; opacity: 0.95; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-/* ====== PET ====== */
-.pet-stage {
-  width: 140px; height: 140px; margin: 0 auto;
-  display: grid; place-content: center;
-  border-radius: 50%;
-  background: radial-gradient(circle at 50% 40%, rgba(59,130,246,0.15), rgba(15,23,42,0.8));
-  border: 3px solid rgba(59,130,246,0.3);
-  font-size: 80px;
-  line-height: 1;
-  position: relative;
-  transition: all 0.4s;
-}
+.pet-stage { width: 140px; height: 140px; margin: 0 auto; display: grid; place-content: center; border-radius: 50%; background: radial-gradient(circle at 50% 40%, rgba(59,130,246,0.15), rgba(15,23,42,0.8)); border: 3px solid rgba(59,130,246,0.3); font-size: 80px; line-height: 1; position: relative; transition: all 0.4s; }
 .pet-stage.legendary { border-color: #ef4444; box-shadow: 0 0 40px rgba(239,68,68,0.5); }
 .pet-stage.dragon { border-color: #a855f7; box-shadow: 0 0 30px rgba(168,85,247,0.4); }
 @keyframes petBounce { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-8px) scale(1.05); } }
 .pet-bounce { animation: petBounce 2s ease-in-out infinite; }
-@keyframes petHatch {
-  0% { transform: scale(1) rotate(0deg); }
-  20% { transform: scale(1.1) rotate(-10deg); }
-  40% { transform: scale(1.1) rotate(10deg); }
-  60% { transform: scale(1.2) rotate(-15deg); }
-  80% { transform: scale(1.2) rotate(15deg); }
-  100% { transform: scale(1) rotate(0deg); }
-}
-.pet-hatching { animation: petHatch 1.5s ease-in-out; }
 .pet-bar { height: 8px; border-radius: 999px; overflow: hidden; background: rgba(15,23,42,0.8); border: 1px solid rgba(100,116,139,0.3); }
 .pet-bar-fill { height: 100%; transition: width 0.4s; }
-
-/* ====== POMODORO ====== */
-.pomodoro-display {
-  font-size: 64px; font-weight: 900; text-align: center;
-  font-family: 'Inter', monospace;
-  background: linear-gradient(135deg, #ef4444, #f59e0b, #eab308);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-  text-shadow: 0 0 40px rgba(239,68,68,0.3);
-  letter-spacing: 2px;
-}
-.pomodoro-display.break-mode {
-  background: linear-gradient(135deg, #22c55e, #06b6d4, #3b82f6);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-  text-shadow: 0 0 40px rgba(34,197,94,0.3);
-}
+.pomodoro-display { font-size: 64px; font-weight: 900; text-align: center; font-family: 'Inter', monospace; background: linear-gradient(135deg, #ef4444, #f59e0b, #eab308); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: 0 0 40px rgba(239,68,68,0.3); letter-spacing: 2px; }
+.pomodoro-display.break-mode { background: linear-gradient(135deg, #22c55e, #06b6d4, #3b82f6); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: 0 0 40px rgba(34,197,94,0.3); }
 .pomo-mode-btn { padding: 8px 16px; border-radius: 12px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; border: 2px solid transparent; }
 .pomo-mode-btn.active { border-color: currentColor; }
-
-/* ====== WEEKLY MISSIONS ====== */
-.weekly-item {
-  background: rgba(15,23,42,0.7);
-  border: 1px solid rgba(249,115,22,0.3);
-  border-radius: 14px; padding: 14px;
-  margin-bottom: 10px;
-  transition: all 0.3s;
-}
-.weekly-item.complete {
-  border-color: #22c55e;
-  background: linear-gradient(135deg, rgba(34,197,94,0.1), rgba(34,197,94,0.05));
-  box-shadow: 0 0 15px rgba(34,197,94,0.25);
-}
+.weekly-item { background: rgba(15,23,42,0.7); border: 1px solid rgba(249,115,22,0.3); border-radius: 14px; padding: 14px; margin-bottom: 10px; transition: all 0.3s; }
+.weekly-item.complete { border-color: #22c55e; background: linear-gradient(135deg, rgba(34,197,94,0.1), rgba(34,197,94,0.05)); box-shadow: 0 0 15px rgba(34,197,94,0.25); }
 .weekly-bar { height: 6px; border-radius: 999px; overflow: hidden; background: rgba(15,23,42,0.9); margin-top: 8px; }
 .weekly-bar-fill { height: 100%; background: linear-gradient(90deg, #f97316, #ef4444); transition: width 0.4s; }
 .weekly-item.complete .weekly-bar-fill { background: linear-gradient(90deg, #22c55e, #16a34a); }
+.boss-stage { position: relative; width: 180px; height: 180px; margin: 0 auto; display: grid; place-content: center; font-size: 110px; line-height: 1; filter: drop-shadow(0 0 20px rgba(239,68,68,0.6)); }
+@keyframes bossIdle { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-5px) scale(1.03); } }
+.boss-idle { animation: bossIdle 2.5s ease-in-out infinite; }
+@keyframes bossHit { 0% { transform: translateX(0) scale(1); filter: brightness(1); } 20% { transform: translateX(-15px) scale(0.95); filter: brightness(3) hue-rotate(-30deg); } 40% { transform: translateX(15px) scale(1.05); } 60% { transform: translateX(-10px) scale(0.98); filter: brightness(2); } 100% { transform: translateX(0) scale(1); filter: brightness(1); } }
+.boss-hit { animation: bossHit 0.5s ease-out; }
+@keyframes bossDefeat { 0% { transform: scale(1) rotate(0deg); opacity: 1; } 50% { transform: scale(1.3) rotate(15deg); opacity: 1; filter: brightness(3); } 100% { transform: scale(0) rotate(360deg); opacity: 0; } }
+.boss-defeat { animation: bossDefeat 1.5s ease-in forwards; }
+.boss-hp-outer { background: linear-gradient(180deg, rgba(15,23,42,0.9), rgba(0,0,0,0.6)); border: 2px solid #7f1d1d; border-radius: 999px; height: 22px; overflow: hidden; position: relative; box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
+.boss-hp-fill { height: 100%; background: linear-gradient(90deg, #dc2626, #ef4444, #f87171, #ef4444); background-size: 200% auto; border-radius: 999px; transition: width 0.8s ease-out; box-shadow: 0 0 15px rgba(239,68,68,0.7); animation: hpShine 3s linear infinite; }
+@keyframes hpShine { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+.boss-hp-text { position: absolute; inset: 0; display: grid; place-content: center; font-size: 11px; font-weight: 900; color: white; text-shadow: 0 0 6px black; letter-spacing: 1px; }
+.boss-arena { background: radial-gradient(circle at 50% 40%, rgba(239,68,68,0.15), rgba(15,23,42,0.5) 60%); border: 2px solid rgba(239,68,68,0.3); border-radius: 24px; padding: 15px; position: relative; overflow: hidden; }
+.boss-arena::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(239,68,68,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(239,68,68,0.05) 1px, transparent 1px); background-size: 30px 30px; pointer-events: none; }
+.lofi-btn-playing { animation: lofiPulse 1.5s ease-in-out infinite; }
+@keyframes lofiPulse { 0%, 100% { box-shadow: 0 0 10px rgba(139,92,246,0.4); } 50% { box-shadow: 0 0 25px rgba(139,92,246,0.9), 0 0 40px rgba(139,92,246,0.5); } }
 </style>
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col">
 
 <div class="bg-eye-layer"></div>
 
-<!-- ============ HEADER ============ -->
 <header class="sticky top-0 z-40 glass border-b border-slate-800/80 shadow-lg">
   <div class="max-w-7xl mx-auto px-3 pt-3 sm:px-6">
-
-    <!-- Linha 1: Avatar + Título + Rank + Tema -->
     <div class="flex items-center justify-between gap-2">
       <div class="flex items-center gap-2.5">
         <div class="avatar-ring" style="width:40px;height:40px;">
@@ -236,11 +193,13 @@ body.light-bg .avatar-inner { background: #eef2ff; }
         <div id="rankBadge" class="rank-badge flex items-center gap-1.5 bg-slate-500/10 border border-slate-500/30 px-2 py-1 rounded-xl text-[10px] font-bold">
           <span id="rankEmoji">🌱</span><span id="rankName" class="hidden sm:inline">Iniciante</span>
         </div>
+        <button id="lofiBtn" type="button" title="Som Lo-fi" class="btn-action p-2 rounded-xl bg-purple-500/15 text-purple-400 border border-purple-500/40 hover:bg-purple-500/25 transition-all">
+          <span id="lofiIcon" class="text-sm">🎵</span>
+        </button>
         <button id="themeToggleBtn" type="button" class="btn-action p-2 rounded-xl bg-slate-800 hover:bg-slate-700 transition-all"><span id="themeIcon" class="text-sm">🌙</span></button>
       </div>
     </div>
 
-    <!-- Linha 2: Level + XP -->
     <div class="flex items-center gap-3 mt-2.5">
       <div class="flex items-center gap-1 bg-purple-500/15 border border-purple-500/40 px-2.5 py-1 rounded-lg text-purple-300 font-black text-xs">
         <span>🎮</span><span id="levelBadge">0</span><span class="opacity-50">/15</span>
@@ -253,37 +212,20 @@ body.light-bg .avatar-inner { background: #eef2ff; }
       </div>
     </div>
 
-    <!-- Linha 3: Barra de ações deslizável -->
     <div class="mt-3">
       <div class="flex gap-1.5 overflow-x-auto no-scrollbar pb-1" id="actionsBar">
-        <button id="missionsBtn" type="button" class="action-chip bg-cyan-500/15 text-cyan-400 border-cyan-500/40">
-          <span>📋</span><span class="chip-label">Missões</span>
-        </button>
-        <button id="weeklyBtn" type="button" class="action-chip bg-orange-500/15 text-orange-400 border-orange-500/40">
-          <span>🎯</span><span class="chip-label">Semanais</span>
-        </button>
-        <button id="pomodoroBtn" type="button" class="action-chip bg-red-500/15 text-red-400 border-red-500/40">
-          <span>⏱️</span><span class="chip-label">Pomodoro</span>
-        </button>
-        <button id="petBtn" type="button" class="action-chip bg-lime-500/15 text-lime-400 border-lime-500/40">
-          <span>🐉</span><span class="chip-label">Pet</span>
-        </button>
-        <button id="rouletteBtn" type="button" class="action-chip bg-pink-500/15 text-pink-400 border-pink-500/40">
-          <span>🎰</span><span class="chip-label">Roleta</span>
-        </button>
-        <button id="achievementsBtn" type="button" class="action-chip bg-yellow-500/15 text-yellow-400 border-yellow-500/40">
-          <span>🏆</span><span class="chip-label">Troféus</span>
-        </button>
-        <button id="statsBtn" type="button" class="action-chip bg-emerald-500/15 text-emerald-400 border-emerald-500/40">
-          <span>📊</span><span class="chip-label">Stats</span>
-        </button>
-        <button id="storeBtn" type="button" class="action-chip bg-amber-500/15 text-amber-400 border-amber-500/40">
-          <span>🛒</span><span class="chip-label">Loja</span>
-        </button>
+        <button id="missionsBtn" type="button" class="action-chip bg-cyan-500/15 text-cyan-400 border-cyan-500/40"><span>📋</span><span class="chip-label">Missões</span></button>
+        <button id="weeklyBtn" type="button" class="action-chip bg-orange-500/15 text-orange-400 border-orange-500/40"><span>🎯</span><span class="chip-label">Semanais</span></button>
+        <button id="bossBtn" type="button" class="action-chip bg-red-500/15 text-red-400 border-red-500/40"><span>👹</span><span class="chip-label">Boss</span></button>
+        <button id="pomodoroBtn" type="button" class="action-chip bg-rose-500/15 text-rose-400 border-rose-500/40"><span>⏱️</span><span class="chip-label">Pomodoro</span></button>
+        <button id="petBtn" type="button" class="action-chip bg-lime-500/15 text-lime-400 border-lime-500/40"><span>🐉</span><span class="chip-label">Pet</span></button>
+        <button id="rouletteBtn" type="button" class="action-chip bg-pink-500/15 text-pink-400 border-pink-500/40"><span>🎰</span><span class="chip-label">Roleta</span></button>
+        <button id="achievementsBtn" type="button" class="action-chip bg-yellow-500/15 text-yellow-400 border-yellow-500/40"><span>🏆</span><span class="chip-label">Troféus</span></button>
+        <button id="statsBtn" type="button" class="action-chip bg-emerald-500/15 text-emerald-400 border-emerald-500/40"><span>📊</span><span class="chip-label">Stats</span></button>
+        <button id="storeBtn" type="button" class="action-chip bg-amber-500/15 text-amber-400 border-amber-500/40"><span>🛒</span><span class="chip-label">Loja</span></button>
       </div>
     </div>
 
-    <!-- Linha 4: Progresso Semanal -->
     <div class="mt-1">
       <div class="flex justify-between items-center mb-1">
         <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">📊 Semana</span>
@@ -337,7 +279,7 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </footer>
 
-<!-- MODAL MISSÕES -->
+<!-- MISSÕES -->
 <div id="missionsModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="missions-panel rounded-3xl p-5 max-w-md w-full my-auto">
     <div class="text-center mb-4">
@@ -355,7 +297,7 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
-<!-- MODAL CONQUISTAS -->
+<!-- CONQUISTAS -->
 <div id="achievementsModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="rounded-3xl p-5 max-w-md w-full bg-slate-900 border-2 border-yellow-500/40 shadow-2xl my-auto">
     <div class="flex items-center justify-between mb-4">
@@ -370,7 +312,7 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
-<!-- MODAL ESTATÍSTICAS -->
+<!-- STATS -->
 <div id="statsModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="rounded-3xl p-5 max-w-md w-full bg-slate-900 border-2 border-emerald-500/40 shadow-2xl my-auto">
     <div class="flex items-center justify-between mb-4">
@@ -387,14 +329,14 @@ body.light-bg .avatar-inner { background: #eef2ff; }
       <div class="text-[10px] font-bold text-slate-400 uppercase mb-2">Últimos 7 dias (% conclusão)</div>
       <div id="statsChart" class="flex items-end gap-1" style="height:100px;"></div>
     </div>
-    <div class="stat-card">
-      <div class="stat-value" id="statPerfectDays">0</div>
-      <div class="stat-label">Dias Perfeitos (Total)</div>
+    <div class="grid grid-cols-2 gap-2">
+      <div class="stat-card"><div class="stat-value" id="statPerfectDays">0</div><div class="stat-label">Dias Perfeitos</div></div>
+      <div class="stat-card"><div class="stat-value" id="statBossWins">0</div><div class="stat-label">Boss Derrotados</div></div>
     </div>
   </div>
 </div>
 
-<!-- MODAL ROLETA -->
+<!-- ROLETA -->
 <div id="rouletteModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="rounded-3xl p-5 max-w-md w-full bg-slate-900 border-2 border-pink-500/40 shadow-2xl my-auto">
     <div class="flex items-center justify-between mb-4">
@@ -414,7 +356,6 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
-<!-- MODAL RESULTADO ROLETA -->
 <div id="spinResultModal" class="hidden fixed inset-0 z-[80] modal-overlay flex items-center justify-center p-4">
   <div class="rounded-3xl p-8 max-w-sm w-full bg-gradient-to-br from-pink-600 via-purple-600 to-indigo-700 border-2 border-pink-400 shadow-2xl text-center text-white relative overflow-hidden">
     <div class="relative z-10">
@@ -426,85 +367,66 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
-<!-- MODAL PET -->
+<!-- PET -->
 <div id="petModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="rounded-3xl p-5 max-w-md w-full bg-slate-900 border-2 border-lime-500/40 shadow-2xl my-auto">
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-xl font-black text-lime-400">🐉 Meu Pet</h2>
       <button id="petCloseBtn" type="button" class="btn-action p-2 rounded-xl bg-slate-800 text-slate-300 text-sm">✕</button>
     </div>
-
     <div id="petStage" class="pet-stage pet-bounce mb-3">🥚</div>
     <div class="text-center mb-4">
       <div id="petName" class="text-lg font-black text-white mb-0.5">Ovo Misterioso</div>
       <div id="petLevelText" class="text-[11px] font-bold text-lime-400">Nível 1 — 0 / 100 XP</div>
     </div>
-
     <div class="space-y-3 mb-4">
       <div>
-        <div class="flex justify-between text-[10px] font-bold mb-1">
-          <span class="text-slate-400">🍖 Fome</span>
-          <span id="petHungerText" class="text-orange-400">100%</span>
-        </div>
+        <div class="flex justify-between text-[10px] font-bold mb-1"><span class="text-slate-400">🍖 Fome</span><span id="petHungerText" class="text-orange-400">100%</span></div>
         <div class="pet-bar"><div id="petHungerBar" class="pet-bar-fill" style="width:100%;background:linear-gradient(90deg,#f97316,#fbbf24);"></div></div>
       </div>
       <div>
-        <div class="flex justify-between text-[10px] font-bold mb-1">
-          <span class="text-slate-400">💚 Felicidade</span>
-          <span id="petHappinessText" class="text-pink-400">100%</span>
-        </div>
+        <div class="flex justify-between text-[10px] font-bold mb-1"><span class="text-slate-400">💚 Felicidade</span><span id="petHappinessText" class="text-pink-400">100%</span></div>
         <div class="pet-bar"><div id="petHappinessBar" class="pet-bar-fill" style="width:100%;background:linear-gradient(90deg,#ec4899,#f472b6);"></div></div>
       </div>
       <div>
-        <div class="flex justify-between text-[10px] font-bold mb-1">
-          <span class="text-slate-400">⭐ XP do Pet</span>
-          <span id="petXpText" class="text-lime-400">0</span>
-        </div>
+        <div class="flex justify-between text-[10px] font-bold mb-1"><span class="text-slate-400">⭐ XP do Pet</span><span id="petXpText" class="text-lime-400">0</span></div>
         <div class="pet-bar"><div id="petXpBar" class="pet-bar-fill" style="width:0%;background:linear-gradient(90deg,#84cc16,#22c55e);"></div></div>
       </div>
     </div>
-
     <div class="grid grid-cols-2 gap-2 mb-3">
       <button id="petFeedBtn" type="button" class="py-3 rounded-2xl bg-orange-500/20 text-orange-400 border border-orange-500/40 font-black text-xs">🍖 ALIMENTAR (20🪙)</button>
-      <button id="petPlayBtn" type="button" class="py-3 rounded-2xl bg-pink-500/20 text-pink-400 border border-pink-500/40 font-black text-xs">🎾 BRINCAR (Grátis)</button>
+      <button id="petPlayBtn" type="button" class="py-3 rounded-2xl bg-pink-500/20 text-pink-400 border border-pink-500/40 font-black text-xs">🎾 BRINCAR</button>
     </div>
-
-    <div class="text-[10px] text-slate-500 text-center italic">Seu pet ganha XP quando você completa tarefas. Cuide bem dele!</div>
+    <div class="text-[10px] text-slate-500 text-center italic">Seu pet ganha XP quando você completa tarefas!</div>
   </div>
 </div>
 
-<!-- MODAL POMODORO -->
+<!-- POMODORO -->
 <div id="pomodoroModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="rounded-3xl p-5 max-w-md w-full bg-slate-900 border-2 border-red-500/40 shadow-2xl my-auto">
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-xl font-black text-red-400">⏱️ Pomodoro</h2>
       <button id="pomodoroCloseBtn" type="button" class="btn-action p-2 rounded-xl bg-slate-800 text-slate-300 text-sm">✕</button>
     </div>
-
     <div class="flex justify-center gap-2 mb-4">
       <button id="pomoFocusBtn" class="pomo-mode-btn active text-red-400 bg-red-500/15">🎯 FOCO</button>
       <button id="pomoBreakBtn" class="pomo-mode-btn text-emerald-400 bg-emerald-500/15">☕ PAUSA</button>
     </div>
-
     <div id="pomodoroDisplay" class="pomodoro-display mb-5">25:00</div>
-
     <div class="grid grid-cols-3 gap-2 mb-4">
       <button id="pomoStartBtn" type="button" class="py-3 rounded-2xl bg-gradient-to-r from-red-500 to-orange-500 text-white font-black text-xs">▶ INICIAR</button>
       <button id="pomoPauseBtn" type="button" class="py-3 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/40 font-black text-xs">⏸ PAUSAR</button>
       <button id="pomoResetBtn" type="button" class="py-3 rounded-2xl bg-slate-800 text-slate-300 border border-slate-700 font-black text-xs">↺ ZERAR</button>
     </div>
-
     <div class="stat-card">
       <div class="text-[10px] font-bold text-slate-400 uppercase mb-1">Pomodoros Hoje</div>
       <div class="stat-value" id="pomoTodayCount">0</div>
       <div class="text-[10px] text-slate-500 mt-1">Total: <span id="pomoTotalCount">0</span></div>
     </div>
-
-    <div class="text-[10px] text-slate-500 text-center italic mt-3">25 min de foco = +50 XP bônus!</div>
   </div>
 </div>
 
-<!-- MODAL MISSOES SEMANAIS -->
+<!-- WEEKLY -->
 <div id="weeklyModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="rounded-3xl p-5 max-w-md w-full bg-slate-900 border-2 border-orange-500/40 shadow-2xl my-auto">
     <div class="flex items-center justify-between mb-4">
@@ -519,7 +441,54 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
-<!-- MODAL LEVEL UP -->
+<!-- BOSS -->
+<div id="bossModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
+  <div class="rounded-3xl p-5 max-w-md w-full bg-slate-900 border-2 border-red-600/60 shadow-2xl my-auto" style="box-shadow:0 0 60px rgba(239,68,68,0.3);">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="text-xl font-black text-red-500">👹 Boss Fight</h2>
+      <button id="bossCloseBtn" type="button" class="btn-action p-2 rounded-xl bg-slate-800 text-slate-300 text-sm">✕</button>
+    </div>
+
+    <div class="text-center mb-3">
+      <p class="text-[10px] text-slate-400 font-bold">Semana atual</p>
+      <p id="bossStatusText" class="text-[11px] font-black text-red-400 mt-0.5">Preparado para o combate?</p>
+    </div>
+
+    <div class="boss-arena mb-3">
+      <div id="bossStage" class="boss-stage boss-idle">👹</div>
+      <div class="text-center mb-1">
+        <div id="bossName" class="text-sm font-black text-red-400 tracking-wider">GOBLIN SOMBRIO</div>
+        <div id="bossLevelText" class="text-[10px] text-slate-400 font-bold">Nível 1</div>
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <div class="flex justify-between text-[10px] font-bold mb-1">
+        <span class="text-red-400">❤️ HP DO BOSS</span>
+        <span id="bossHpText" class="text-red-400">100 / 100</span>
+      </div>
+      <div class="boss-hp-outer">
+        <div id="bossHpFill" class="boss-hp-fill" style="width:100%"></div>
+        <div class="boss-hp-text" id="bossHpInnerText">100%</div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-2 mb-3">
+      <div class="stat-card">
+        <div class="stat-value" id="bossPlayerDamage">0</div>
+        <div class="stat-label">Dano por Ataque</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="bossReward">0</div>
+        <div class="stat-label">Recompensa 🪙</div>
+      </div>
+    </div>
+
+    <div class="text-[10px] text-slate-500 text-center italic">Cada tarefa completada na semana = 1 ataque automático!</div>
+  </div>
+</div>
+
+<!-- LEVEL UP -->
 <div id="levelUpModal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
   <div id="levelUpCard" class="relative rounded-3xl p-6 sm:p-8 max-w-md w-full text-white text-center shadow-2xl overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-br from-blue-700 via-indigo-700 to-purple-800"></div>
@@ -548,6 +517,7 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
+<!-- CONFIRM -->
 <div id="confirmModal" class="hidden fixed inset-0 z-[60] modal-overlay flex items-center justify-center p-4">
   <div class="rounded-3xl p-6 max-w-sm w-full bg-slate-900 border border-slate-700 text-center shadow-2xl">
     <div class="text-5xl mb-2" id="confirmEmoji">⚠️</div>
@@ -560,6 +530,7 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
+<!-- STORE -->
 <div id="storeModal" class="hidden fixed inset-0 z-[70] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="rounded-3xl p-5 max-w-lg w-full bg-slate-900 border border-slate-700 shadow-2xl my-auto">
     <div class="flex items-center justify-between mb-4">
@@ -592,7 +563,6 @@ body.light-bg .avatar-inner { background: #eef2ff; }
 <button id="installAppBtn" class="hidden fixed bottom-5 right-5 z-50 bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-4 py-3 rounded-2xl shadow-2xl font-bold text-sm flex items-center gap-2 active:scale-95 transition-all">⬇️ Instalar App</button>
 
 <script>
-/* ===== CONSTANTES ===== */
 const DAYS = [
   { id: 0, name: 'Domingo', short: 'Dom' }, { id: 1, name: 'Segunda', short: 'Seg' },
   { id: 2, name: 'Terça', short: 'Ter' }, { id: 3, name: 'Quarta', short: 'Qua' },
@@ -681,7 +651,9 @@ const ACHIEVEMENTS = [
   { id: 'pomodoro_1', emoji: '🍅', name: 'Focado', desc: 'Complete 1 pomodoro', check: s => (s.pomoTotal || 0) >= 1, reward: 30 },
   { id: 'pomodoro_25', emoji: '🧠', name: 'Mente Afiada', desc: 'Complete 25 pomodoros', check: s => (s.pomoTotal || 0) >= 25, reward: 200 },
   { id: 'pet_evo', emoji: '🐣', name: 'Papai Coruja', desc: 'Seu pet evoluiu', check: s => (s.petMaxStage || 0) >= 1, reward: 50 },
-  { id: 'pet_dragon', emoji: '🐉', name: 'Domador', desc: 'Seu pet virou Dragão', check: s => (s.petMaxStage || 0) >= 4, reward: 500 }
+  { id: 'pet_dragon', emoji: '🐉', name: 'Domador', desc: 'Seu pet virou Dragão', check: s => (s.petMaxStage || 0) >= 4, reward: 500 },
+  { id: 'boss_first', emoji: '👹', name: 'Caçador', desc: 'Derrote seu primeiro boss', check: s => (s.bossWins || 0) >= 1, reward: 100 },
+  { id: 'boss_5', emoji: '⚔️', name: 'Matador de Boss', desc: 'Derrote 5 bosses', check: s => (s.bossWins || 0) >= 5, reward: 400 }
 ];
 const ROULETTE_REWARDS = [
   { emoji: '🪙', text: '+30 moedas', type: 'coins', value: 30, color: '#ef4444' },
@@ -711,8 +683,17 @@ const WEEKLY_POOL = [
   { id: 'pomodoro', desc: 'Complete 5 pomodoros', target: 5, reward: 200, emoji: '🍅' },
   { id: 'water', desc: 'Tome 10L de água na semana', target: 10, reward: 150, emoji: '💧' }
 ];
+const BOSSES = [
+  { emoji: '👹', name: 'GOBLIN SOMBRIO' },
+  { emoji: '👺', name: 'DUENDE MALIGNO' },
+  { emoji: '🐗', name: 'JAVALI FERAL' },
+  { emoji: '🐻', name: 'URSO DAS SOMBRAS' },
+  { emoji: '🦁', name: 'LEÃO ANCESTRAL' },
+  { emoji: '🐲', name: 'SERPENTE DRACÔNICA' },
+  { emoji: '👾', name: 'ENTIDADE CÓSMICA' },
+  { emoji: '😈', name: 'DEMÔNIO SUPREMO' }
+];
 
-/* ===== HELPERS ===== */
 function getLevelGoals(level) {
   return { videos: 3 + Math.floor(level / 4), water: 2000, study: 1800 + level * 120, diaryPages: 1 + Math.floor(level / 4), noPhone: 3600 + level * 240 };
 }
@@ -736,13 +717,27 @@ function getMondayKey() {
   return `${monday.getFullYear()}-${String(monday.getMonth()+1).padStart(2,'0')}-${String(monday.getDate()).padStart(2,'0')}`;
 }
 function getPetStage(xp) {
-  let stage = PET_STAGES[0];
-  let idx = 0;
+  let stage = PET_STAGES[0], idx = 0;
   PET_STAGES.forEach((s, i) => { if (xp >= s.min) { stage = s; idx = i; } });
   return { stage, idx };
 }
+function getBossForWeek() {
+  const wk = getMondayKey();
+  let hash = 0;
+  for (let i = 0; i < wk.length; i++) hash = ((hash << 5) - hash) + wk.charCodeAt(i);
+  return Math.abs(hash) % BOSSES.length;
+}
+function getBossMaxHp() {
+  return 150 + (appData.level || 0) * 40 + (appData.prestiges || 0) * 250;
+}
+function getPlayerDamage() {
+  return 5 + (appData.level || 0) * 2;
+}
+function getBossReward() {
+  return 150 + (appData.level || 0) * 30 + (appData.prestiges || 0) * 200;
+}
 
-/* ===== AUDIO ===== */
+/* AUDIO */
 let audioCtx = null;
 function getAudioCtx() { if (!audioCtx) { try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { return null; } } return audioCtx; }
 function playTone(freq, dur, type = 'sine', vol = 0.15, delay = 0) {
@@ -767,6 +762,14 @@ function soundSpin() { playTone(700, 0.03, 'square', 0.06); }
 function soundAchievement() { playTone(659.25, 0.12, 'triangle', 0.15, 0); playTone(783.99, 0.12, 'triangle', 0.15, 0.1); playTone(1046.5, 0.12, 'triangle', 0.15, 0.2); playTone(1318.5, 0.4, 'triangle', 0.2, 0.3); }
 function soundPomodoro() { playTone(800, 0.15, 'triangle', 0.15, 0); playTone(1000, 0.15, 'triangle', 0.15, 0.15); playTone(1200, 0.4, 'triangle', 0.2, 0.3); }
 function soundPet() { playTone(700, 0.08, 'sine', 0.12); playTone(900, 0.1, 'sine', 0.12, 0.06); }
+function soundHit() { playTone(200, 0.08, 'square', 0.15); playTone(150, 0.12, 'sawtooth', 0.12, 0.05); }
+function soundBossWin() {
+  playTone(392, 0.2, 'triangle', 0.2, 0);
+  playTone(523.25, 0.2, 'triangle', 0.2, 0.15);
+  playTone(659.25, 0.2, 'triangle', 0.2, 0.3);
+  playTone(783.99, 0.2, 'triangle', 0.2, 0.45);
+  playTone(1046.5, 0.8, 'triangle', 0.25, 0.6);
+}
 function vibrate(p) { if (navigator.vibrate) { try { navigator.vibrate(p); } catch(e) {} } }
 
 function spawnBgParticles() {
@@ -782,6 +785,72 @@ function spawnBgParticles() {
     p.style.animationDuration = (18 + Math.random() * 15) + 's';
     p.style.animationDelay = (Math.random() * 15) + 's';
     document.body.appendChild(p);
+  }
+}
+
+/* ===== LO-FI MUSIC ===== */
+let lofiPlaying = false;
+let lofiIntervals = [];
+const LOFI_CHORDS = [
+  [261.63, 329.63, 392.00], // C
+  [220.00, 261.63, 329.63], // Am
+  [174.61, 220.00, 261.63], // F
+  [196.00, 246.94, 293.66]  // G
+];
+function playLofiChord(freqs, vol = 0.04) {
+  const ctx = getAudioCtx(); if (!ctx) return;
+  const t = ctx.currentTime;
+  freqs.forEach((f, i) => {
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    const filt = ctx.createBiquadFilter();
+    filt.type = 'lowpass';
+    filt.frequency.setValueAtTime(1200, t);
+    o.type = 'triangle';
+    o.frequency.setValueAtTime(f, t);
+    o.frequency.detune.setValueAtTime((Math.random() - 0.5) * 8, t);
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(vol, t + 0.8);
+    g.gain.linearRampToValueAtTime(vol * 0.7, t + 2.5);
+    g.gain.linearRampToValueAtTime(0, t + 3.6);
+    o.connect(filt); filt.connect(g); g.connect(ctx.destination);
+    o.start(t); o.stop(t + 3.8);
+  });
+}
+function startLofi() {
+  if (lofiPlaying) return;
+  const ctx = getAudioCtx();
+  if (!ctx) return;
+  if (ctx.state === 'suspended') ctx.resume();
+  lofiPlaying = true;
+  let chordIdx = 0;
+  const playNext = () => {
+    if (!lofiPlaying) return;
+    playLofiChord(LOFI_CHORDS[chordIdx % LOFI_CHORDS.length]);
+    chordIdx++;
+  };
+  playNext();
+  const iv = setInterval(playNext, 3200);
+  lofiIntervals.push(iv);
+}
+function stopLofi() {
+  lofiPlaying = false;
+  lofiIntervals.forEach(iv => clearInterval(iv));
+  lofiIntervals = [];
+}
+function toggleLofi() {
+  const btn = document.getElementById('lofiBtn');
+  const icon = document.getElementById('lofiIcon');
+  if (lofiPlaying) {
+    stopLofi();
+    btn.classList.remove('lofi-btn-playing');
+    icon.textContent = '🎵';
+    soundClick();
+  } else {
+    startLofi();
+    btn.classList.add('lofi-btn-playing');
+    icon.textContent = '🔊';
+    soundSystem();
   }
 }
 
@@ -805,7 +874,12 @@ function newDayData(studySecs, noPhoneSecs) {
     noPhoneSeconds: noPhoneSecs, noPhoneRunning: false, sleepOk: false
   };
 }
-
+function newBoss() {
+  const idx = getBossForWeek();
+  const boss = BOSSES[idx];
+  const maxHp = getBossMaxHp();
+  return { weekKey: getMondayKey(), bossIdx: idx, hp: maxHp, maxHp: maxHp, defeated: false };
+}
 function loadAppData() {
   const def = {
     theme: 'dark', autoTheme: false, quoteIndex: 0, level: 0, prestiges: 0, xp: 0, coins: 0, streak: 0,
@@ -815,10 +889,12 @@ function loadAppData() {
     unlockedAchievements: [],
     basicTasks: {}, basicDate: '',
     lastFreeSpin: '',
-    stats: { xpTotal: 0, coinsTotal: 0, tasksTotal: 0, perfectDays: 0, bestStreak: 0, maxLevel: 0, prestiges: 0, spinsTotal: 0, pomoTotal: 0, petMaxStage: 0 },
+    lofiOn: false,
+    stats: { xpTotal: 0, coinsTotal: 0, tasksTotal: 0, perfectDays: 0, bestStreak: 0, maxLevel: 0, prestiges: 0, spinsTotal: 0, pomoTotal: 0, petMaxStage: 0, bossWins: 0 },
     pet: { xp: 0, hunger: 100, happiness: 100, lastUpdate: getTodayKey() },
     pomodoro: { today: 0, date: getTodayKey(), mode: 'focus', seconds: 1500, running: false },
-    weekly: { weekKey: getMondayKey(), missions: [], progress: {} },
+    weekly: { weekKey: getMondayKey(), missions: [], progress: {}, claimed: {} },
+    boss: newBoss(),
     sleepSchedule: { bedtime: '22:00', wakeup: '06:00' }, days: {}
   };
   DAYS.forEach(d => { def.days[d.id] = newDayData(1800, 3600); });
@@ -856,21 +932,23 @@ function loadAppData() {
       if (!parsed.basicDate) parsed.basicDate = '';
       if (!parsed.lastFreeSpin) parsed.lastFreeSpin = '';
       if (parsed.autoTheme === undefined) parsed.autoTheme = false;
-      if (!parsed.stats) parsed.stats = { xpTotal: 0, coinsTotal: 0, tasksTotal: 0, perfectDays: 0, bestStreak: 0, maxLevel: 0, prestiges: 0, spinsTotal: 0, pomoTotal: 0, petMaxStage: 0 };
+      if (parsed.lofiOn === undefined) parsed.lofiOn = false;
+      if (!parsed.stats) parsed.stats = def.stats;
       if (parsed.stats.pomoTotal === undefined) parsed.stats.pomoTotal = 0;
       if (parsed.stats.petMaxStage === undefined) parsed.stats.petMaxStage = 0;
-      if (!parsed.pet) parsed.pet = { xp: 0, hunger: 100, happiness: 100, lastUpdate: getTodayKey() };
-      if (!parsed.pomodoro) parsed.pomodoro = { today: 0, date: getTodayKey(), mode: 'focus', seconds: 1500, running: false };
-      if (!parsed.weekly || parsed.weekly.weekKey !== getMondayKey()) parsed.weekly = { weekKey: getMondayKey(), missions: [], progress: {} };
+      if (parsed.stats.bossWins === undefined) parsed.stats.bossWins = 0;
+      if (!parsed.pet) parsed.pet = def.pet;
+      if (!parsed.pomodoro) parsed.pomodoro = def.pomodoro;
+      if (!parsed.weekly || parsed.weekly.weekKey !== getMondayKey()) parsed.weekly = { weekKey: getMondayKey(), missions: [], progress: {}, claimed: {} };
+      if (!parsed.boss || parsed.boss.weekKey !== getMondayKey()) parsed.boss = newBoss();
+      else parsed.boss.maxHp = getBossMaxHp();
       return parsed;
     }
   } catch(e) { console.error('Erro load:', e); }
   return def;
 }
-
 function saveAppData() { try { localStorage.setItem('rotina_criador_v2', JSON.stringify(appData)); } catch(e) { console.error('Erro save:', e); } }
 
-/* ===== AUTO TEMA ===== */
 function checkAutoTheme() {
   if (!appData.autoTheme) return;
   const h = new Date().getHours();
@@ -878,6 +956,75 @@ function checkAutoTheme() {
   const newTheme = shouldBeDark ? 'dark' : 'light';
   if (appData.theme !== newTheme) { appData.theme = newTheme; initTheme(); saveAppData(); }
 }
+
+/* ===== BOSS ===== */
+function updateBossUI() {
+  if (!appData || !appData.boss) return;
+  const boss = appData.boss;
+  const bossData = BOSSES[boss.bossIdx] || BOSSES[0];
+  const stage = document.getElementById('bossStage');
+  const nameEl = document.getElementById('bossName');
+  const lvlEl = document.getElementById('bossLevelText');
+  const hpTextEl = document.getElementById('bossHpText');
+  const hpFill = document.getElementById('bossHpFill');
+  const hpInner = document.getElementById('bossHpInnerText');
+  const rewardEl = document.getElementById('bossReward');
+  const dmgEl = document.getElementById('bossPlayerDamage');
+  const statusEl = document.getElementById('bossStatusText');
+
+  if (stage) {
+    stage.textContent = bossData.emoji;
+    stage.className = 'boss-stage ' + (boss.defeated ? 'boss-defeat' : 'boss-idle');
+  }
+  if (nameEl) nameEl.textContent = bossData.name;
+  if (lvlEl) lvlEl.textContent = `Nível ${appData.level || 0}`;
+  const hpPct = Math.max(0, Math.round((boss.hp / boss.maxHp) * 100));
+  if (hpTextEl) hpTextEl.textContent = `${Math.max(0, boss.hp)} / ${boss.maxHp}`;
+  if (hpFill) hpFill.style.width = hpPct + '%';
+  if (hpInner) hpInner.textContent = hpPct + '%';
+  if (rewardEl) rewardEl.textContent = getBossReward();
+  if (dmgEl) dmgEl.textContent = getPlayerDamage();
+  if (statusEl) {
+    if (boss.defeated) statusEl.textContent = '🏆 BOSS DERROTADO!';
+    else statusEl.textContent = '⚔️ Complete tarefas para atacar!';
+  }
+}
+function bossTakeHit() {
+  if (!appData || !appData.boss || appData.boss.defeated) return;
+  const dmg = getPlayerDamage();
+  appData.boss.hp = Math.max(0, appData.boss.hp - dmg);
+  if (appData.boss.hp <= 0) {
+    appData.boss.defeated = true;
+    const reward = getBossReward();
+    appData.coins = (appData.coins || 0) + reward;
+    appData.stats.coinsTotal = (appData.stats.coinsTotal || 0) + reward;
+    appData.stats.bossWins = (appData.stats.bossWins || 0) + 1;
+    addXP(200);
+    appData.stats.xpTotal = (appData.stats.xpTotal || 0) + 200;
+    soundBossWin();
+    vibrate([100,50,100,50,200]);
+    launchConfetti(100, ['💥','⚔️','👹','💀','🏆','✨','💰']);
+    setTimeout(() => {
+      showAchievementToast({ emoji: '👹', name: 'BOSS DERROTADO!', reward });
+    }, 300);
+    checkAchievements();
+  } else {
+    soundHit();
+    vibrate(30);
+  }
+  saveAppData();
+  updateBossUI();
+  // Animação de hit no stage
+  const stage = document.getElementById('bossStage');
+  if (stage && !appData.boss.defeated) {
+    stage.classList.remove('boss-hit');
+    void stage.offsetWidth;
+    stage.classList.add('boss-hit');
+    setTimeout(() => stage.classList.remove('boss-hit'), 500);
+  }
+}
+function openBoss() { soundClick(); updateBossUI(); const m = document.getElementById('bossModal'); m.classList.remove('hidden'); m.style.display = 'flex'; }
+function closeBoss() { const m = document.getElementById('bossModal'); m.classList.add('hidden'); m.style.display = 'none'; soundClick(); }
 
 /* ===== PET ===== */
 function updatePetDecay() {
@@ -902,18 +1049,8 @@ function addPetXP(amount) {
   saveAppData();
   updatePetUI();
 }
-function openPet() {
-  updatePetDecay();
-  soundClick();
-  updatePetUI();
-  const m = document.getElementById('petModal');
-  m.classList.remove('hidden'); m.style.display = 'flex';
-}
-function closePet() {
-  const m = document.getElementById('petModal');
-  m.classList.add('hidden'); m.style.display = 'none';
-  soundClick();
-}
+function openPet() { updatePetDecay(); soundClick(); updatePetUI(); const m = document.getElementById('petModal'); m.classList.remove('hidden'); m.style.display = 'flex'; }
+function closePet() { const m = document.getElementById('petModal'); m.classList.add('hidden'); m.style.display = 'none'; soundClick(); }
 function updatePetUI() {
   if (!appData || !appData.pet) return;
   const pet = appData.pet;
@@ -931,8 +1068,7 @@ function updatePetUI() {
     if (nextStage) lvlEl.textContent = `Evolução ${idx + 1} — ${pet.xp} / ${nextStage.min} XP`;
     else lvlEl.textContent = `Forma Final — ${pet.xp} XP`;
   }
-  const hunger = pet.hunger || 0;
-  const happiness = pet.happiness || 0;
+  const hunger = pet.hunger || 0, happiness = pet.happiness || 0;
   const hungerEl = document.getElementById('petHungerText');
   const happinessEl = document.getElementById('petHappinessText');
   const xpEl = document.getElementById('petXpText');
@@ -984,11 +1120,7 @@ function openPomodoro() {
   const m = document.getElementById('pomodoroModal');
   m.classList.remove('hidden'); m.style.display = 'flex';
 }
-function closePomodoro() {
-  const m = document.getElementById('pomodoroModal');
-  m.classList.add('hidden'); m.style.display = 'none';
-  soundClick();
-}
+function closePomodoro() { const m = document.getElementById('pomodoroModal'); m.classList.add('hidden'); m.style.display = 'none'; soundClick(); }
 function updatePomodoroUI() {
   if (!appData || !appData.pomodoro) return;
   const p = appData.pomodoro;
@@ -1020,33 +1152,24 @@ function startPomodoro() {
       if (appData.pomodoro.seconds % 5 === 0) saveAppData();
       updatePomodoroUI();
     } else {
-      // Timer finished
       clearInterval(pomodoroInterval); pomodoroInterval = null;
       if (appData.pomodoro.mode === 'focus') {
-        // Focus complete
         appData.pomodoro.today = (appData.pomodoro.today || 0) + 1;
         appData.stats.pomoTotal = (appData.stats.pomoTotal || 0) + 1;
         addXP(50);
-        // Bonus every 4
-        if (appData.pomodoro.today % 4 === 0) {
-          addXP(100);
-          launchConfetti(30, ['🍅','🔥','✨','💪']);
-        }
+        appData.stats.xpTotal = (appData.stats.xpTotal || 0) + 50;
+        if (appData.pomodoro.today % 4 === 0) { addXP(100); launchConfetti(30, ['🍅','🔥','✨','💪']); }
         appData.pomodoro.mode = 'break';
         appData.pomodoro.seconds = 300;
-        // Increment weekly progress
         if (appData.weekly && appData.weekly.progress) {
           appData.weekly.progress.pomodoro = (appData.weekly.progress.pomodoro || 0) + 1;
         }
       } else {
-        // Break complete
         appData.pomodoro.mode = 'focus';
         appData.pomodoro.seconds = 1500;
       }
       appData.pomodoro.running = false;
-      saveAppData();
-      updatePomodoroUI();
-      updateLevelUI();
+      saveAppData(); updatePomodoroUI(); updateLevelUI();
       checkAchievements();
       soundPomodoro();
       vibrate([50,30,50,30,80]);
@@ -1055,38 +1178,16 @@ function startPomodoro() {
     }
   }, 1000);
 }
-function pausePomodoro() {
-  if (pomodoroInterval) { clearInterval(pomodoroInterval); pomodoroInterval = null; }
-  appData.pomodoro.running = false;
-  saveAppData();
-}
-function resetPomodoro() {
-  pausePomodoro();
-  appData.pomodoro.mode = 'focus';
-  appData.pomodoro.seconds = 1500;
-  saveAppData();
-  updatePomodoroUI();
-}
-function setPomodoroMode(mode) {
-  pausePomodoro();
-  appData.pomodoro.mode = mode;
-  appData.pomodoro.seconds = mode === 'focus' ? 1500 : 300;
-  saveAppData();
-  updatePomodoroUI();
-}
+function pausePomodoro() { if (pomodoroInterval) { clearInterval(pomodoroInterval); pomodoroInterval = null; } appData.pomodoro.running = false; saveAppData(); }
+function resetPomodoro() { pausePomodoro(); appData.pomodoro.mode = 'focus'; appData.pomodoro.seconds = 1500; saveAppData(); updatePomodoroUI(); }
+function setPomodoroMode(mode) { pausePomodoro(); appData.pomodoro.mode = mode; appData.pomodoro.seconds = mode === 'focus' ? 1500 : 300; saveAppData(); updatePomodoroUI(); }
 
-/* ===== WEEKLY MISSIONS ===== */
+/* ===== WEEKLY ===== */
 function ensureWeeklyMissions() {
   const wk = getMondayKey();
   if (!appData.weekly || appData.weekly.weekKey !== wk) {
-    // Generate 3 random missions
     const pool = [...WEEKLY_POOL].sort(() => Math.random() - 0.5).slice(0, 3);
-    appData.weekly = {
-      weekKey: wk,
-      missions: pool.map(m => m.id),
-      progress: { tasks: 0, perfect: 0, pomodoro: 0, water: 0 },
-      claimed: {}
-    };
+    appData.weekly = { weekKey: wk, missions: pool.map(m => m.id), progress: { tasks: 0, perfect: 0, pomodoro: 0, water: 0 }, claimed: {} };
     saveAppData();
   }
 }
@@ -1102,28 +1203,15 @@ function checkWeeklyMissions() {
       appData.coins = (appData.coins || 0) + mission.reward;
       appData.stats.coinsTotal = (appData.stats.coinsTotal || 0) + mission.reward;
       changed = true;
-      soundAchievement();
-      vibrate([50,30,50,30,80]);
+      soundAchievement(); vibrate([50,30,50,30,80]);
       launchConfetti(40, [mission.emoji,'✨','🎉','💰']);
-      setTimeout(() => {
-        showAchievementToast({ emoji: mission.emoji, name: 'Missão Semanal!', reward: mission.reward });
-      }, 200);
+      setTimeout(() => showAchievementToast({ emoji: mission.emoji, name: 'Missão Semanal!', reward: mission.reward }), 200);
     }
   });
   if (changed) { saveAppData(); updateLevelUI(); updateWeeklyUI(); }
 }
-function openWeekly() {
-  ensureWeeklyMissions();
-  soundClick();
-  updateWeeklyUI();
-  const m = document.getElementById('weeklyModal');
-  m.classList.remove('hidden'); m.style.display = 'flex';
-}
-function closeWeekly() {
-  const m = document.getElementById('weeklyModal');
-  m.classList.add('hidden'); m.style.display = 'none';
-  soundClick();
-}
+function openWeekly() { ensureWeeklyMissions(); soundClick(); updateWeeklyUI(); const m = document.getElementById('weeklyModal'); m.classList.remove('hidden'); m.style.display = 'flex'; }
+function closeWeekly() { const m = document.getElementById('weeklyModal'); m.classList.add('hidden'); m.style.display = 'none'; soundClick(); }
 function updateWeeklyUI() {
   if (!appData || !appData.weekly) return;
   const list = document.getElementById('weeklyList');
@@ -1152,7 +1240,6 @@ function updateWeeklyUI() {
       ${done ? '<div style="text-align:right;font-size:10px;color:#22c55e;font-weight:900;margin-top:4px;">✅ CONCLUÍDA</div>' : ''}`;
     list.appendChild(div);
   });
-  // Time left
   const el = document.getElementById('weeklyTimeLeft');
   if (el) {
     const now = new Date();
@@ -1166,7 +1253,7 @@ function updateWeeklyUI() {
   }
 }
 
-/* ===== MISSÕES BÁSICAS ===== */
+/* ===== BASIC ===== */
 function ensureBasicTasksToday() {
   const today = getTodayKey();
   if (appData.basicDate !== today) {
@@ -1196,28 +1283,16 @@ function renderBasicTasks() {
     if (isDone) done++;
     const row = document.createElement('div');
     row.className = 'basic-task-row' + (isDone ? ' done' : '');
-    row.innerHTML = `
-      <div class="basic-task-name"><span class="basic-task-emoji">${t.emoji}</span><span>${t.name}</span></div>
-      <div style="width:28px;height:28px;border-radius:8px;border:2px solid ${isDone ? '#22c55e' : '#475569'};display:grid;place-content:center;background:${isDone ? 'linear-gradient(135deg,#22c55e,#16a34a)' : 'transparent'};color:white;font-weight:900;font-size:14px;box-shadow:${isDone ? '0 0 12px rgba(34,197,94,0.6)' : 'none'};">${isDone ? '✔' : ''}</div>`;
+    row.innerHTML = `<div class="basic-task-name"><span class="basic-task-emoji">${t.emoji}</span><span>${t.name}</span></div><div style="width:28px;height:28px;border-radius:8px;border:2px solid ${isDone ? '#22c55e' : '#475569'};display:grid;place-content:center;background:${isDone ? 'linear-gradient(135deg,#22c55e,#16a34a)' : 'transparent'};color:white;font-weight:900;font-size:14px;box-shadow:${isDone ? '0 0 12px rgba(34,197,94,0.6)' : 'none'};">${isDone ? '✔' : ''}</div>`;
     row.addEventListener('click', () => toggleBasicTask(t.id));
     list.appendChild(row);
   });
   document.getElementById('basicProgress').textContent = `${done} / ${BASIC_TASKS.length}`;
 }
-function openMissions() {
-  ensureBasicTasksToday();
-  renderBasicTasks();
-  soundSystem(); vibrate([20,10,30]);
-  const m = document.getElementById('missionsModal');
-  m.classList.remove('hidden'); m.style.display = 'flex';
-}
-function closeMissions() {
-  const m = document.getElementById('missionsModal');
-  m.classList.add('hidden'); m.style.display = 'none';
-  soundClick();
-}
+function openMissions() { ensureBasicTasksToday(); renderBasicTasks(); soundSystem(); vibrate([20,10,30]); const m = document.getElementById('missionsModal'); m.classList.remove('hidden'); m.style.display = 'flex'; }
+function closeMissions() { const m = document.getElementById('missionsModal'); m.classList.add('hidden'); m.style.display = 'none'; soundClick(); }
 
-/* ===== CONQUISTAS ===== */
+/* ===== ACHIEVEMENTS ===== */
 function checkAchievements() {
   if (!appData.unlockedAchievements) appData.unlockedAchievements = [];
   ACHIEVEMENTS.forEach(a => {
@@ -1225,13 +1300,11 @@ function checkAchievements() {
       appData.unlockedAchievements.push(a.id);
       appData.coins = (appData.coins || 0) + a.reward;
       appData.stats.coinsTotal = (appData.stats.coinsTotal || 0) + a.reward;
-      soundAchievement();
-      vibrate([30,20,30,20,50]);
+      soundAchievement(); vibrate([30,20,30,20,50]);
       setTimeout(() => { launchConfetti(25, ['🏆','✨','🎉',a.emoji]); showAchievementToast(a); }, 200);
     }
   });
-  saveAppData();
-  updateLevelUI();
+  saveAppData(); updateLevelUI();
 }
 function showAchievementToast(achv) {
   const t = document.createElement('div');
@@ -1242,16 +1315,8 @@ function showAchievementToast(achv) {
   setTimeout(() => { t.style.transform = 'translateX(-50%) translateY(-150px)'; }, 4000);
   setTimeout(() => t.remove(), 4600);
 }
-function openAchievements() {
-  soundClick(); renderAchievements();
-  const m = document.getElementById('achievementsModal');
-  m.classList.remove('hidden'); m.style.display = 'flex';
-}
-function closeAchievements() {
-  const m = document.getElementById('achievementsModal');
-  m.classList.add('hidden'); m.style.display = 'none';
-  soundClick();
-}
+function openAchievements() { soundClick(); renderAchievements(); const m = document.getElementById('achievementsModal'); m.classList.remove('hidden'); m.style.display = 'flex'; }
+function closeAchievements() { const m = document.getElementById('achievementsModal'); m.classList.add('hidden'); m.style.display = 'none'; soundClick(); }
 function renderAchievements() {
   const list = document.getElementById('achievementsList');
   list.innerHTML = '';
@@ -1262,15 +1327,13 @@ function renderAchievements() {
     const div = document.createElement('div');
     div.className = 'achv-badge ' + (isUnlocked ? 'unlocked' : 'locked');
     div.innerHTML = `<div class="achv-emoji">${a.emoji}</div><div class="achv-name">${a.name}</div>`;
-    div.addEventListener('click', () => {
-      showConfirm(a.emoji, a.name, a.desc + (isUnlocked ? ' ✅ DESBLOQUEADA' : ' 🔒 Bloqueada') + ' — Recompensa: ' + a.reward + ' 🪙', null);
-    });
+    div.addEventListener('click', () => showConfirm(a.emoji, a.name, a.desc + (isUnlocked ? ' ✅ DESBLOQUEADA' : ' 🔒 Bloqueada') + ' — Recompensa: ' + a.reward + ' 🪙', null));
     list.appendChild(div);
   });
   document.getElementById('achvProgress').textContent = `${unlocked} / ${ACHIEVEMENTS.length}`;
 }
 
-/* ===== ESTATÍSTICAS ===== */
+/* ===== STATS ===== */
 function openStats() { soundClick(); renderStats(); const m = document.getElementById('statsModal'); m.classList.remove('hidden'); m.style.display = 'flex'; }
 function closeStats() { const m = document.getElementById('statsModal'); m.classList.add('hidden'); m.style.display = 'none'; soundClick(); }
 function renderStats() {
@@ -1280,6 +1343,7 @@ function renderStats() {
   document.getElementById('statTasksTotal').textContent = s.tasksTotal || 0;
   document.getElementById('statBestStreak').textContent = s.bestStreak || 0;
   document.getElementById('statPerfectDays').textContent = s.perfectDays || 0;
+  document.getElementById('statBossWins').textContent = s.bossWins || 0;
   const chart = document.getElementById('statsChart');
   chart.innerHTML = '';
   for (let i = 6; i >= 0; i--) {
@@ -1296,7 +1360,7 @@ function renderStats() {
   }
 }
 
-/* ===== ROLETA ===== */
+/* ===== ROULETTE ===== */
 function openRoulette() { soundClick(); updateRouletteStatus(); const m = document.getElementById('rouletteModal'); m.classList.remove('hidden'); m.style.display = 'flex'; }
 function closeRoulette() { const m = document.getElementById('rouletteModal'); m.classList.add('hidden'); m.style.display = 'none'; soundClick(); }
 function updateRouletteStatus() {
@@ -1357,7 +1421,7 @@ function spinRoulette(isPaid) {
   }, 4100);
 }
 
-/* ===== TEMA ===== */
+/* ===== THEME ===== */
 function applyThemeStyle() {
   ['theme-purple','theme-green','theme-red','theme-gold','theme-pink','theme-rainbow'].forEach(c => document.body.classList.remove(c));
   if (appData.themeStyle && appData.themeStyle !== 'default') document.body.classList.add('theme-' + appData.themeStyle);
@@ -1378,7 +1442,7 @@ function initTheme() {
   applyThemeStyle();
 }
 
-/* ===== NAVEGAÇÃO DIAS ===== */
+/* ===== DAYS ===== */
 function renderDaysNav() {
   const c = document.getElementById('daysNavContainer');
   c.innerHTML = '';
@@ -1397,15 +1461,10 @@ function renderDaysNav() {
       <span class="text-[10px] uppercase tracking-wider opacity-80 font-bold">${day.short}</span>
       <span class="text-xs font-black mt-0.5">${day.name}</span>
       <span class="text-[9px] mt-1 px-2 py-0.5 rounded-full font-bold ${isCurrent ? 'bg-white/25 text-white' : 'bg-slate-800 text-slate-400'}">${completed}/${TOTAL_TASKS}</span>`;
-    btn.addEventListener('click', () => {
-      pauseAllTimers(); soundClick();
-      currentDayIndex = day.id;
-      renderDaysNav(); loadDayData(currentDayIndex);
-    });
+    btn.addEventListener('click', () => { pauseAllTimers(); soundClick(); currentDayIndex = day.id; renderDaysNav(); loadDayData(currentDayIndex); });
     c.appendChild(btn);
   });
 }
-
 function loadDayData(dayId) {
   const dd = appData.days[dayId];
   const dayObj = DAYS.find(d => d.id === dayId);
@@ -1417,7 +1476,6 @@ function loadDayData(dayId) {
   updateTimerDisplay();
   updateNoPhoneDisplay();
 }
-
 function renderTasks(dd, goals) {
   const grid = document.getElementById('tasksGrid');
   grid.innerHTML = '';
@@ -1441,22 +1499,13 @@ function renderTasks(dd, goals) {
     const checked = dd.tasks[c.i];
     const card = document.createElement('div');
     card.className = `task-card rarity-${TASK_RARITY[c.i]} ${checked ? 'completed' : ''} glass rounded-2xl p-4 shadow-lg flex flex-col justify-between`;
-    let html = `<div>
-      <div class="flex items-center justify-between mb-2">
-        <div class="flex items-center gap-2">
-          <span class="text-3xl">${c.emoji}</span>
-          <span class="rarity-tag ${TASK_RARITY[c.i]}">${rar.label}</span>
-        </div>`;
+    let html = `<div><div class="flex items-center justify-between mb-2"><div class="flex items-center gap-2"><span class="text-3xl">${c.emoji}</span><span class="rarity-tag ${TASK_RARITY[c.i]}">${rar.label}</span></div>`;
     if (c.type === 'checkbox') html += `<input type="checkbox" data-index="${c.i}" class="custom-checkbox task-checkbox" ${checked ? 'checked' : ''}>`;
     else if (c.type !== 'subvideos' && c.type !== 'water') html += `<input type="checkbox" data-index="${c.i}" class="custom-checkbox task-checkbox" ${checked ? 'checked' : ''}>`;
-    html += `</div>
-      <h3 class="font-black text-sm text-white mb-0.5">${c.title}</h3>
-      <p class="text-[11px] text-slate-400 mb-2">${c.desc}</p>`;
+    html += `</div><h3 class="font-black text-sm text-white mb-0.5">${c.title}</h3><p class="text-[11px] text-slate-400 mb-2">${c.desc}</p>`;
     if (c.type === 'subvideos') {
       html += `<div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 space-y-1.5">`;
-      for (let s = 0; s < c.count; s++) {
-        html += `<label class="flex items-center gap-2 text-[11px] font-semibold cursor-pointer text-slate-300"><input type="checkbox" data-sub="${s}" class="custom-checkbox subvideo-checkbox !w-5 !h-5" ${dd.subvideos[s] ? 'checked' : ''}><span>Vídeo ${s + 1}</span></label>`;
-      }
+      for (let s = 0; s < c.count; s++) html += `<label class="flex items-center gap-2 text-[11px] font-semibold cursor-pointer text-slate-300"><input type="checkbox" data-sub="${s}" class="custom-checkbox subvideo-checkbox !w-5 !h-5" ${dd.subvideos[s] ? 'checked' : ''}><span>Vídeo ${s + 1}</span></label>`;
       html += `</div>`;
     } else if (c.type === 'instagram') {
       html += `<textarea data-field="instagramNotes" rows="2" placeholder="Anotações..." class="w-full text-[11px] p-2 rounded-xl bg-slate-950/60 border border-slate-800 text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none">${dd.instagramNotes || ''}</textarea>`;
@@ -1537,11 +1586,10 @@ function setTaskState(i, newState, rar, rect) {
     appData.stats.tasksTotal = (appData.stats.tasksTotal || 0) + 1;
     appData.stats.xpTotal = (appData.stats.xpTotal || 0) + rar.xp;
     appData.stats.coinsTotal = (appData.stats.coinsTotal || 0) + rar.coins;
-    // Weekly progress
     ensureWeeklyMissions();
     appData.weekly.progress.tasks = (appData.weekly.progress.tasks || 0) + 1;
-    // Pet XP
     addPetXP(3);
+    bossTakeHit();
     if (rect) { burstParticles(rect.left + rect.width/2, rect.top + rect.height/2, rar.color); floatXP(rect.left, rect.top - 10, rar.xp, 'XP'); }
   } else {
     removeXP(rar.xp); removeCoins(rar.coins);
@@ -1563,9 +1611,7 @@ function bindTaskEvents() {
       setTaskState(i, to, rar, rect);
       if (to) { if (i === 6) soundWater(); else soundCheck(); vibrate([20,10,30]); }
       else { soundClick(); vibrate(20); }
-      saveAppData();
-      loadDayData(currentDayIndex);
-      renderDaysNav();
+      saveAppData(); loadDayData(currentDayIndex); renderDaysNav();
     });
   });
   document.querySelectorAll('.subvideo-checkbox').forEach(cb => {
@@ -1600,23 +1646,13 @@ function bindTaskEvents() {
   const tr = document.getElementById('timerResetBtn');
   if (ts) ts.addEventListener('click', () => { startStudyTimer(goals); soundClick(); });
   if (tp) tp.addEventListener('click', () => { pauseStudyTimer(); soundClick(); });
-  if (tr) tr.addEventListener('click', () => {
-    pauseStudyTimer();
-    dd.timerSeconds = goals.study;
-    setTaskState(4, false, RARITY.rare, null);
-    saveAppData(); loadDayData(currentDayIndex); renderDaysNav();
-  });
+  if (tr) tr.addEventListener('click', () => { pauseStudyTimer(); dd.timerSeconds = goals.study; setTaskState(4, false, RARITY.rare, null); saveAppData(); loadDayData(currentDayIndex); renderDaysNav(); });
   const ns = document.getElementById('noPhoneStartBtn');
   const np = document.getElementById('noPhonePauseBtn');
   const nr = document.getElementById('noPhoneResetBtn');
   if (ns) ns.addEventListener('click', () => { startNoPhoneTimer(goals); soundClick(); });
   if (np) np.addEventListener('click', () => { pauseNoPhoneTimer(); soundClick(); });
-  if (nr) nr.addEventListener('click', () => {
-    pauseNoPhoneTimer();
-    dd.noPhoneSeconds = goals.noPhone;
-    setTaskState(8, false, RARITY.epic, null);
-    saveAppData(); loadDayData(currentDayIndex); renderDaysNav();
-  });
+  if (nr) nr.addEventListener('click', () => { pauseNoPhoneTimer(); dd.noPhoneSeconds = goals.noPhone; setTaskState(8, false, RARITY.epic, null); saveAppData(); loadDayData(currentDayIndex); renderDaysNav(); });
   const bt = document.getElementById('bedtimeInput');
   const wk = document.getElementById('wakeupInput');
   if (bt) bt.addEventListener('change', e => { appData.sleepSchedule.bedtime = e.target.value; saveAppData(); });
@@ -1682,10 +1718,8 @@ function triggerLevelUp() {
   if (appData.level > (appData.stats.maxLevel || 0)) appData.stats.maxLevel = appData.level;
   if (appData.streak > (appData.stats.bestStreak || 0)) appData.stats.bestStreak = appData.streak;
   if (appData.prestiges > (appData.stats.prestiges || 0)) appData.stats.prestiges = appData.prestiges;
-  // Weekly progress perfect
   ensureWeeklyMissions();
   appData.weekly.progress.perfect = (appData.weekly.progress.perfect || 0) + 1;
-  // Pet XP bonus
   addPetXP(30);
   const ng = getLevelGoals(appData.level);
   const rank = getRank(appData.prestiges || 0);
@@ -1728,14 +1762,11 @@ function triggerLevelUp() {
   document.getElementById('levelUpModal').classList.remove('hidden');
   DAYS.forEach(d => { appData.days[d.id] = newDayData(ng.study, ng.noPhone); });
   appData.xp = 0;
-  saveAppData(); updateLevelUI();
-  checkAchievements();
-  checkWeeklyMissions();
-  setTimeout(() => {
-    const b = document.getElementById('rankBadge');
-    b.classList.add('badge-glow','shine');
-    setTimeout(() => b.classList.remove('badge-glow'), 4000);
-  }, 600);
+  // Atualiza boss pro novo nível
+  appData.boss = newBoss();
+  saveAppData(); updateLevelUI(); updateBossUI();
+  checkAchievements(); checkWeeklyMissions();
+  setTimeout(() => { const b = document.getElementById('rankBadge'); b.classList.add('badge-glow','shine'); setTimeout(() => b.classList.remove('badge-glow'), 4000); }, 600);
 }
 function updateLevelUI() {
   document.getElementById('levelBadge').textContent = appData.level;
@@ -1773,15 +1804,9 @@ function showConfirm(emoji, title, msg, cb) {
 }
 function openStore() { soundClick(); updateLevelUI(); renderStore(); const sm = document.getElementById('storeModal'); sm.classList.remove('hidden'); sm.style.display = 'flex'; }
 function closeStore() { const sm = document.getElementById('storeModal'); sm.classList.add('hidden'); sm.style.display = 'none'; soundClick(); }
-function renderStore() {
-  const storeContent = document.getElementById('storeContent');
-  storeContent.innerHTML = '';
-  if (currentStoreTab === 'avatars') renderAvatarsTab();
-  else if (currentStoreTab === 'themes') renderThemesTab();
-  else renderChestTab();
-}
+function renderStore() { const c = document.getElementById('storeContent'); c.innerHTML = ''; if (currentStoreTab === 'avatars') renderAvatarsTab(); else if (currentStoreTab === 'themes') renderThemesTab(); else renderChestTab(); }
 function renderAvatarsTab() {
-  const storeContent = document.getElementById('storeContent');
+  const c = document.getElementById('storeContent');
   const grid = document.createElement('div');
   grid.className = 'grid grid-cols-3 gap-2';
   AVATARS_SHOP.forEach(item => {
@@ -1804,10 +1829,10 @@ function renderAvatarsTab() {
     }
     grid.appendChild(div);
   });
-  storeContent.appendChild(grid);
+  c.appendChild(grid);
 }
 function renderThemesTab() {
-  const storeContent = document.getElementById('storeContent');
+  const c = document.getElementById('storeContent');
   const list = document.createElement('div');
   list.className = 'space-y-2';
   THEMES_SHOP.forEach(item => {
@@ -1828,14 +1853,14 @@ function renderThemesTab() {
     }
     list.appendChild(div);
   });
-  storeContent.appendChild(list);
+  c.appendChild(list);
 }
 function renderChestTab() {
-  const storeContent = document.getElementById('storeContent');
+  const c = document.getElementById('storeContent');
   const div = document.createElement('div');
   div.className = 'text-center py-4';
   div.innerHTML = `<div id="chestVisual" class="text-8xl mb-3">🎁</div><h3 class="text-lg font-black text-white mb-1">Baú Misterioso</h3><p class="text-xs text-slate-400 mb-5 px-4">Pode vir moedas, XP, avatares ou temas raros!</p><button type="button" id="openChestBtn" class="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-600 text-white font-black text-sm shadow-xl">🪙 ABRIR POR ${CHEST_PRICE} MOEDAS</button><p class="text-[10px] text-slate-500 mt-3">Suas moedas: 🪙 ${appData.coins || 0}</p>`;
-  storeContent.appendChild(div);
+  c.appendChild(div);
   document.getElementById('openChestBtn').addEventListener('click', () => {
     if ((appData.coins || 0) < CHEST_PRICE) { soundError(); vibrate([50,30,50]); document.getElementById('openChestBtn').textContent = '❌ MOEDAS INSUFICIENTES'; setTimeout(() => renderChestTab(), 1200); return; }
     appData.coins -= CHEST_PRICE; saveAppData(); updateLevelUI();
@@ -1878,10 +1903,14 @@ function initApp() {
   ensureBasicTasksToday();
   updatePetDecay();
   ensureWeeklyMissions();
+  // Valida boss da semana
+  if (!appData.boss || appData.boss.weekKey !== getMondayKey()) appData.boss = newBoss();
+  else appData.boss.maxHp = getBossMaxHp();
   spawnBgParticles();
   initTheme();
   updateLevelUI();
   updatePetUI();
+  updateBossUI();
   document.getElementById('avatarInner').textContent = appData.avatar || '⚡';
   renderDaysNav();
   loadDayData(currentDayIndex);
@@ -1889,18 +1918,13 @@ function initApp() {
   checkAutoTheme();
   setInterval(checkAutoTheme, 60000);
 
-  // Buttons
   document.getElementById('themeToggleBtn').addEventListener('click', () => {
     appData.theme = appData.theme === 'dark' ? 'light' : 'dark';
     appData.autoTheme = false;
     initTheme(); saveAppData(); soundClick();
   });
-  document.getElementById('themeToggleBtn').addEventListener('dblclick', () => {
-    appData.autoTheme = !appData.autoTheme;
-    saveAppData(); checkAutoTheme();
-    if (appData.autoTheme) launchConfetti(10, ['🌓','✨']);
-    soundSystem();
-  });
+  document.getElementById('lofiBtn').addEventListener('click', toggleLofi);
+
   document.getElementById('storeBtn').addEventListener('click', openStore);
   document.getElementById('storeCloseBtn').addEventListener('click', closeStore);
   document.getElementById('missionsBtn').addEventListener('click', openMissions);
@@ -1917,6 +1941,8 @@ function initApp() {
   document.getElementById('pomodoroCloseBtn').addEventListener('click', closePomodoro);
   document.getElementById('weeklyBtn').addEventListener('click', openWeekly);
   document.getElementById('weeklyCloseBtn').addEventListener('click', closeWeekly);
+  document.getElementById('bossBtn').addEventListener('click', openBoss);
+  document.getElementById('bossCloseBtn').addEventListener('click', closeBoss);
 
   document.getElementById('spinBtn').addEventListener('click', () => spinRoulette(false));
   document.getElementById('spinPaidBtn').addEventListener('click', () => spinRoulette(true));
@@ -1989,7 +2015,7 @@ function initApp() {
 
   checkAchievements();
   checkWeeklyMissions();
-  console.log('✅ Modo Monstro v3 inicializado!');
+  console.log('✅ Modo Monstro v4 inicializado!');
 }
 document.addEventListener('DOMContentLoaded', initApp);
 </script>
@@ -2012,7 +2038,7 @@ installAppBtn.addEventListener('click', async () => {
   deferredPrompt = null;
   installAppBtn.classList.add('hidden');
 });
-window.addEventListener('appinstalled', () => { installAppBtn.classList.remove('hidden'); deferredPrompt = null; });
+window.addEventListener('appinstalled', () => { installAppBtn.classList.add('hidden'); deferredPrompt = null; });
 </script>
 </body>
 </html>
