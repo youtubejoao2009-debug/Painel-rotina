@@ -25,6 +25,7 @@ tailwind.config = { darkMode: 'class', theme: { extend: {
 body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: #0a0f1e; min-height: 100vh; position: relative; }
 body.light-bg { background: #eef2ff; }
 
+/* ====== FUNDO SOLO LEVELING - OLHOS ====== */
 .bg-eye-layer {
   position: fixed;
   inset: 0;
@@ -36,19 +37,20 @@ body.light-bg { background: #eef2ff; }
   opacity: 0.22;
   pointer-events: none;
   filter: brightness(1.1) contrast(1.25) saturate(1.3);
-  animation: eyeBreathe 5s ease-in-out infinite, eyeBlink 8s ease-in-out infinite;
-  will-change: opacity, filter, transform;
-  transform-origin: center 30%;
+  animation: eyeEffect 7s ease-in-out infinite;
+  will-change: opacity, filter;
 }
-@keyframes eyeBreathe {
-  0%, 100% { opacity: 0.15; filter: brightness(1) contrast(1.25) saturate(1.2); }
-  50% { opacity: 0.35; filter: brightness(1.5) contrast(1.4) saturate(1.5); }
+
+/* Respiração suave + piscada flash (sem mexer a imagem) */
+@keyframes eyeEffect {
+  0%   { opacity: 0.15; filter: brightness(1)   contrast(1.25) saturate(1.2); }
+  35%  { opacity: 0.35; filter: brightness(1.5) contrast(1.4)  saturate(1.5); }
+  70%  { opacity: 0.15; filter: brightness(1)   contrast(1.25) saturate(1.2); }
+  82%  { opacity: 0.32; filter: brightness(1.4) contrast(1.4)  saturate(1.4); }
+  84%  { opacity: 0.05; filter: brightness(0.2) contrast(1.2)  saturate(1.2); }
+  86%  { opacity: 0.32; filter: brightness(1.4) contrast(1.4)  saturate(1.4); }
 }
-@keyframes eyeBlink {
-  0%, 88%, 100% { transform: scaleY(1); }
-  91% { transform: scaleY(0.05); }
-  94% { transform: scaleY(1); }
-}
+
 body.light-bg .bg-eye-layer { opacity: 0.12; }
 
 body::before {
@@ -113,7 +115,7 @@ body.light-bg .glass { background: rgba(255,255,255,0.8); }
 .rank-badge.shine::after { content: ""; position: absolute; inset: 0; background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.5) 50%, transparent 70%); background-size: 250% auto; animation: shineSweep 3s linear infinite; pointer-events: none; }
 @keyframes shineSweep { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
 
-.modal-overlay { background: rgba(0,0,0,0.88); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.modal-overlay { background: rgba(0,0,0,0.88); }
 .levelup-rays { position: absolute; inset: -50%; background: conic-gradient(from 0deg, transparent 0deg, rgba(0,229,255,0.5) 15deg, transparent 30deg, transparent 45deg, rgba(0,229,255,0.5) 60deg, transparent 75deg, transparent 90deg, rgba(0,229,255,0.5) 105deg, transparent 120deg, transparent 135deg, rgba(0,229,255,0.5) 150deg, transparent 165deg, transparent 180deg, rgba(0,229,255,0.5) 195deg, transparent 210deg, transparent 225deg, rgba(0,229,255,0.5) 240deg, transparent 255deg, transparent 270deg, rgba(0,229,255,0.5) 285deg, transparent 300deg, transparent 315deg, rgba(0,229,255,0.5) 330deg, transparent 345deg); animation: rotateRays 8s linear infinite; pointer-events: none; opacity: 0.55; }
 @keyframes rotateRays { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 @keyframes levelUpPop { 0% { transform: scale(0.2) rotate(-15deg); opacity: 0; } 55% { transform: scale(1.15) rotate(8deg); opacity: 1; } 75% { transform: scale(0.95) rotate(-4deg); } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
@@ -167,7 +169,7 @@ body.light-bg .avatar-inner { background: #eef2ff; }
 .store-tab { transition: all 0.2s; }
 .store-tab.active { background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; box-shadow: 0 4px 15px rgba(59,130,246,0.4); }
 
-/* ====== MODAL MISSÕES BÁSICAS - ESTILO SISTEMA SOLO LEVELING ====== */
+/* ====== MODAL MISSÕES BÁSICAS - SISTEMA SOLO LEVELING ====== */
 #missionsModal .missions-panel {
   background: linear-gradient(180deg, rgba(10,20,40,0.98), rgba(5,10,25,0.98));
   border: 2px solid rgba(59,130,246,0.6);
@@ -214,7 +216,6 @@ body.light-bg .avatar-inner { background: #eef2ff; }
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col">
 
-<!-- FUNDO SOLO LEVELING -->
 <div class="bg-eye-layer"></div>
 
 <header class="sticky top-0 z-40 glass border-b border-slate-800/80 shadow-lg">
@@ -305,7 +306,7 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </footer>
 
-<!-- MODAL MISSÕES BÁSICAS - SISTEMA SOLO LEVELING -->
+<!-- MODAL MISSÕES BÁSICAS -->
 <div id="missionsModal" class="hidden fixed inset-0 z-[75] modal-overlay items-center justify-center p-3 overflow-y-auto" style="display:none;">
   <div class="missions-panel rounded-3xl p-5 max-w-md w-full my-auto">
     <div class="text-center mb-4">
@@ -314,14 +315,11 @@ body.light-bg .avatar-inner { background: #eef2ff; }
       <div class="missions-line my-2"></div>
       <p class="text-[10px] text-cyan-400/80 font-bold tracking-wider uppercase">Missões Diárias Básicas</p>
     </div>
-
     <div id="basicTasksList" class="max-h-[55vh] overflow-y-auto mb-3"></div>
-
     <div class="flex items-center justify-between px-1 mb-3">
       <span class="text-[11px] text-slate-400 font-bold">Progresso:</span>
       <span id="basicProgress" class="text-[12px] font-black text-cyan-400">0 / 8</span>
     </div>
-
     <button id="missionsCloseBtn" type="button" class="w-full py-3 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-black text-sm shadow-xl tracking-wider">FECHAR</button>
   </div>
 </div>
