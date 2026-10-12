@@ -683,7 +683,7 @@ function renderTasks(dd){
     if(editModeOn){
       html+=`<div class="edit-badge"><div class="edit-btn edit" data-action="edit" data-id="${task.id}">✏️</div>${task.fixed?'':`<div class="edit-btn del" data-action="del" data-id="${task.id}">🗑️</div>`}</div>`;
     }else{
-      if(task.type==='checkbox'||task.type==='custom'||task.type==='instagram'||task.type==='reading'||task.type==='diary'||task.type==='sleep'){
+      if(task.type!=='subvideos'&&task.type!=='water'){.type==='sleep'){
         html+=`<input type="checkbox" data-id="${task.id}" class="custom-checkbox task-checkbox" ${checked?'checked':''}>`;
       }
     }
