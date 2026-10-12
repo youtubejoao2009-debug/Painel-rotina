@@ -124,6 +124,13 @@ body.light-bg .avatar-inner{background:#eef2ff}
 .chart-bar.today{background:linear-gradient(180deg,#fbbf24,#f59e0b);box-shadow:0 0 12px rgba(251,191,36,.6)}
 .chart-col{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px;flex:1;height:100%}
 .chart-day{font-size:9px;font-weight:800;color:#94a3b8}
+.heat-cell{width:11px;height:11px;border-radius:2px;background:rgba(30,41,59,.8);transition:transform .15s;cursor:pointer;flex-shrink:0}
+.heat-cell:hover{transform:scale(1.4);z-index:5;position:relative}
+.heat-cell.l1{background:rgba(34,197,94,.35)}
+.heat-cell.l2{background:rgba(34,197,94,.55)}
+.heat-cell.l3{background:rgba(34,197,94,.8);box-shadow:0 0 6px rgba(34,197,94,.5)}
+.heat-cell.l4{background:#22c55e;box-shadow:0 0 8px rgba(34,197,94,.8)}
+.heat-col{display:flex;flex-direction:column;gap:3px;flex-shrink:0}
 .roulette-wrap{position:relative;width:240px;height:240px;margin:0 auto}
 .roulette-wheel{width:100%;height:100%;border-radius:50%;background:conic-gradient(#ef4444 0deg 30deg,#f59e0b 30deg 60deg,#eab308 60deg 90deg,#22c55e 90deg 120deg,#06b6d4 120deg 150deg,#3b82f6 150deg 180deg,#8b5cf6 180deg 210deg,#ec4899 210deg 240deg,#ef4444 240deg 270deg,#f59e0b 270deg 300deg,#eab308 300deg 330deg,#22c55e 330deg 360deg);border:6px solid #1e293b;box-shadow:0 0 30px rgba(59,130,246,.4),inset 0 0 20px rgba(0,0,0,.4);position:relative;transition:transform 4s cubic-bezier(.17,.67,.15,1);will-change:transform}
 .roulette-pointer{position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-top:24px solid #fbbf24;filter:drop-shadow(0 0 8px #fbbf24);z-index:3}
@@ -187,7 +194,7 @@ body.light-bg .avatar-inner{background:#eef2ff}
         <div class="avatar-ring" style="width:40px;height:40px;"><div class="avatar-inner w-full h-full" id="avatarInner">⚡</div></div>
         <div>
           <h1 class="text-sm sm:text-base font-black bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">Modo Monstro</h1>
-          <div class="flex items-center gap-2 text-[10px] text-slate-400"><span id="streakDisplay">🔥 0</span><span>•</span><span id="coinsDisplay">🪙 0</span></div>
+          <div class="flex items-center gap-2 text-[10px] text-slate-400"><span id="streakDisplay">🔥 0</span><span>•</span><span id="comboDisplay">⚡ 0</span><span>•</span><span id="coinsDisplay">🪙 0</span></div>
         </div>
       </div>
       <div class="flex items-center gap-1.5">
@@ -326,6 +333,10 @@ body.light-bg .avatar-inner{background:#eef2ff}
       <div class="stat-card"><div class="stat-value" id="statPerfectDays">0</div><div class="stat-label">Dias Perfeitos</div></div>
       <div class="stat-card"><div class="stat-value" id="statBossWins">0</div><div class="stat-label">Boss Derrotados</div></div>
     </div>
+    <div class="stat-card mt-3">
+      <div class="text-[10px] font-bold text-slate-400 uppercase mb-2">Últimos 12 meses</div>
+      <div id="heatmapContainer" class="flex gap-[3px] overflow-x-auto pb-1" style="height:90px"></div>
+    </div>
   </div>
 </div>
 
@@ -453,7 +464,7 @@ const AVATARS_SHOP=[{emoji:'⚡',price:0,name:'Raio'},{emoji:'🚀',price:0,name
 const THEMES_SHOP=[{id:'default',name:'Azul Padrão',price:0},{id:'purple',name:'Roxo Místico',price:100},{id:'green',name:'Verde Selva',price:100},{id:'pink',name:'Rosa Neon',price:150},{id:'red',name:'Vermelho Fogo',price:200},{id:'gold',name:'Dourado Real',price:300},{id:'rainbow',name:'Arco-Íris',price:500}];
 const CHEST_PRICE=100;
 const CHEST_REWARDS=[{type:'coins',weight:35,min:30,max:150},{type:'xp',weight:20,min:20,max:80},{type:'avatar',weight:25},{type:'theme',weight:15},{type:'jackpot',weight:5}];
-const ACHIEVEMENTS=[{id:'first_task',emoji:'✅',name:'Primeira Tarefa',desc:'Complete 1 tarefa',check:s=>s.tasksTotal>=1,reward:20},{id:'ten_tasks',emoji:'🔟',name:'Aquecendo',desc:'Complete 10 tarefas',check:s=>s.tasksTotal>=10,reward:30},{id:'fifty_tasks',emoji:'💪',name:'Guerreiro',desc:'Complete 50 tarefas',check:s=>s.tasksTotal>=50,reward:80},{id:'hundred_tasks',emoji:'⚔️',name:'Veterano',desc:'Complete 100 tarefas',check:s=>s.tasksTotal>=100,reward:150},{id:'first_perfect',emoji:'⭐',name:'Dia Perfeito',desc:'1 dia 100%',check:s=>s.perfectDays>=1,reward:50},{id:'week_perfect',emoji:'🏆',name:'Semana Perfeita',desc:'7 dias perfeitos',check:s=>s.perfectDays>=7,reward:200},{id:'month_perfect',emoji:'👑',name:'Mês Perfeito',desc:'30 dias perfeitos',check:s=>s.perfectDays>=30,reward:500},{id:'first_level',emoji:'🎮',name:'Subindo',desc:'Nível 1',check:s=>s.maxLevel>=1,reward:30},{id:'level_5',emoji:'🚀',name:'Decolando',desc:'Nível 5',check:s=>s.maxLevel>=5,reward:100},{id:'level_10',emoji:'🌟',name:'Estrela',desc:'Nível 10',check:s=>s.maxLevel>=10,reward:250},{id:'first_prestige',emoji:'🥉',name:'Prestígio',desc:'Prestígio 1',check:s=>s.prestiges>=1,reward:300},{id:'rich',emoji:'💰',name:'Rico',desc:'500 moedas',check:s=>s.coinsTotal>=500,reward:100},{id:'streak_3',emoji:'🔥',name:'Em Chamas',desc:'Streak 3',check:s=>s.bestStreak>=3,reward:150},{id:'streak_10',emoji:'🌋',name:'Imparável',desc:'Streak 10',check:s=>s.bestStreak>=10,reward:500},{id:'xp_1000',emoji:'⚡',name:'Energizado',desc:'1000 XP',check:s=>s.xpTotal>=1000,reward:100},{id:'spinner',emoji:'🎰',name:'Sortudo',desc:'Gire 10x',check:s=>s.spinsTotal>=10,reward:100},{id:'pomodoro_1',emoji:'🍅',name:'Focado',desc:'1 pomodoro',check:s=>(s.pomoTotal||0)>=1,reward:30},{id:'pomodoro_25',emoji:'🧠',name:'Mente Afiada',desc:'25 pomodoros',check:s=>(s.pomoTotal||0)>=25,reward:200},{id:'pet_evo',emoji:'🐣',name:'Papai Coruja',desc:'Pet evoluiu',check:s=>(s.petMaxStage||0)>=1,reward:50},{id:'pet_dragon',emoji:'🐉',name:'Domador',desc:'Pet virou Dragão',check:s=>(s.petMaxStage||0)>=4,reward:500},{id:'boss_first',emoji:'👹',name:'Caçador',desc:'1 boss',check:s=>(s.bossWins||0)>=1,reward:100},{id:'boss_5',emoji:'⚔️',name:'Matador',desc:'5 bosses',check:s=>(s.bossWins||0)>=5,reward:400}];
+const ACHIEVEMENTS=[{id:'first_task',emoji:'✅',name:'Primeira Tarefa',desc:'Complete 1 tarefa',check:s=>s.tasksTotal>=1,reward:20},{id:'ten_tasks',emoji:'🔟',name:'Aquecendo',desc:'Complete 10 tarefas',check:s=>s.tasksTotal>=10,reward:30},{id:'fifty_tasks',emoji:'💪',name:'Guerreiro',desc:'Complete 50 tarefas',check:s=>s.tasksTotal>=50,reward:80},{id:'hundred_tasks',emoji:'⚔️',name:'Veterano',desc:'Complete 100 tarefas',check:s=>s.tasksTotal>=100,reward:150},{id:'first_perfect',emoji:'⭐',name:'Dia Perfeito',desc:'1 dia 100%',check:s=>s.perfectDays>=1,reward:50},{id:'week_perfect',emoji:'🏆',name:'Semana Perfeita',desc:'7 dias perfeitos',check:s=>s.perfectDays>=7,reward:200},{id:'month_perfect',emoji:'👑',name:'Mês Perfeito',desc:'30 dias perfeitos',check:s=>s.perfectDays>=30,reward:500},{id:'first_level',emoji:'🎮',name:'Subindo',desc:'Nível 1',check:s=>s.maxLevel>=1,reward:30},{id:'level_5',emoji:'🚀',name:'Decolando',desc:'Nível 5',check:s=>s.maxLevel>=5,reward:100},{id:'level_10',emoji:'🌟',name:'Estrela',desc:'Nível 10',check:s=>s.maxLevel>=10,reward:250},{id:'first_prestige',emoji:'🥉',name:'Prestígio',desc:'Prestígio 1',check:s=>s.prestiges>=1,reward:300},{id:'rich',emoji:'💰',name:'Rico',desc:'500 moedas',check:s=>s.coinsTotal>=500,reward:100},{id:'streak_3',emoji:'🔥',name:'Em Chamas',desc:'Streak 3',check:s=>s.bestStreak>=3,reward:150},{id:'streak_10',emoji:'🌋',name:'Imparável',desc:'Streak 10',check:s=>s.bestStreak>=10,reward:500},{id:'xp_1000',emoji:'⚡',name:'Energizado',desc:'1000 XP',check:s=>s.xpTotal>=1000,reward:100},{id:'spinner',emoji:'🎰',name:'Sortudo',desc:'Gire 10x',check:s=>s.spinsTotal>=10,reward:100},{id:'pomodoro_1',emoji:'🍅',name:'Focado',desc:'1 pomodoro',check:s=>(s.pomoTotal||0)>=1,reward:30},{id:'pomodoro_25',emoji:'🧠',name:'Mente Afiada',desc:'25 pomodoros',check:s=>(s.pomoTotal||0)>=25,reward:200},{id:'pet_evo',emoji:'🐣',name:'Papai Coruja',desc:'Pet evoluiu',check:s=>(s.petMaxStage||0)>=1,reward:50},{id:'pet_dragon',emoji:'🐉',name:'Domador',desc:'Pet virou Dragão',check:s=>(s.petMaxStage||0)>=4,reward:500},{id:'boss_first',emoji:'👹',name:'Caçador',desc:'1 boss',check:s=>(s.bossWins||0)>=1,reward:100},{id:'boss_5',emoji:'⚔️',name:'Matador',desc:'5 bosses',check:s=>(s.bossWins||0)>=5,reward:400},{id:'combo_10',emoji:'⚡',name:'Combo Master',desc:'Combo 10 em um dia',check:s=>(s.maxCombo||0)>=10,reward:200}];
 const ROULETTE_REWARDS=[{emoji:'🪙',text:'+30 moedas',type:'coins',value:30},{emoji:'⭐',text:'+20 XP',type:'xp',value:20},{emoji:'🪙',text:'+50 moedas',type:'coins',value:50},{emoji:'💫',text:'+40 XP',type:'xp',value:40},{emoji:'💰',text:'+100 moedas',type:'coins',value:100},{emoji:'⚡',text:'+75 XP',type:'xp',value:75},{emoji:'🎁',text:'Baú grátis!',type:'chest',value:0},{emoji:'🪙',text:'+75 moedas',type:'coins',value:75},{emoji:'👑',text:'Avatar raro!',type:'avatar',value:0},{emoji:'💎',text:'+150 moedas',type:'coins',value:150},{emoji:'🎨',text:'Tema aleatório!',type:'theme',value:0},{emoji:'🌟',text:'+200 XP',type:'xp',value:200}];
 const PET_STAGES=[{min:0,emoji:'🥚',name:'Ovo Misterioso',color:'#94a3b8'},{min:100,emoji:'🐣',name:'Filhote',color:'#fbbf24'},{min:300,emoji:'🦊',name:'Jovem Astuto',color:'#f97316'},{min:700,emoji:'🐺',name:'Lobo Feroz',color:'#22c55e'},{min:1500,emoji:'🐉',name:'Dragão',color:'#a855f7'},{min:3000,emoji:'🔥',name:'Lendário',color:'#ef4444'}];
 const WEEKLY_POOL=[{id:'tasks',desc:'Complete 25 tarefas',target:25,reward:150,emoji:'✅'},{id:'perfect',desc:'Tenha 4 dias perfeitos',target:4,reward:250,emoji:'⭐'},{id:'pomodoro',desc:'Complete 5 pomodoros',target:5,reward:200,emoji:'🍅'},{id:'water',desc:'Tome 10L de água na semana',target:10,reward:150,emoji:'💧'}];
@@ -524,7 +535,7 @@ let editModeOn=false,taskEditId=null;
 
 function newDayData(){return{taskState:{},subvideos:[false,false,false],water:0,instagramNotes:'',readingText:'',diaryText:'',timerSeconds:1800,timerRunning:false,noPhoneSeconds:3600,noPhoneRunning:false};}
 function makeDefaultData(){
-  const def={theme:'dark',autoTheme:false,quoteIndex:0,level:0,prestiges:0,xp:0,coins:0,streak:0,avatar:'⚡',themeStyle:'default',unlockedAvatars:['⚡','🚀','🔥','💪'],unlockedThemes:['default'],unlockedAchievements:[],basicTasks:{},basicDate:'',lastFreeSpin:'',lofiOn:false,stats:{xpTotal:0,coinsTotal:0,tasksTotal:0,perfectDays:0,bestStreak:0,maxLevel:0,prestiges:0,spinsTotal:0,pomoTotal:0,petMaxStage:0,bossWins:0},pet:{xp:0,hunger:100,happiness:100,lastUpdate:getTodayKey()},pomodoro:{today:0,date:getTodayKey(),mode:'focus',seconds:1500,running:false},weekly:{weekKey:getMondayKey(),missions:[],progress:{},claimed:{}},boss:newBoss(0,0),sleepSchedule:{bedtime:'22:00',wakeup:'06:00'},taskList:JSON.parse(JSON.stringify(DEFAULT_TASK_LIST)),days:{}};
+  const def={theme:'dark',autoTheme:false,quoteIndex:0,level:0,prestiges:0,xp:0,coins:0,streak:0,avatar:'⚡',themeStyle:'default',unlockedAvatars:['⚡','🚀','🔥','💪'],unlockedThemes:['default'],unlockedAchievements:[],basicTasks:{},basicDate:'',lastFreeSpin:'',lofiOn:false,stats:{xpTotal:0,coinsTotal:0,tasksTotal:0,perfectDays:0,bestStreak:0,maxLevel:0,prestiges:0,spinsTotal:0,pomoTotal:0,petMaxStage:0,bossWins:0,maxCombo:0},pet:{xp:0,hunger:100,happiness:100,lastUpdate:getTodayKey()},pomodoro:{today:0,date:getTodayKey(),mode:'focus',seconds:1500,running:false},weekly:{weekKey:getMondayKey(),missions:[],progress:{},claimed:{}},boss:newBoss(0,0),sleepSchedule:{bedtime:'22:00',wakeup:'06:00'},taskList:JSON.parse(JSON.stringify(DEFAULT_TASK_LIST)),history:{},combo:0,comboDate:getTodayKey(),comboMult:1,days:{}};
   DAYS.forEach(d=>{def.days[d.id]=newDayData();});
   return def;
 }
@@ -574,9 +585,14 @@ function loadAppData(){
       if(parsed.stats.pomoTotal===undefined)parsed.stats.pomoTotal=0;
       if(parsed.stats.petMaxStage===undefined)parsed.stats.petMaxStage=0;
       if(parsed.stats.bossWins===undefined)parsed.stats.bossWins=0;
+      if(parsed.stats.maxCombo===undefined)parsed.stats.maxCombo=0;
       if(!parsed.pet)parsed.pet=def.pet;
       if(!parsed.pomodoro)parsed.pomodoro=def.pomodoro;
       if(!parsed.weekly||parsed.weekly.weekKey!==getMondayKey())parsed.weekly={weekKey:getMondayKey(),missions:[],progress:{},claimed:{}};
+      if(!parsed.history)parsed.history={};
+      if(parsed.combo===undefined)parsed.combo=0;
+      if(!parsed.comboDate)parsed.comboDate=getTodayKey();
+      if(parsed.comboMult===undefined)parsed.comboMult=1;
       if(!parsed.boss||parsed.boss.weekKey!==getMondayKey())parsed.boss=newBoss(parsed.level||0,parsed.prestiges||0);
       else parsed.boss.maxHp=getBossMaxHp(parsed.level||0,parsed.prestiges||0);
       return parsed;
@@ -592,7 +608,7 @@ function resetAllData(){
   appData=makeDefaultData();saveAppData();
   currentDayIndex=new Date().getDay();
   editModeOn=false;
-  initTheme();updateLevelUI();updatePetUI();updateBossUI();
+  initTheme();updateLevelUI();updatePetUI();updateBossUI();updateComboUI();
   document.getElementById('avatarInner').textContent='⚡';
   renderDaysNav();loadDayData(currentDayIndex);
   document.getElementById('quoteText').textContent=`"${QUOTES[0]}"`;
@@ -602,6 +618,11 @@ function resetAllData(){
 }
 
 function checkAutoTheme(){if(!appData.autoTheme)return;const h=new Date().getHours();const shouldBeDark=h<6||h>=19;const newTheme=shouldBeDark?'dark':'light';if(appData.theme!==newTheme){appData.theme=newTheme;initTheme();saveAppData();}}
+
+function updateComboUI(){const el=document.getElementById('comboDisplay');if(el){const c=appData.combo||0;el.textContent='⚡ '+c;if(c>=15)el.style.color='#ef4444';else if(c>=10)el.style.color='#f59e0b';else if(c>=5)el.style.color='#fbbf24';else if(c>=3)el.style.color='#22d3ee';else el.style.color='';}}
+function checkComboReset(){const today=getTodayKey();if(appData.comboDate!==today){appData.combo=0;appData.comboDate=today;appData.comboMult=1;saveAppData();}}
+function addComboPoint(){checkComboReset();appData.combo=(appData.combo||0)+1;if(appData.combo>(appData.stats.maxCombo||0))appData.stats.maxCombo=appData.combo;let bonusXP=0,bonusCoins=0;if(appData.combo===5){bonusXP=30;bonusCoins=10;appData.comboMult=2;}else if(appData.combo===10){bonusXP=60;bonusCoins=25;appData.comboMult=3;}else if(appData.combo===15){bonusXP=100;bonusCoins=50;appData.comboMult=4;}else if(appData.combo===20){bonusXP=200;bonusCoins=100;appData.comboMult=5;}if(bonusXP>0){addXP(bonusXP);addCoins(bonusCoins);appData.stats.xpTotal=(appData.stats.xpTotal||0)+bonusXP;appData.stats.coinsTotal=(appData.stats.coinsTotal||0)+bonusCoins;soundAchievement();vibrate([50,30,50,30,100]);launchConfetti(50,['⚡','🔥','💰','✨','🎉']);showAchievementToast({emoji:'⚡',name:`COMBO ${appData.combo}x!`,reward:bonusCoins});}saveAppData();updateComboUI();}
+function saveTodayHistory(){const today=getTodayKey();const dd=appData.days[currentDayIndex];const count=getCompletedCount(dd);appData.history[today]=count;saveAppData();}
 
 function updateBossUI(){if(!appData||!appData.boss)return;const boss=appData.boss;const bossData=BOSSES[boss.bossIdx]||BOSSES[0];const stage=document.getElementById('bossStage');const nameEl=document.getElementById('bossName');const lvlEl=document.getElementById('bossLevelText');const hpTextEl=document.getElementById('bossHpText');const hpFill=document.getElementById('bossHpFill');const hpInner=document.getElementById('bossHpInnerText');const rewardEl=document.getElementById('bossReward');const dmgEl=document.getElementById('bossPlayerDamage');const statusEl=document.getElementById('bossStatusText');if(stage){stage.textContent=bossData.emoji;stage.className='boss-stage '+(boss.defeated?'boss-defeat':'boss-idle');}if(nameEl)nameEl.textContent=bossData.name;if(lvlEl)lvlEl.textContent=`Nível ${appData.level||0}`;const hpPct=Math.max(0,Math.round((boss.hp/boss.maxHp)*100));if(hpTextEl)hpTextEl.textContent=`${Math.max(0,boss.hp)} / ${boss.maxHp}`;if(hpFill)hpFill.style.width=hpPct+'%';if(hpInner)hpInner.textContent=hpPct+'%';if(rewardEl)rewardEl.textContent=getBossReward(appData.level||0,appData.prestiges||0);if(dmgEl)dmgEl.textContent=getPlayerDamage(appData.level||0);if(statusEl)statusEl.textContent=boss.defeated?'🏆 BOSS DERROTADO!':'⚔️ Complete tarefas para atacar!';}
 function bossTakeHit(){if(!appData||!appData.boss||appData.boss.defeated)return;const dmg=getPlayerDamage(appData.level||0);appData.boss.hp=Math.max(0,appData.boss.hp-dmg);if(appData.boss.hp<=0){appData.boss.defeated=true;const reward=getBossReward(appData.level||0,appData.prestiges||0);appData.coins=(appData.coins||0)+reward;appData.stats.coinsTotal=(appData.stats.coinsTotal||0)+reward;appData.stats.bossWins=(appData.stats.bossWins||0)+1;addXP(200);appData.stats.xpTotal=(appData.stats.xpTotal||0)+200;soundBossWin();vibrate([100,50,100,50,200]);launchConfetti(100,['💥','⚔️','👹','💀','🏆','✨','💰']);setTimeout(()=>showAchievementToast({emoji:'👹',name:'BOSS DERROTADO!',reward}),300);checkAchievements();}else{soundHit();vibrate(30);}saveAppData();updateBossUI();const stage=document.getElementById('bossStage');if(stage&&!appData.boss.defeated){stage.classList.remove('boss-hit');void stage.offsetWidth;stage.classList.add('boss-hit');setTimeout(()=>stage.classList.remove('boss-hit'),500);}}
@@ -644,7 +665,8 @@ function renderAchievements(){const list=document.getElementById('achievementsLi
 
 function openStats(){soundClick();renderStats();const m=document.getElementById('statsModal');m.classList.remove('hidden');m.style.display='flex';}
 function closeStats(){const m=document.getElementById('statsModal');m.classList.add('hidden');m.style.display='none';soundClick();}
-function renderStats(){const s=appData.stats||{};document.getElementById('statXpTotal').textContent=s.xpTotal||0;document.getElementById('statCoinsTotal').textContent=s.coinsTotal||0;document.getElementById('statTasksTotal').textContent=s.tasksTotal||0;document.getElementById('statBestStreak').textContent=s.bestStreak||0;document.getElementById('statPerfectDays').textContent=s.perfectDays||0;document.getElementById('statBossWins').textContent=s.bossWins||0;const chart=document.getElementById('statsChart');chart.innerHTML='';for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const dayIdx=d.getDay();const dd=appData.days[dayIdx];const completed=getCompletedCount(dd);const pct=Math.round((completed/Math.max(1,getTotalTasks()))*100);const col=document.createElement('div');col.className='chart-col';col.innerHTML=`<div style="font-size:9px;font-weight:800;color:${i===0?'#fbbf24':'#94a3b8'}">${pct}%</div><div class="chart-bar ${i===0?'today':''}" style="height:${Math.max(4,pct)}%"></div><div class="chart-day">${DAYS[dayIdx].short}</div>`;chart.appendChild(col);}}
+function renderStats(){const s=appData.stats||{};document.getElementById('statXpTotal').textContent=s.xpTotal||0;document.getElementById('statCoinsTotal').textContent=s.coinsTotal||0;document.getElementById('statTasksTotal').textContent=s.tasksTotal||0;document.getElementById('statBestStreak').textContent=s.bestStreak||0;document.getElementById('statPerfectDays').textContent=s.perfectDays||0;document.getElementById('statBossWins').textContent=s.bossWins||0;const chart=document.getElementById('statsChart');chart.innerHTML='';for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const dayIdx=d.getDay();const dd=appData.days[dayIdx];const completed=getCompletedCount(dd);const pct=Math.round((completed/Math.max(1,getTotalTasks()))*100);const col=document.createElement('div');col.className='chart-col';col.innerHTML=`<div style="font-size:9px;font-weight:800;color:${i===0?'#fbbf24':'#94a3b8'}">${pct}%</div><div class="chart-bar ${i===0?'today':''}" style="height:${Math.max(4,pct)}%"></div><div class="chart-day">${DAYS[dayIdx].short}</div>`;chart.appendChild(col);}renderHeatmap();}
+function renderHeatmap(){const container=document.getElementById('heatmapContainer');if(!container)return;container.innerHTML='';const today=new Date();today.setHours(0,0,0,0);const start=new Date(today);start.setDate(start.getDate()-363);const dayOfWeek=start.getDay();start.setDate(start.getDate()-dayOfWeek);const weeks=[];let currentDate=new Date(start);while(currentDate<=today){const week=[];for(let i=0;i<7;i++){if(currentDate<=today){const key=`${currentDate.getFullYear()}-${String(currentDate.getMonth()+1).padStart(2,'0')}-${String(currentDate.getDate()).padStart(2,'0')}`;week.push({key,date:new Date(currentDate)});}else{week.push(null);}currentDate.setDate(currentDate.getDate()+1);}weeks.push(week);}const total=getTotalTasks();weeks.forEach(week=>{const col=document.createElement('div');col.className='heat-col';week.forEach(day=>{const cell=document.createElement('div');cell.className='heat-cell';if(day){const count=appData.history[day.key]||0;if(count>0&&total>0){const pct=(count/total)*100;if(pct>=100)cell.classList.add('l4');else if(pct>=75)cell.classList.add('l3');else if(pct>=40)cell.classList.add('l2');else cell.classList.add('l1');}cell.title=`${day.key}: ${count} tarefas`;}else{cell.style.background='transparent';}col.appendChild(cell);});container.appendChild(col);});}
 
 function openRoulette(){soundClick();updateRouletteStatus();const m=document.getElementById('rouletteModal');m.classList.remove('hidden');m.style.display='flex';}
 function closeRoulette(){const m=document.getElementById('rouletteModal');m.classList.add('hidden');m.style.display='none';soundClick();}
@@ -657,7 +679,7 @@ function initTheme(){const icon=document.getElementById('themeIcon');if(appData.
 function getCompletedCount(dd){if(!dd||!dd.taskState)return 0;let count=0;appData.taskList.forEach(t=>{if(t.enabled&&dd.taskState[t.id])count++;});return count;}
 function isDayPerfect(dd){return getCompletedCount(dd)>=getTotalTasks()&&getTotalTasks()>0;}
 
-function renderDaysNav(){const c=document.getElementById('daysNavContainer');c.innerHTML='';const total=getTotalTasks();DAYS.forEach(day=>{const dd=appData.days[day.id];const completed=getCompletedCount(dd);const isCurrent=day.id===currentDayIndex;const isToday=day.id===new Date().getDay();const isPerfect=isDayPerfect(dd);const btn=document.createElement('button');btn.type='button';btn.className=`day-tab flex flex-col items-center justify-center p-3 rounded-2xl border ${isCurrent?'active bg-gradient-to-br from-blue-600 to-cyan-600 text-white border-cyan-400':'glass text-slate-300 border-slate-700/80'}`;btn.innerHTML=`${isToday?'<span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-cyan-400 rounded-full border-2 border-slate-900"></span>':''}${isPerfect?'<span class="absolute -top-1 -left-1 text-xs">⭐</span>':''}<span class="text-[10px] uppercase tracking-wider opacity-80 font-bold">${day.short}</span><span class="text-xs font-black mt-0.5">${day.name}</span><span class="text-[9px] mt-1 px-2 py-0.5 rounded-full font-bold ${isCurrent?'bg-white/25 text-white':'bg-slate-800 text-slate-400'}">${completed}/${total}</span>`;btn.addEventListener('click',()=>{pauseAllTimers();soundClick();currentDayIndex=day.id;renderDaysNav();loadDayData(currentDayIndex);});c.appendChild(btn);});}
+function renderDaysNav(){const c=document.getElementById('daysNavContainer');c.innerHTML='';const total=getTotalTasks();DAYS.forEach(day=>{const dd=appData.days[day.id];const completed=getCompletedCount(dd);const isCurrent=day.id===currentDayIndex;const isToday=day.id===new Date().getDay();const isPerfect=isDayPerfect(dd);const btn=document.createElement('button');btn.type='button';btn.className=`day-tab flex flex-col items-center justify-center p-3 rounded-2xl border ${isCurrent?'active bg-gradient-to-br from-blue-600 to-cyan-600 text-white border-cyan-400':'glass text-slate-300 border-slate-700/80'}`;btn.innerHTML=`${isToday?'<span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-cyan-400 rounded-full border-2 border-slate-900"></span>':''}${isPerfect?'<span class="absolute -top-1 -left-1 text-xs">⭐</span>':''}<span class="text-[10px] uppercase tracking-wider opacity-80 font-bold">${day.short}</span><span class="text-xs font-black mt-0.5">${day.name}</span><span class="text-[9px] mt-1 px-2 py-0.5 rounded-full font-bold ${isCurrent?'bg-white/25 text-white':'bg-slate-800 text-slate-400'}">${completed}/${total}</span>`;btn.addEventListener('click',()=>{pauseAllTimers();soundClick();currentDayIndex=day.id;renderDaysNav();loadDayData(currentDayIndex);updateComboUI();});c.appendChild(btn);});}
 function loadDayData(dayId){const dd=appData.days[dayId];const dayObj=DAYS.find(d=>d.id===dayId);const total=getTotalTasks();document.getElementById('selectedDayTitle').textContent=dayObj.name;document.getElementById('selectedDaySubtitle').textContent=`Nível ${appData.level} — ${total} missões`;renderTasks(dd);updateProgress();updateTimerDisplay();updateNoPhoneDisplay();}
 
 function renderTasks(dd){
@@ -679,7 +701,6 @@ function renderTasks(dd){
     if(task.type==='nophone'){title=`Sem celular ${noPhoneH}h`;}
     if(task.type==='diary'){title=`Diário (${goals.diaryPages} pág)`;}
     let html=`<div><div class="flex items-center justify-between mb-2"><div class="flex items-center gap-2"><span class="text-3xl">${emoji}</span><span class="rarity-tag ${task.rarity}">${rar.label}</span></div>`;
-    // MOSTRA CHECKBOX em TODAS as tarefas MENOS subvideos e water (que têm UI própria)
     if(editModeOn){
       html+=`<div class="edit-badge"><div class="edit-btn edit" data-action="edit" data-id="${task.id}">✏️</div>${task.fixed?'':`<div class="edit-btn del" data-action="del" data-id="${task.id}">🗑️</div>`}</div>`;
     }else{
@@ -721,7 +742,7 @@ function floatXP(x,y,amount,type){const el=document.createElement('div');el.clas
 function floatLoss(x,y,amount,type){const el=document.createElement('div');el.className='xp-float';el.textContent='-'+amount+' '+type;el.style.left=x+'px';el.style.top=y+'px';el.style.color='#ef4444';document.body.appendChild(el);setTimeout(()=>el.remove(),1400);}
 function launchConfetti(qty,emojis){for(let i=0;i<qty;i++){const p=document.createElement('div');p.className='confetti-piece';p.textContent=emojis[Math.floor(Math.random()*emojis.length)];p.style.left=Math.random()*100+'vw';p.style.animationDelay=Math.random()*1.5+'s';p.style.animationDuration=(2.5+Math.random()*1.5)+'s';p.style.fontSize=(16+Math.random()*22)+'px';document.body.appendChild(p);setTimeout(()=>p.remove(),5000);}}
 
-function setTaskState(taskId,newState,rar,rect){const dd=appData.days[currentDayIndex];const was=!!dd.taskState[taskId];if(was===newState)return;dd.taskState[taskId]=newState;if(newState){addXP(rar.xp);addCoins(rar.coins);appData.stats.tasksTotal=(appData.stats.tasksTotal||0)+1;appData.stats.xpTotal=(appData.stats.xpTotal||0)+rar.xp;appData.stats.coinsTotal=(appData.stats.coinsTotal||0)+rar.coins;ensureWeeklyMissions();appData.weekly.progress.tasks=(appData.weekly.progress.tasks||0)+1;addPetXP(3);bossTakeHit();if(rect){burstParticles(rect.left+rect.width/2,rect.top+rect.height/2,rar.color);floatXP(rect.left,rect.top-10,rar.xp,'XP');}}else{removeXP(rar.xp);removeCoins(rar.coins);appData.stats.tasksTotal=Math.max(0,(appData.stats.tasksTotal||0)-1);if(rect)floatLoss(rect.left,rect.top-10,rar.xp,'XP');}checkAchievements();checkWeeklyMissions();}
+function setTaskState(taskId,newState,rar,rect){const dd=appData.days[currentDayIndex];const was=!!dd.taskState[taskId];if(was===newState)return;dd.taskState[taskId]=newState;if(newState){const mult=appData.comboMult||1;addXP(rar.xp*mult);addCoins(rar.coins*mult);appData.stats.tasksTotal=(appData.stats.tasksTotal||0)+1;appData.stats.xpTotal=(appData.stats.xpTotal||0)+rar.xp*mult;appData.stats.coinsTotal=(appData.stats.coinsTotal||0)+rar.coins*mult;ensureWeeklyMissions();appData.weekly.progress.tasks=(appData.weekly.progress.tasks||0)+1;addPetXP(3);bossTakeHit();addComboPoint();if(rect){burstParticles(rect.left+rect.width/2,rect.top+rect.height/2,rar.color);floatXP(rect.left,rect.top-10,rar.xp*mult,'XP');}}else{removeXP(rar.xp);removeCoins(rar.coins);appData.stats.tasksTotal=Math.max(0,(appData.stats.tasksTotal||0)-1);if(rect)floatLoss(rect.left,rect.top-10,rar.xp,'XP');}checkAchievements();checkWeeklyMissions();saveTodayHistory();}
 
 function bindTaskEvents(){
   const dd=appData.days[currentDayIndex];
@@ -839,6 +860,7 @@ function updateLevelUI(){
   document.getElementById('levelBadge').textContent=appData.level;
   document.getElementById('streakDisplay').textContent='🔥 '+(appData.streak||0);
   document.getElementById('coinsDisplay').textContent='🪙 '+(appData.coins||0);
+  updateComboUI();
   const storeCoinsEl=document.getElementById('storeCoins');if(storeCoinsEl)storeCoinsEl.textContent=appData.coins||0;
   const needed=xpNeededForLevel(appData.level);
   const pct=Math.min(100,Math.round(((appData.xp||0)/needed)*100));
@@ -874,10 +896,11 @@ function restoreDefaults(){showConfirm('🔄','Restaurar Padrão?','Vai apagar s
 
 function initApp(){
   appData=loadAppData();
-  ensureBasicTasksToday();updatePetDecay();ensureWeeklyMissions();
+  ensureBasicTasksToday();updatePetDecay();ensureWeeklyMissions();checkComboReset();
   if(!appData.boss||appData.boss.weekKey!==getMondayKey())appData.boss=newBoss(appData.level,appData.prestiges);
   else appData.boss.maxHp=getBossMaxHp(appData.level,appData.prestiges);
-  spawnBgParticles();initTheme();updateLevelUI();updatePetUI();updateBossUI();
+  saveTodayHistory();
+  spawnBgParticles();initTheme();updateLevelUI();updatePetUI();updateBossUI();updateComboUI();
   document.getElementById('avatarInner').textContent=appData.avatar||'⚡';
   renderDaysNav();loadDayData(currentDayIndex);
   if(QUOTES[appData.quoteIndex])document.getElementById('quoteText').textContent=`"${QUOTES[appData.quoteIndex]}"`;
@@ -978,7 +1001,7 @@ function initApp(){
   });
 
   checkAchievements();checkWeeklyMissions();
-  console.log('✅ Modo Monstro v8 inicializado!');
+  console.log('✅ Modo Monstro v9 inicializado!');
 }
 document.addEventListener('DOMContentLoaded',initApp);
 </script>
