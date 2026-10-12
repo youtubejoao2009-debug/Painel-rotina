@@ -2,7 +2,7 @@
 <html lang="pt-BR" class="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Painel de Rotina do Criador</title>
 
 <link rel="manifest" href="manifest.json">
@@ -14,220 +14,528 @@
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
-  tailwind.config = {
-    darkMode: 'class',
-    theme: { extend: {
-      colors: { darkBg: '#0f172a', darkCard: '#1e293b', lightBg: '#f1f5f9', lightCard: '#ffffff' },
-      fontFamily: { sans: ['Inter', 'sans-serif'] }
-    }}
-  }
+tailwind.config = {
+  darkMode: 'class',
+  theme: { extend: {
+    colors: { darkBg: '#0f172a', darkCard: '#1e293b', lightBg: '#f1f5f9', lightCard: '#ffffff' },
+    fontFamily: { sans: ['Inter', 'sans-serif'] }
+  }}
+}
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-  body { font-family: 'Inter', sans-serif; }
-  .glass { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-  .custom-checkbox {
-    appearance: none; -webkit-appearance: none;
-    width: 24px; height: 24px;
-    border: 2px solid #64748b; border-radius: 6px;
-    cursor: pointer; display: grid; place-content: center;
-    transition: all 0.2s ease-in-out;
-  }
-  .custom-checkbox:checked { background-color: #22c55e; border-color: #22c55e; }
-  .custom-checkbox:checked::before { content: "✔"; font-size: 14px; color: white; font-weight: bold; }
+:root {
+  --accent: #3b82f6;
+  --accent2: #22c55e;
+  --glow: 0 0 20px rgba(59,130,246,0.5);
+}
 
-  /* ====== ANIMAÇÕES ====== */
-  @keyframes levelUpPop {
-    0% { transform: scale(0.2) rotate(-15deg); opacity: 0; }
-    50% { transform: scale(1.15) rotate(8deg); opacity: 1; }
-    70% { transform: scale(0.95) rotate(-4deg); }
-    100% { transform: scale(1) rotate(0deg); opacity: 1; }
-  }
-  @keyframes prestigePop {
-    0% { transform: scale(0) rotate(-180deg); opacity: 0; }
-    60% { transform: scale(1.3) rotate(20deg); opacity: 1; }
-    80% { transform: scale(0.9) rotate(-10deg); }
-    100% { transform: scale(1) rotate(0deg); opacity: 1; }
-  }
-  @keyframes glowBadge {
-    0%, 100% { box-shadow: 0 0 8px currentColor; }
-    50% { box-shadow: 0 0 25px currentColor, 0 0 40px currentColor; }
-  }
-  @keyframes confettiFall {
-    0% { transform: translateY(-20vh) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
-  }
-  @keyframes shineSweep {
-    0% { background-position: -200% center; }
-    100% { background-position: 200% center; }
-  }
-  @keyframes pulseRing {
-    0% { transform: scale(0.8); opacity: 0.8; }
-    100% { transform: scale(2.5); opacity: 0; }
-  }
+* { -webkit-tap-highlight-color: transparent; }
 
-  .animate-levelup { animation: levelUpPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
-  .animate-prestige { animation: prestigePop 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
-  .badge-glow { animation: glowBadge 1.5s ease-in-out infinite; }
+body {
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  background: #0a0f1e;
+  position: relative;
+  min-height: 100vh;
+}
 
-  .rank-badge {
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
-  }
-  .rank-badge::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.5) 50%, transparent 70%);
-    background-size: 200% auto;
-    animation: shineSweep 2.5s linear infinite;
-    pointer-events: none;
-  }
+/* ====== FUNDO ANIMADO ====== */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 15% 20%, rgba(59,130,246,0.18), transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(168,85,247,0.18), transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(34,197,94,0.08), transparent 60%);
+  z-index: -3;
+  animation: bgShift 12s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+@keyframes bgShift {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(30deg); }
+}
 
-  .confetti-piece {
-    position: fixed;
-    top: -10vh;
-    font-size: 24px;
-    pointer-events: none;
-    z-index: 9999;
-    animation: confettiFall 3s linear forwards;
-  }
+body.dark-bg {
+  background: #0a0f1e;
+}
+body.light-bg {
+  background: #eef2ff;
+}
+body.light-bg::before {
+  background: 
+    radial-gradient(circle at 15% 20%, rgba(59,130,246,0.15), transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(168,85,247,0.15), transparent 45%);
+}
 
-  .pulse-ring {
-    position: absolute;
-    inset: 0;
-    border-radius: 9999px;
-    border: 2px solid currentColor;
-    animation: pulseRing 1.2s ease-out infinite;
-    pointer-events: none;
-  }
+/* Grid neon sutil */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(59,130,246,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  z-index: -2;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
 
-  .modal-overlay {
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-  }
+/* ====== PARTÍCULAS FLUTUANTES ====== */
+.particle-bg {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.5;
+  animation: floatUp linear infinite;
+}
+@keyframes floatUp {
+  0% { transform: translateY(100vh) scale(0); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.6; }
+  100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+}
+
+.glass {
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+}
+
+/* ====== CHECKBOX ====== */
+.custom-checkbox {
+  appearance: none; -webkit-appearance: none;
+  width: 26px; height: 26px;
+  border: 2px solid #475569;
+  border-radius: 8px;
+  cursor: pointer; display: grid; place-content: center;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+.custom-checkbox:hover { border-color: #22c55e; transform: scale(1.05); }
+.custom-checkbox:checked {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border-color: #22c55e;
+  box-shadow: 0 0 12px rgba(34,197,94,0.7);
+  animation: checkPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.custom-checkbox:checked::before {
+  content: "✔";
+  font-size: 15px; color: white; font-weight: 900;
+}
+@keyframes checkPop {
+  0% { transform: scale(0.7); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+/* ====== CARDS ====== */
+.task-card {
+  position: relative;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+.task-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+  transition: left 0.6s;
+}
+.task-card:hover::before { left: 100%; }
+
+.task-card.rarity-common { border-left: 4px solid #22c55e; }
+.task-card.rarity-rare { border-left: 4px solid #3b82f6; }
+.task-card.rarity-epic { border-left: 4px solid #a855f7; }
+.task-card.rarity-legendary { border-left: 4px solid #f59e0b; }
+
+.task-card.completed.rarity-common { box-shadow: 0 0 25px rgba(34,197,94,0.4); }
+.task-card.completed.rarity-rare { box-shadow: 0 0 25px rgba(59,130,246,0.4); }
+.task-card.completed.rarity-epic { box-shadow: 0 0 25px rgba(168,85,247,0.4); }
+.task-card.completed.rarity-legendary { box-shadow: 0 0 25px rgba(245,158,11,0.5); }
+
+.task-card.completed .task-emoji { animation: iconBounce 0.6s ease; }
+@keyframes iconBounce {
+  0%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-8px) scale(1.15); }
+  60% { transform: translateY(-3px) scale(1.05); }
+}
+
+/* ====== RARIDADE BADGE ====== */
+.rarity-tag {
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 999px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+.rarity-tag.common { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.4); }
+.rarity-tag.rare { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.4); }
+.rarity-tag.epic { background: rgba(168,85,247,0.15); color: #c084fc; border: 1px solid rgba(168,85,247,0.4); }
+.rarity-tag.legendary { background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.4); }
+
+/* ====== XP BAR ====== */
+.xp-bar-outer {
+  position: relative;
+  background: rgba(15,23,42,0.8);
+  border-radius: 999px;
+  height: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(59,130,246,0.3);
+}
+.xp-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #06b6d4, #3b82f6, #a855f7, #06b6d4);
+  background-size: 200% auto;
+  border-radius: 999px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: xpShine 3s linear infinite;
+  box-shadow: 0 0 15px rgba(59,130,246,0.8);
+}
+@keyframes xpShine {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ====== BADGE PATENTE ====== */
+.rank-badge {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+.rank-badge::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.55) 50%, transparent 70%);
+  background-size: 250% auto;
+  animation: shineSweep 3s linear infinite;
+  pointer-events: none;
+}
+@keyframes shineSweep {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ====== MODAL LEVEL UP ====== */
+.modal-overlay {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(0,0,0,0.85);
+}
+
+.levelup-rays {
+  position: absolute;
+  inset: -50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg, rgba(255,215,0,0.4) 15deg, transparent 30deg,
+    transparent 45deg, rgba(255,215,0,0.4) 60deg, transparent 75deg,
+    transparent 90deg, rgba(255,215,0,0.4) 105deg, transparent 120deg,
+    transparent 135deg, rgba(255,215,0,0.4) 150deg, transparent 165deg,
+    transparent 180deg, rgba(255,215,0,0.4) 195deg, transparent 210deg,
+    transparent 225deg, rgba(255,215,0,0.4) 240deg, transparent 255deg,
+    transparent 270deg, rgba(255,215,0,0.4) 285deg, transparent 300deg,
+    transparent 315deg, rgba(255,215,0,0.4) 330deg, transparent 345deg
+  );
+  animation: rotateRays 8s linear infinite;
+  pointer-events: none;
+  opacity: 0.6;
+}
+@keyframes rotateRays {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ====== ANIMAÇÕES DO MODAL ====== */
+@keyframes levelUpPop {
+  0% { transform: scale(0.2) rotate(-15deg); opacity: 0; }
+  55% { transform: scale(1.15) rotate(8deg); opacity: 1; }
+  75% { transform: scale(0.95) rotate(-4deg); }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+@keyframes prestigePop {
+  0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+  55% { transform: scale(1.25) rotate(20deg); opacity: 1; }
+  75% { transform: scale(0.92) rotate(-8deg); }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+.animate-levelup { animation: levelUpPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.animate-prestige { animation: prestigePop 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.badge-glow { animation: badgeGlow 1.5s ease-in-out infinite; }
+@keyframes badgeGlow {
+  0%, 100% { box-shadow: 0 0 10px currentColor; }
+  50% { box-shadow: 0 0 30px currentColor, 0 0 50px currentColor; }
+}
+
+/* ====== CONFETES ====== */
+.confetti-piece {
+  position: fixed;
+  top: -10vh;
+  font-size: 24px;
+  pointer-events: none;
+  z-index: 9999;
+  animation: confettiFall linear forwards;
+}
+@keyframes confettiFall {
+  0% { transform: translateY(-20vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(115vh) rotate(720deg); opacity: 0; }
+}
+
+/* ====== XP GAIN FLOAT ====== */
+.xp-float {
+  position: fixed;
+  font-weight: 900;
+  font-size: 20px;
+  pointer-events: none;
+  z-index: 9998;
+  animation: xpFloatUp 1.3s ease-out forwards;
+  text-shadow: 0 0 10px currentColor;
+}
+@keyframes xpFloatUp {
+  0% { transform: translateY(0) scale(0.5); opacity: 0; }
+  20% { transform: translateY(-15px) scale(1.2); opacity: 1; }
+  100% { transform: translateY(-90px) scale(1); opacity: 0; }
+}
+
+/* ====== EXPLOSÃO DE PARTÍCULAS ====== */
+.burst-particle {
+  position: fixed;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9997;
+}
+@keyframes burstOut {
+  0% { transform: translate(0,0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+}
+
+/* ====== STREAK FLAME ====== */
+@keyframes flameDance {
+  0%, 100% { transform: scale(1) rotate(-3deg); }
+  50% { transform: scale(1.15) rotate(3deg); }
+}
+.flame-active { animation: flameDance 1.5s ease-in-out infinite; }
+
+/* ====== COIN SPIN ====== */
+@keyframes coinSpin {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(360deg); }
+}
+.coin-spin { animation: coinSpin 3s linear infinite; }
+
+/* ====== AVATAR RING ====== */
+.avatar-ring {
+  position: relative;
+  background: conic-gradient(from 0deg, #3b82f6, #a855f7, #06b6d4, #22c55e, #3b82f6);
+  animation: rotateRays 4s linear infinite;
+  border-radius: 9999px;
+  padding: 2.5px;
+}
+.avatar-inner {
+  border-radius: 9999px;
+  background: #0f172a;
+  display: grid;
+  place-content: center;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+/* ====== DAY TABS ====== */
+.day-tab {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+.day-tab.active {
+  transform: scale(1.05);
+  box-shadow: 0 8px 30px rgba(59,130,246,0.35);
+}
+.day-tab.active::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(168,85,247,0.2));
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* ====== BOTÃO AÇÃO ====== */
+.btn-action {
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.btn-action:active { transform: scale(0.94); }
+
+/* ====== SCROLLBAR ====== */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(100,116,139,0.4); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(100,116,139,0.7); }
+
+/* ====== LEVEL COLORS (fundo muda conforme nível) ====== */
+body.level-tier-0::before { --tier: 0; }
+body.level-tier-1::before { background: radial-gradient(circle at 15% 20%, rgba(34,197,94,0.2), transparent 45%), radial-gradient(circle at 85% 80%, rgba(59,130,246,0.2), transparent 45%); }
+body.level-tier-2::before { background: radial-gradient(circle at 15% 20%, rgba(59,130,246,0.25), transparent 45%), radial-gradient(circle at 85% 80%, rgba(168,85,247,0.25), transparent 45%); }
+body.level-tier-3::before { background: radial-gradient(circle at 15% 20%, rgba(168,85,247,0.3), transparent 45%), radial-gradient(circle at 85% 80%, rgba(236,72,153,0.25), transparent 45%); }
+body.level-tier-4::before { background: radial-gradient(circle at 15% 20%, rgba(245,158,11,0.3), transparent 45%), radial-gradient(circle at 85% 80%, rgba(239,68,68,0.25), transparent 45%); }
 </style>
 </head>
-<body class="bg-lightBg dark:bg-darkBg text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
+<body class="dark-bg text-slate-100 min-h-screen flex flex-col transition-colors duration-500">
 
 <!-- HEADER -->
-<header class="sticky top-0 z-40 bg-white/80 dark:bg-darkCard/80 glass border-b border-slate-200 dark:border-slate-800 shadow-sm">
-  <div class="max-w-7xl mx-auto px-4 py-3 sm:px-6 flex flex-col sm:flex-row justify-between items-center gap-3">
-    <div>
-      <h1 class="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent flex items-center gap-2">
-        ⚡ Painel de Rotina do Criador
-      </h1>
-      <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Minha rotina diária — Nível <span id="levelHeader">0</span>/15</p>
-    </div>
-    <div class="flex items-center gap-2 flex-wrap justify-center">
-      <!-- Patente (Badge) -->
-      <div id="rankBadge" class="rank-badge flex items-center gap-2 bg-slate-500/10 border border-slate-500/30 px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 font-bold text-sm">
-        <span id="rankEmoji">🌱</span>
-        <span id="rankName">Iniciante</span>
+<header class="sticky top-0 z-40 bg-slate-900/70 dark:bg-slate-950/70 glass border-b border-slate-800/80 shadow-lg">
+  <div class="max-w-7xl mx-auto px-3 py-3 sm:px-6">
+    <div class="flex items-center justify-between gap-3 mb-3">
+      <!-- AVATAR + NOME -->
+      <div class="flex items-center gap-3">
+        <div class="avatar-ring" style="width:44px;height:44px;">
+          <div class="avatar-inner w-full h-full" id="avatarInner">⚡</div>
+        </div>
+        <div>
+          <h1 class="text-base sm:text-lg font-black bg-gradient-to-r from-blue-400 via-cyan-300 to-purple-400 bg-clip-text text-transparent">Rotina Criador</h1>
+          <div class="flex items-center gap-2 text-[10px] text-slate-400">
+            <span id="streakDisplay">🔥 0</span>
+            <span>•</span>
+            <span id="coinsDisplay">🪙 0</span>
+          </div>
+        </div>
       </div>
-      <!-- Nível -->
-      <div class="flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 px-3 py-1.5 rounded-xl text-purple-600 dark:text-purple-400 font-bold text-sm">
-        <span>🎮</span><span>Nv</span><span id="levelBadge">0</span><span class="opacity-60">/15</span>
-      </div>
-      <button id="themeToggleBtn" aria-label="Alternar Tema" class="p-2.5 rounded-xl bg-slate-200 dark:bg-slate-700 hover:scale-105 transition-all shadow-sm">
-        <span id="themeIcon" class="text-lg">🌙</span>
-      </button>
-    </div>
-  </div>
 
-  <!-- BARRA DE PROGRESSO SEMANAL -->
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 pb-3">
-    <div class="flex justify-between items-center mb-1.5">
-      <span class="text-xs font-semibold text-slate-600 dark:text-slate-300">📊 Progresso da Semana</span>
-      <span id="weekProgressText" class="text-xs font-bold text-blue-500">0/7 dias perfeitos</span>
+      <!-- PATENTE + TEMA -->
+      <div class="flex items-center gap-2">
+        <div id="rankBadge" class="rank-badge flex items-center gap-1.5 bg-slate-500/10 border border-slate-500/30 px-2.5 py-1.5 rounded-xl text-xs font-bold">
+          <span id="rankEmoji">🌱</span>
+          <span id="rankName">Iniciante</span>
+        </div>
+        <button id="themeToggleBtn" aria-label="Tema" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 transition-all active:scale-95">
+          <span id="themeIcon" class="text-base">🌙</span>
+        </button>
+      </div>
     </div>
-    <div class="w-full bg-slate-200 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
-      <div id="weekProgressBar" class="bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-400 h-full w-0 transition-all duration-700 ease-out"></div>
+
+    <!-- NÍVEL + XP -->
+    <div class="flex items-center gap-3">
+      <div class="flex items-center gap-1.5 bg-purple-500/15 border border-purple-500/40 px-3 py-1 rounded-xl text-purple-300 font-black text-sm">
+        <span>🎮</span><span id="levelBadge">0</span><span class="opacity-50 text-xs">/15</span>
+      </div>
+      <div class="flex-1">
+        <div class="flex justify-between text-[10px] text-slate-400 font-semibold mb-0.5">
+          <span>XP do Nível</span>
+          <span id="xpText">0 / 100</span>
+        </div>
+        <div class="xp-bar-outer">
+          <div id="xpBarFill" class="xp-bar-fill" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROGRESSO SEMANAL -->
+    <div class="mt-3">
+      <div class="flex justify-between items-center mb-1">
+        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">📊 Semana</span>
+        <span id="weekProgressText" class="text-[11px] font-bold text-blue-400">0/7 dias perfeitos</span>
+      </div>
+      <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden border border-slate-700">
+        <div id="weekProgressBar" class="bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-400 h-full w-0 transition-all duration-700 ease-out" style="box-shadow: 0 0 10px rgba(59,130,246,0.6);"></div>
+      </div>
     </div>
   </div>
 </header>
 
 <!-- MAIN -->
-<main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6 sm:px-6 flex flex-col gap-6">
+<main class="flex-1 max-w-7xl w-full mx-auto px-3 py-5 sm:px-6 flex flex-col gap-5">
 
-  <nav aria-label="Dias da Semana" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 sm:gap-3">
+  <!-- DIAS -->
+  <nav aria-label="Dias" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
     <div id="daysNavContainer" class="contents"></div>
   </nav>
 
-  <section class="bg-white dark:bg-darkCard rounded-2xl p-5 sm:p-6 shadow-lg border border-slate-200 dark:border-slate-800 relative overflow-hidden">
-    <div id="congratsBanner" class="hidden mb-4 p-4 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 text-white font-medium flex items-center justify-between shadow-md">
-      <span class="flex items-center gap-2 text-sm sm:text-base">🎉 Dia perfeito! Todos os <span id="totalTasksBanner">10</span> objetivos concluídos!</span>
+  <!-- CARD DO DIA -->
+  <section class="bg-slate-900/60 glass rounded-2xl p-4 sm:p-5 shadow-xl border border-slate-800 relative overflow-hidden">
+    <div class="absolute -top-20 -right-20 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-20 -left-20 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div id="congratsBanner" class="hidden mb-4 p-3 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold flex items-center justify-between shadow-lg animate-pulse">
+      <span class="flex items-center gap-2 text-sm">🎉 DIA PERFEITO! <span id="totalTasksBanner">10</span> objetivos!</span>
       <span class="text-2xl">🔥</span>
     </div>
 
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-3 relative z-10">
       <div>
-        <h2 id="selectedDayTitle" class="text-xl sm:text-2xl font-bold capitalize text-slate-900 dark:text-white">Domingo</h2>
-        <p id="selectedDaySubtitle" class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Gerencie suas tarefas diárias</p>
+        <h2 id="selectedDayTitle" class="text-lg sm:text-xl font-black text-white">Domingo</h2>
+        <p id="selectedDaySubtitle" class="text-[11px] text-slate-400">Nível 0 — 10 missões</p>
       </div>
       <div class="flex items-center gap-2 w-full sm:w-auto">
-        <button id="resetDayBtn" class="flex-1 sm:flex-none px-4 py-2 text-xs sm:text-sm font-medium rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 hover:bg-rose-500/20 transition-all border border-rose-500/20">
-          🔄 Resetar Dia
+        <button id="resetDayBtn" class="btn-action flex-1 sm:flex-none px-3 py-1.5 text-[11px] font-bold rounded-xl bg-rose-500/15 text-rose-400 hover:bg-rose-500/25 border border-rose-500/30">
+          🔄 Dia
         </button>
-        <button id="resetWeekBtn" class="flex-1 sm:flex-none px-4 py-2 text-xs sm:text-sm font-medium rounded-xl bg-slate-500/10 text-slate-600 dark:text-slate-300 hover:bg-slate-500/20 transition-all border border-slate-300 dark:border-slate-700">
-          🗑️ Resetar Semana
+        <button id="resetWeekBtn" class="btn-action flex-1 sm:flex-none px-3 py-1.5 text-[11px] font-bold rounded-xl bg-slate-500/15 text-slate-300 hover:bg-slate-500/25 border border-slate-500/30">
+          🗑️ Semana
         </button>
       </div>
     </div>
 
-    <div class="w-full bg-slate-200 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
-      <div id="progressBar" class="bg-gradient-to-r from-blue-500 to-emerald-500 h-full w-0 transition-all duration-500 ease-out"></div>
+    <div class="w-full bg-slate-800 h-3 rounded-full overflow-hidden border border-slate-700 relative z-10">
+      <div id="progressBar" class="bg-gradient-to-r from-blue-500 to-emerald-500 h-full w-0 transition-all duration-500 ease-out" style="box-shadow: 0 0 12px rgba(34,197,94,0.7);"></div>
     </div>
-    <div class="flex justify-between items-center mt-2 text-xs text-slate-500 dark:text-slate-400 font-medium">
-      <span id="progressText">0 de 10 tarefas concluídas</span>
-      <span id="progressPercent">0%</span>
+    <div class="flex justify-between items-center mt-1.5 text-[11px] text-slate-400 font-semibold relative z-10">
+      <span id="progressText">0 de 10 tarefas</span>
+      <span id="progressPercent" class="text-emerald-400 font-bold">0%</span>
     </div>
   </section>
 
-  <section aria-label="Lista de Tarefas" id="tasksGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></section>
+  <!-- GRID DE TAREFAS -->
+  <section aria-label="Tarefas" id="tasksGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></section>
 </main>
 
 <!-- RODAPÉ -->
-<footer class="mt-auto bg-white/50 dark:bg-darkCard/50 border-t border-slate-200 dark:border-slate-800 py-6 px-4">
-  <div class="max-w-4xl mx-auto text-center flex flex-col items-center gap-3">
-    <blockquote id="quoteText" class="text-sm sm:text-base italic text-slate-600 dark:text-slate-300 font-medium">
+<footer class="mt-auto bg-slate-950/60 glass border-t border-slate-800 py-5 px-4">
+  <div class="max-w-4xl mx-auto text-center flex flex-col items-center gap-2">
+    <blockquote id="quoteText" class="text-xs sm:text-sm italic text-slate-400 font-medium">
       "A consistência supera o talento quando o talento não é consistente."
     </blockquote>
-    <button id="newQuoteBtn" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 hover:bg-blue-500/20 transition-all">
-      ✨ Nova Frase Motivacional
+    <button id="newQuoteBtn" class="text-[11px] font-bold px-3 py-1.5 rounded-lg bg-blue-500/15 text-blue-400 hover:bg-blue-500/25 border border-blue-500/30 transition">
+      ✨ Nova Frase
     </button>
-    <p class="text-xs text-slate-400 mt-2">Painel de Rotina do Criador © 2026</p>
+    <p class="text-[10px] text-slate-500 mt-1">Painel de Rotina do Criador © 2026</p>
   </div>
 </footer>
 
-<!-- MODAL LEVEL UP / PRESTÍGIO -->
-<div id="levelUpModal" class="hidden fixed inset-0 z-50 bg-black/80 modal-overlay flex items-center justify-center p-4">
-  <div id="levelUpCard" class="relative rounded-3xl p-8 max-w-md w-full text-white text-center shadow-2xl overflow-hidden">
-    <!-- Fundo animado -->
-    <div id="modalBg" class="absolute inset-0 bg-gradient-to-br from-purple-600 to-blue-600"></div>
+<!-- MODAL LEVEL UP ÉPICO -->
+<div id="levelUpModal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
+  <div id="levelUpCard" class="relative rounded-3xl p-6 sm:p-8 max-w-md w-full text-white text-center shadow-2xl overflow-hidden">
+    <div id="modalBg" class="absolute inset-0 bg-gradient-to-br from-purple-700 via-blue-700 to-indigo-800"></div>
     <div id="modalBgOverlay" class="absolute inset-0 opacity-40 bg-gradient-to-tr from-yellow-400 via-transparent to-pink-500"></div>
+    <div class="levelup-rays"></div>
 
-    <!-- Conteúdo -->
     <div class="relative z-10">
-      <div id="modalEmoji" class="text-7xl mb-3 inline-block">🏆</div>
-      <h2 id="modalTitle" class="text-3xl font-black mb-2 tracking-tight">LEVEL UP!</h2>
-      <p id="modalSubtitle" class="text-lg mb-4 font-semibold">Você subiu para o <span id="newLevelText" class="font-black">Nível 1</span>!</p>
+      <div id="modalEmoji" class="text-7xl mb-2 inline-block drop-shadow-2xl">🏆</div>
+      <h2 id="modalTitle" class="text-3xl font-black mb-1 tracking-tight drop-shadow-lg">LEVEL UP!</h2>
+      <p id="modalSubtitle" class="text-base mb-4 font-bold opacity-95">Você subiu para o <span id="newLevelText" class="font-black">Nível 1</span>!</p>
 
-      <!-- Badge da nova patente (aparece só no prestígio) -->
-      <div id="prestigeBadgeBox" class="hidden mb-5">
-        <div id="prestigeBadgeInner" class="inline-block px-6 py-4 rounded-2xl bg-white/20 backdrop-blur border-2 border-white/40">
+      <div id="prestigeBadgeBox" class="hidden mb-4">
+        <div id="prestigeBadgeInner" class="inline-block px-6 py-4 rounded-2xl bg-white/15 backdrop-blur border-2 border-white/40">
           <div class="text-5xl mb-1" id="prestigeBadgeEmoji">🥉</div>
           <div class="text-xl font-black tracking-wide" id="prestigeBadgeName">BRONZE</div>
         </div>
       </div>
 
-      <div class="bg-white/15 backdrop-blur rounded-2xl p-4 mb-5 text-left text-sm space-y-1.5 border border-white/20">
-        <p class="font-bold mb-2 text-base">🎯 Novas metas:</p>
+      <div class="bg-black/25 backdrop-blur rounded-2xl p-3 mb-4 text-left text-xs space-y-1.5 border border-white/20">
+        <p class="font-black mb-1 text-sm">🎯 NOVAS METAS:</p>
         <p>📹 <span id="newVideos">3</span> vídeos por dia</p>
         <p>💧 <span id="newWater">2</span> L de água</p>
         <p>📚 <span id="newStudy">30</span> min de estudo</p>
@@ -235,15 +543,15 @@
         <p>📵 <span id="newNoPhone">1</span> h sem celular</p>
       </div>
 
-      <button id="levelUpCloseBtn" class="w-full py-3 bg-white text-purple-700 rounded-2xl font-bold hover:bg-slate-100 transition shadow-lg text-base">
-        🔥 Aceitar Desafio
+      <button id="levelUpCloseBtn" class="btn-action w-full py-3 bg-white text-purple-700 rounded-2xl font-black hover:bg-slate-100 transition shadow-2xl text-sm tracking-wide">
+        🔥 ACEITAR DESAFIO
       </button>
     </div>
   </div>
 </div>
 
-<!-- BOTÃO INSTALAR PWA -->
-<button id="installAppBtn" class="hidden fixed bottom-6 right-6 z-50 bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-5 py-3 rounded-2xl shadow-xl font-bold text-sm flex items-center gap-2 hover:scale-105 active:scale-95 transition-all">
+<!-- BOTÃO INSTALAR -->
+<button id="installAppBtn" class="hidden fixed bottom-5 right-5 z-50 bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-4 py-3 rounded-2xl shadow-2xl font-bold text-sm flex items-center gap-2 active:scale-95 transition-all" style="box-shadow: 0 8px 30px rgba(59,130,246,0.5);">
   ⬇️ Instalar App
 </button>
 
@@ -264,7 +572,6 @@ const DAYS = [
 const TOTAL_TASKS = 10;
 const MAX_LEVEL = 15;
 
-// Patentes com emoji e cor
 const RANKS = [
   { name: 'Bronze',   emoji: '🥉', color: '#cd7f32' },
   { name: 'Prata',    emoji: '🥈', color: '#c0c0c0' },
@@ -275,6 +582,14 @@ const RANKS = [
   { name: 'Lenda',    emoji: '👑', color: '#f59e0b' },
   { name: 'Mítico',   emoji: '🔥', color: '#ef4444' }
 ];
+
+// Raridades: xp e coins por tarefa
+const RARITY = {
+  common:    { xp: 10,  coins: 5,  color: '#22c55e', label: 'Comum' },
+  rare:      { xp: 25,  coins: 10, color: '#3b82f6', label: 'Raro' },
+  epic:      { xp: 50,  coins: 20, color: '#a855f7', label: 'Épico' },
+  legendary: { xp: 100, coins: 50, color: '#f59e0b', label: 'Lendário' }
+};
 
 const QUOTES = [
   "A consistência supera o talento quando o talento não é consistente.",
@@ -291,12 +606,16 @@ const QUOTES = [
 ====================================================== */
 function getLevelGoals(level) {
   return {
-    videos: 3 + Math.floor(level / 4),      // Nv0:3 ... Nv15:6
-    water: 2000,                            // Fixo 2L
-    study: 1800 + level * 120,              // Nv0:30min ... Nv15:60min
-    diaryPages: 1 + Math.floor(level / 4),  // Nv0:1 ... Nv15:4
-    noPhone: 3600 + level * 240             // Nv0:1h ... Nv15:2h
+    videos: 3 + Math.floor(level / 4),
+    water: 2000,
+    study: 1800 + level * 120,
+    diaryPages: 1 + Math.floor(level / 4),
+    noPhone: 3600 + level * 240
   };
+}
+
+function xpNeededForLevel(level) {
+  return 100 + level * 50;
 }
 
 function toRoman(n) {
@@ -307,7 +626,7 @@ function toRoman(n) {
 
 function getRank(prestiges) {
   if (!prestiges || prestiges === 0) {
-    return { name: 'Iniciante', emoji: '🌱', color: '#64748b', tier: 0 };
+    return { name: 'Iniciante', emoji: '🌱', color: '#94a3b8', tier: 0 };
   }
   const totalRanks = RANKS.length;
   const cycle = Math.floor((prestiges - 1) / totalRanks);
@@ -320,6 +639,95 @@ function getRank(prestiges) {
     color: base.color,
     tier: cycle
   };
+}
+
+/* ======================================================
+   SOM (Web Audio API)
+====================================================== */
+let audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+    catch (e) { return null; }
+  }
+  return audioCtx;
+}
+
+function playTone(freq, duration, type = 'sine', volume = 0.15, delay = 0) {
+  const ctx = getAudioCtx();
+  if (!ctx) return;
+  if (ctx.state === 'suspended') ctx.resume();
+  const t = ctx.currentTime + delay;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, t);
+  gain.gain.setValueAtTime(0, t);
+  gain.gain.linearRampToValueAtTime(volume, t + 0.01);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + duration);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start(t);
+  osc.stop(t + duration);
+}
+
+function soundCheck() {
+  playTone(880, 0.08, 'sine', 0.12);
+  playTone(1320, 0.1, 'sine', 0.09, 0.05);
+}
+
+function soundLevelUp() {
+  playTone(523.25, 0.15, 'triangle', 0.15, 0);
+  playTone(659.25, 0.15, 'triangle', 0.15, 0.12);
+  playTone(783.99, 0.15, 'triangle', 0.15, 0.24);
+  playTone(1046.5, 0.4, 'triangle', 0.2, 0.36);
+}
+
+function soundPrestige() {
+  playTone(523.25, 0.2, 'sine', 0.15, 0);
+  playTone(659.25, 0.2, 'sine', 0.15, 0.15);
+  playTone(783.99, 0.2, 'sine', 0.15, 0.3);
+  playTone(1046.5, 0.2, 'sine', 0.18, 0.45);
+  playTone(1318.5, 0.6, 'sine', 0.22, 0.6);
+}
+
+function soundWater() {
+  playTone(1200, 0.05, 'sine', 0.1);
+  playTone(900, 0.08, 'sine', 0.08, 0.04);
+}
+
+function soundClick() {
+  playTone(600, 0.04, 'square', 0.05);
+}
+
+/* ======================================================
+   VIBRAÇÃO
+====================================================== */
+function vibrate(pattern) {
+  if (navigator.vibrate) {
+    try { navigator.vibrate(pattern); } catch (e) {}
+  }
+}
+
+/* ======================================================
+   PARTÍCULAS DE FUNDO
+====================================================== */
+function spawnBgParticles() {
+  const colors = ['#3b82f6', '#a855f7', '#06b6d4', '#22c55e', '#f59e0b'];
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle-bg';
+    const size = 2 + Math.random() * 4;
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.boxShadow = '0 0 ' + (size * 3) + 'px currentColor';
+    p.style.color = p.style.background;
+    p.style.animationDuration = (15 + Math.random() * 20) + 's';
+    p.style.animationDelay = (Math.random() * 15) + 's';
+    document.body.appendChild(p);
+  }
 }
 
 /* ======================================================
@@ -339,6 +747,10 @@ function loadAppData() {
     quoteIndex: 0,
     level: 0,
     prestiges: 0,
+    xp: 0,
+    coins: 0,
+    streak: 0,
+    avatar: '⚡',
     sleepSchedule: { bedtime: '22:00', wakeup: '06:00' },
     days: {}
   };
@@ -382,15 +794,19 @@ function loadAppData() {
       if (!parsed.sleepSchedule) parsed.sleepSchedule = defaultData.sleepSchedule;
       if (parsed.level === undefined) parsed.level = 0;
       if (parsed.prestiges === undefined) parsed.prestiges = 0;
+      if (parsed.xp === undefined) parsed.xp = 0;
+      if (parsed.coins === undefined) parsed.coins = 0;
+      if (parsed.streak === undefined) parsed.streak = 0;
+      if (!parsed.avatar) parsed.avatar = '⚡';
       return parsed;
     }
-  } catch (e) { console.error('Erro ao carregar:', e); }
+  } catch (e) { console.error('Erro:', e); }
   return defaultData;
 }
 
 function saveAppData() {
   try { localStorage.setItem('rotina_criador_v2', JSON.stringify(appData)); }
-  catch (e) { console.error('Erro ao salvar:', e); }
+  catch (e) { console.error('Erro:', e); }
 }
 
 /* ======================================================
@@ -399,23 +815,26 @@ function saveAppData() {
 function initTheme() {
   const icon = document.getElementById('themeIcon');
   if (appData.theme === 'light') {
+    document.body.classList.remove('dark-bg');
+    document.body.classList.add('light-bg');
     document.documentElement.classList.remove('dark');
+    document.body.classList.remove('text-slate-100');
+    document.body.classList.add('text-slate-800');
     icon.textContent = '☀️';
   } else {
+    document.body.classList.add('dark-bg');
+    document.body.classList.remove('light-bg');
     document.documentElement.classList.add('dark');
+    document.body.classList.add('text-slate-100');
+    document.body.classList.remove('text-slate-800');
     icon.textContent = '🌙';
   }
 }
 document.getElementById('themeToggleBtn').addEventListener('click', () => {
-  const icon = document.getElementById('themeIcon');
-  if (document.documentElement.classList.contains('dark')) {
-    document.documentElement.classList.remove('dark');
-    appData.theme = 'light'; icon.textContent = '☀️';
-  } else {
-    document.documentElement.classList.add('dark');
-    appData.theme = 'dark'; icon.textContent = '🌙';
-  }
+  appData.theme = appData.theme === 'dark' ? 'light' : 'dark';
+  initTheme();
   saveAppData();
+  soundClick();
 });
 
 /* ======================================================
@@ -429,21 +848,24 @@ function renderDaysNav() {
     const completed = dayData.tasks.filter(Boolean).length;
     const isCurrent = day.id === currentDayIndex;
     const isRealToday = day.id === new Date().getDay();
+    const isPerfect = completed === TOTAL_TASKS;
 
     const btn = document.createElement('button');
-    btn.className = `flex flex-col items-center justify-center p-3 rounded-2xl border transition-all relative ${
+    btn.className = `day-tab flex flex-col items-center justify-center p-3 rounded-2xl border transition-all relative ${
       isCurrent
-        ? 'bg-blue-500 text-white border-blue-500 shadow-md shadow-blue-500/20 font-bold'
-        : 'bg-white dark:bg-darkCard text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-800 hover:border-blue-400'
+        ? 'active bg-gradient-to-br from-blue-500 to-blue-700 text-white border-blue-400'
+        : 'bg-slate-900/60 glass text-slate-300 border-slate-700/80 hover:border-blue-500/60'
     }`;
     btn.innerHTML = `
-      ${isRealToday ? '<span class="absolute -top-1 -right-1 w-3 h-3 bg-cyan-400 rounded-full border-2 border-white dark:border-darkCard"></span>' : ''}
-      <span class="text-xs uppercase tracking-wider opacity-80">${day.short}</span>
-      <span class="text-sm font-bold mt-0.5">${day.name}</span>
-      <span class="text-[10px] mt-1 px-2 py-0.5 rounded-full ${isCurrent ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'}">${completed}/${TOTAL_TASKS}</span>
+      ${isRealToday ? '<span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-cyan-400 rounded-full border-2 border-slate-900 animate-pulse"></span>' : ''}
+      ${isPerfect ? '<span class="absolute -top-1 -left-1 text-xs">⭐</span>' : ''}
+      <span class="text-[10px] uppercase tracking-wider opacity-80 font-bold">${day.short}</span>
+      <span class="text-xs font-black mt-0.5">${day.name}</span>
+      <span class="text-[9px] mt-1 px-2 py-0.5 rounded-full font-bold ${isCurrent ? 'bg-white/25 text-white' : 'bg-slate-800 text-slate-400'}">${completed}/${TOTAL_TASKS}</span>
     `;
     btn.addEventListener('click', () => {
       pauseAllTimers();
+      soundClick();
       currentDayIndex = day.id;
       renderDaysNav();
       loadDayData(currentDayIndex);
@@ -453,7 +875,7 @@ function renderDaysNav() {
 }
 
 /* ======================================================
-   CARREGAR DADOS DO DIA
+   CARREGAR DIA
 ====================================================== */
 function loadDayData(dayId) {
   const dayData = appData.days[dayId];
@@ -483,26 +905,31 @@ function renderTasks(dayData, goals) {
   const noPhoneH = (goals.noPhone / 60).toFixed(1).replace('.0', '');
 
   const tasksConfig = [
-    { i: 0, emoji: '🎬', title: 'Minerar vídeos bons', desc: 'Busque referências e ideias de conteúdo.', type: 'checkbox' },
-    { i: 1, emoji: '📹', title: `Fazer pelo menos ${goals.videos} vídeos`, desc: `Grave ${goals.videos} vídeos hoje.`, type: 'subvideos', count: goals.videos },
-    { i: 2, emoji: '🎥', title: 'Fazer 1 vídeo longo', desc: 'Conteúdo aprofundado para autoridade.', type: 'checkbox' },
-    { i: 3, emoji: '📱', title: 'Focar no Instagram', desc: 'Interaja, otimize o perfil, melhore as métricas.', type: 'instagram' },
-    { i: 4, emoji: '📚', title: `Estudar ${studyMin} minutos`, desc: 'Use o timer para focar.', type: 'timer' },
-    { i: 5, emoji: '📖', title: 'Ler um pouco', desc: 'Alimente a mente.', type: 'reading' },
-    { i: 6, emoji: '💧', title: `Beber ${waterL} L de água`, desc: 'Hidratação é foco.', type: 'water' },
-    { i: 7, emoji: '📝', title: `Escrever ${goals.diaryPages} página(s) de diário`, desc: 'Reflita e registre o dia.', type: 'diary' },
-    { i: 8, emoji: '📵', title: `Ficar ${noPhoneH}h sem celular`, desc: 'Use o timer para cronometrar.', type: 'nophone' },
-    { i: 9, emoji: '🌙', title: 'Dormir no horário', desc: 'Meta: dormir e acordar no horário programado.', type: 'sleep' }
+    { i: 0, emoji: '🎬', title: 'Minerar vídeos bons', desc: 'Busque referências e ideias.', type: 'checkbox', rarity: 'common' },
+    { i: 1, emoji: '📹', title: `Fazer ${goals.videos} vídeos`, desc: `Grave ${goals.videos} vídeos hoje.`, type: 'subvideos', count: goals.videos, rarity: 'rare' },
+    { i: 2, emoji: '🎥', title: 'Fazer 1 vídeo longo', desc: 'Conteúdo aprofundado.', type: 'checkbox', rarity: 'epic' },
+    { i: 3, emoji: '📱', title: 'Focar no Instagram', desc: 'Interaja e otimize o perfil.', type: 'instagram', rarity: 'common' },
+    { i: 4, emoji: '📚', title: `Estudar ${studyMin} min`, desc: 'Use o timer.', type: 'timer', rarity: 'rare' },
+    { i: 5, emoji: '📖', title: 'Ler um pouco', desc: 'Alimente a mente.', type: 'reading', rarity: 'common' },
+    { i: 6, emoji: '💧', title: `Beber ${waterL} L`, desc: 'Hidratação é foco.', type: 'water', rarity: 'common' },
+    { i: 7, emoji: '📝', title: `Diário (${goals.diaryPages} pág)`, desc: 'Reflita e registre.', type: 'diary', rarity: 'rare' },
+    { i: 8, emoji: '📵', title: `Sem celular ${noPhoneH}h`, desc: 'Timer offline.', type: 'nophone', rarity: 'epic' },
+    { i: 9, emoji: '🌙', title: 'Dormir no horário', desc: 'Meta de sono.', type: 'sleep', rarity: 'legendary' }
   ];
 
   tasksConfig.forEach(cfg => {
     const card = document.createElement('div');
-    card.className = 'bg-white dark:bg-darkCard rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col justify-between hover:shadow-md transition-shadow';
     const checked = dayData.tasks[cfg.i];
+    const rar = RARITY[cfg.rarity];
+    card.className = `task-card rarity-${cfg.rarity} ${checked ? 'completed' : ''} bg-slate-900/70 glass rounded-2xl p-4 shadow-lg border border-slate-800/80 flex flex-col justify-between`;
+    card.style.position = 'relative';
 
     let html = `<div>
-      <div class="flex items-center justify-between mb-3">
-        <span class="text-3xl">${cfg.emoji}</span>`;
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-2">
+          <span class="task-emoji text-3xl">${cfg.emoji}</span>
+          <span class="rarity-tag ${cfg.rarity}">${rar.label}</span>
+        </div>`;
 
     if (cfg.type === 'checkbox') {
       html += `<input type="checkbox" data-index="${cfg.i}" class="custom-checkbox task-checkbox" ${checked ? 'checked' : ''}>`;
@@ -511,76 +938,76 @@ function renderTasks(dayData, goals) {
     }
 
     html += `</div>
-      <h3 class="font-bold text-base text-slate-900 dark:text-white mb-1">${cfg.title}</h3>
-      <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">${cfg.desc}</p>`;
+      <h3 class="font-black text-sm text-white mb-0.5">${cfg.title}</h3>
+      <p class="text-[11px] text-slate-400 mb-2">${cfg.desc}</p>`;
 
     if (cfg.type === 'subvideos') {
-      html += `<div class="bg-slate-50 dark:bg-slate-900/40 p-3 rounded-xl border border-slate-100 dark:border-slate-800 space-y-2">`;
+      html += `<div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 space-y-1.5">`;
       for (let s = 0; s < cfg.count; s++) {
         const subChecked = dayData.subvideos[s] || false;
-        html += `<label class="flex items-center gap-2.5 text-xs font-medium cursor-pointer">
+        html += `<label class="flex items-center gap-2 text-[11px] font-semibold cursor-pointer text-slate-300">
           <input type="checkbox" data-sub="${s}" class="custom-checkbox subvideo-checkbox !w-5 !h-5" ${subChecked ? 'checked' : ''}>
           <span>Vídeo ${s + 1}</span>
         </label>`;
       }
       html += `</div>`;
     } else if (cfg.type === 'instagram') {
-      html += `<textarea data-field="instagramNotes" rows="2" placeholder="Anotações do Instagram..." class="w-full text-xs p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none">${dayData.instagramNotes || ''}</textarea>`;
+      html += `<textarea data-field="instagramNotes" rows="2" placeholder="Anotações..." class="w-full text-[11px] p-2 rounded-xl bg-slate-950/60 border border-slate-800 text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none">${dayData.instagramNotes || ''}</textarea>`;
     } else if (cfg.type === 'timer') {
-      html += `<div class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-center">
-        <div id="timerDisplay" class="text-2xl font-mono font-bold text-blue-500 mb-2">${formatTime(dayData.timerSeconds ?? goals.study)}</div>
-        <div class="flex justify-center gap-2">
-          <button id="timerStartBtn" class="px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-xs font-semibold">Iniciar</button>
-          <button id="timerPauseBtn" class="px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-xs font-semibold">Pausar</button>
-          <button id="timerResetBtn" class="px-3 py-1 bg-slate-300 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-lg text-xs font-semibold">Zerar</button>
+      html += `<div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 text-center">
+        <div id="timerDisplay" class="text-xl font-mono font-black text-blue-400 mb-2">${formatTime(dayData.timerSeconds ?? goals.study)}</div>
+        <div class="flex justify-center gap-1.5">
+          <button id="timerStartBtn" class="btn-action px-2.5 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-[11px] font-bold">▶</button>
+          <button id="timerPauseBtn" class="btn-action px-2.5 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-[11px] font-bold">⏸</button>
+          <button id="timerResetBtn" class="btn-action px-2.5 py-1 bg-slate-700 text-slate-200 rounded-lg text-[11px] font-bold">↺</button>
         </div>
       </div>`;
     } else if (cfg.type === 'reading') {
-      html += `<input type="text" data-field="readingText" placeholder="Livro e páginas lidas..." value="${dayData.readingText || ''}" class="w-full text-xs p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">`;
+      html += `<input type="text" data-field="readingText" placeholder="Livro e páginas..." value="${dayData.readingText || ''}" class="w-full text-[11px] p-2 rounded-xl bg-slate-950/60 border border-slate-800 text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">`;
     } else if (cfg.type === 'water') {
       const pct = Math.min(100, Math.round(((dayData.water || 0) / goals.water) * 100));
-      html += `<div class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
-        <div class="flex justify-between items-center mb-2">
-          <span class="text-xs font-semibold">Progresso</span>
-          <span id="waterMlText" class="text-xs font-bold text-cyan-500">${dayData.water || 0} / ${goals.water} ml</span>
+      html += `<div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
+        <div class="flex justify-between items-center mb-1.5">
+          <span class="text-[10px] font-bold text-slate-400">Progresso</span>
+          <span id="waterMlText" class="text-[11px] font-black text-cyan-400">${dayData.water || 0}/${goals.water}ml</span>
         </div>
-        <div class="w-full bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden mb-3">
-          <div id="waterProgressBar" class="bg-cyan-500 h-full transition-all duration-300" style="width:${pct}%"></div>
+        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-2">
+          <div id="waterProgressBar" class="bg-gradient-to-r from-cyan-400 to-blue-500 h-full transition-all duration-300" style="width:${pct}%; box-shadow: 0 0 10px rgba(6,182,212,0.7);"></div>
         </div>
-        <div class="flex gap-2">
-          <button id="waterMinusBtn" class="flex-1 py-1.5 bg-rose-500/10 text-rose-600 text-xs font-bold rounded-lg border border-rose-500/20">-250 ml</button>
-          <button id="waterPlusBtn" class="flex-1 py-1.5 bg-cyan-500 text-white text-xs font-bold rounded-lg">+250 ml</button>
+        <div class="flex gap-1.5">
+          <button id="waterMinusBtn" class="btn-action flex-1 py-1.5 bg-rose-500/15 text-rose-400 text-[11px] font-bold rounded-lg border border-rose-500/30">-250</button>
+          <button id="waterPlusBtn" class="btn-action flex-1 py-1.5 bg-cyan-500 text-white text-[11px] font-bold rounded-lg">+250</button>
         </div>
       </div>`;
     } else if (cfg.type === 'diary') {
-      html += `<textarea data-field="diaryText" rows="4" placeholder="Escreva sua página de diário aqui..." class="w-full text-xs p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none">${dayData.diaryText || ''}</textarea>`;
+      html += `<textarea data-field="diaryText" rows="3" placeholder="Escreva sua página..." class="w-full text-[11px] p-2 rounded-xl bg-slate-950/60 border border-slate-800 text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none">${dayData.diaryText || ''}</textarea>`;
     } else if (cfg.type === 'nophone') {
-      html += `<div class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-center">
-        <div id="noPhoneDisplay" class="text-2xl font-mono font-bold text-purple-500 mb-2">${formatTime(dayData.noPhoneSeconds ?? goals.noPhone)}</div>
-        <div class="flex justify-center gap-2">
-          <button id="noPhoneStartBtn" class="px-3 py-1 bg-purple-500 hover:bg-purple-600 text-white rounded-lg text-xs font-semibold">Iniciar</button>
-          <button id="noPhonePauseBtn" class="px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-xs font-semibold">Pausar</button>
-          <button id="noPhoneResetBtn" class="px-3 py-1 bg-slate-300 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-lg text-xs font-semibold">Zerar</button>
+      html += `<div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 text-center">
+        <div id="noPhoneDisplay" class="text-xl font-mono font-black text-purple-400 mb-2">${formatTime(dayData.noPhoneSeconds ?? goals.noPhone)}</div>
+        <div class="flex justify-center gap-1.5">
+          <button id="noPhoneStartBtn" class="btn-action px-2.5 py-1 bg-purple-500 hover:bg-purple-600 text-white rounded-lg text-[11px] font-bold">▶</button>
+          <button id="noPhonePauseBtn" class="btn-action px-2.5 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-[11px] font-bold">⏸</button>
+          <button id="noPhoneResetBtn" class="btn-action px-2.5 py-1 bg-slate-700 text-slate-200 rounded-lg text-[11px] font-bold">↺</button>
         </div>
       </div>`;
     } else if (cfg.type === 'sleep') {
       const sleep = appData.sleepSchedule;
-      html += `<div class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
-        <div class="flex justify-between items-center text-xs">
-          <span class="font-semibold text-slate-600 dark:text-slate-300">🌙 Dormir</span>
-          <input type="time" id="bedtimeInput" value="${sleep.bedtime}" class="text-xs px-2 py-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+      html += `<div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 space-y-1.5">
+        <div class="flex justify-between items-center text-[11px]">
+          <span class="font-bold text-slate-400">🌙 Dormir</span>
+          <input type="time" id="bedtimeInput" value="${sleep.bedtime}" class="text-[11px] px-2 py-1 rounded-lg bg-slate-900 border border-slate-700 text-white">
         </div>
-        <div class="flex justify-between items-center text-xs">
-          <span class="font-semibold text-slate-600 dark:text-slate-300">☀️ Acordar</span>
-          <input type="time" id="wakeupInput" value="${sleep.wakeup}" class="text-xs px-2 py-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+        <div class="flex justify-between items-center text-[11px]">
+          <span class="font-bold text-slate-400">☀️ Acordar</span>
+          <input type="time" id="wakeupInput" value="${sleep.wakeup}" class="text-[11px] px-2 py-1 rounded-lg bg-slate-900 border border-slate-700 text-white">
         </div>
       </div>`;
     }
 
     html += `</div>
-      <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400">
-        <span>Nível ${appData.level}</span>
-        <span class="font-medium ${checked ? 'text-emerald-500' : 'text-slate-500 dark:text-slate-400'}">${checked ? 'Concluído' : 'Pendente'}</span>
+      <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] font-bold">
+        <span class="text-slate-500">+${rar.xp} XP • +${rar.coins} 🪙</span>
+        <span class="${checked ? 'text-emerald-400' : 'text-slate-500'}">${checked ? '✓ FEITO' : 'PENDENTE'}</span>
       </div>`;
 
     card.innerHTML = html;
@@ -597,16 +1024,79 @@ function formatTime(secs) {
 }
 
 /* ======================================================
-   EVENTOS
+   EFEITOS VISUAIS
+====================================================== */
+function burstParticles(x, y, color) {
+  for (let i = 0; i < 12; i++) {
+    const p = document.createElement('div');
+    p.className = 'burst-particle';
+    p.style.left = x + 'px';
+    p.style.top = y + 'px';
+    p.style.background = color;
+    p.style.boxShadow = '0 0 10px ' + color;
+    const angle = (Math.PI * 2 * i) / 12;
+    const dist = 60 + Math.random() * 60;
+    p.style.setProperty('--tx', Math.cos(angle) * dist + 'px');
+    p.style.setProperty('--ty', Math.sin(angle) * dist + 'px');
+    p.style.animation = 'burstOut 0.8s ease-out forwards';
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 900);
+  }
+}
+
+function floatXP(x, y, amount, type) {
+  const el = document.createElement('div');
+  el.className = 'xp-float';
+  el.textContent = '+' + amount + ' ' + type;
+  el.style.left = x + 'px';
+  el.style.top = y + 'px';
+  el.style.color = type === 'XP' ? '#22c55e' : '#fbbf24';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1400);
+}
+
+function launchConfetti(qty, emojis) {
+  for (let i = 0; i < qty; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    piece.style.left = Math.random() * 100 + 'vw';
+    piece.style.animationDelay = Math.random() * 1.5 + 's';
+    piece.style.animationDuration = (2.5 + Math.random() * 1.5) + 's';
+    piece.style.fontSize = (16 + Math.random() * 22) + 'px';
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), 5000);
+  }
+}
+
+/* ======================================================
+   EVENTOS TAREFAS
 ====================================================== */
 function bindTaskEvents() {
   const day = appData.days[currentDayIndex];
   const goals = getLevelGoals(appData.level);
 
+  // Raridades por índice
+  const taskRarity = ['common', 'rare', 'epic', 'common', 'rare', 'common', 'common', 'rare', 'epic', 'legendary'];
+
   document.querySelectorAll('.task-checkbox').forEach(cb => {
     cb.addEventListener('change', e => {
       const i = parseInt(e.target.getAttribute('data-index'));
+      const wasChecked = day.tasks[i];
       day.tasks[i] = e.target.checked;
+
+      if (e.target.checked && !wasChecked) {
+        const rar = RARITY[taskRarity[i]];
+        addXP(rar.xp);
+        addCoins(rar.coins);
+
+        const rect = e.target.getBoundingClientRect();
+        burstParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, rar.color);
+        floatXP(rect.left, rect.top - 10, rar.xp, 'XP');
+
+        if (i === 6) soundWater(); else soundCheck();
+        vibrate([20, 10, 30]);
+      }
       saveAppData();
       loadDayData(currentDayIndex);
       renderDaysNav();
@@ -619,6 +1109,7 @@ function bindTaskEvents() {
       day.subvideos[s] = e.target.checked;
       const done = day.subvideos.filter(Boolean).length;
       day.tasks[1] = done >= goals.videos;
+      if (e.target.checked) { soundCheck(); vibrate(20); }
       saveAppData();
       loadDayData(currentDayIndex);
       renderDaysNav();
@@ -636,7 +1127,13 @@ function bindTaskEvents() {
   const wm = document.getElementById('waterMinusBtn');
   if (wp) wp.addEventListener('click', () => {
     day.water = Math.min(goals.water * 2, (day.water || 0) + 250);
-    if (day.water >= goals.water) day.tasks[6] = true;
+    if (day.water >= goals.water && !day.tasks[6]) {
+      day.tasks[6] = true;
+      addXP(RARITY.common.xp);
+      addCoins(RARITY.common.coins);
+    }
+    soundWater();
+    vibrate(20);
     saveAppData();
     loadDayData(currentDayIndex);
     renderDaysNav();
@@ -644,6 +1141,7 @@ function bindTaskEvents() {
   if (wm) wm.addEventListener('click', () => {
     day.water = Math.max(0, (day.water || 0) - 250);
     if (day.water < goals.water) day.tasks[6] = false;
+    soundClick();
     saveAppData();
     loadDayData(currentDayIndex);
     renderDaysNav();
@@ -652,8 +1150,8 @@ function bindTaskEvents() {
   const ts = document.getElementById('timerStartBtn');
   const tp = document.getElementById('timerPauseBtn');
   const tr = document.getElementById('timerResetBtn');
-  if (ts) ts.addEventListener('click', () => startStudyTimer(goals));
-  if (tp) tp.addEventListener('click', pauseStudyTimer);
+  if (ts) ts.addEventListener('click', () => { startStudyTimer(goals); soundClick(); });
+  if (tp) tp.addEventListener('click', () => { pauseStudyTimer(); soundClick(); });
   if (tr) tr.addEventListener('click', () => {
     pauseStudyTimer();
     day.timerSeconds = goals.study;
@@ -666,8 +1164,8 @@ function bindTaskEvents() {
   const ns = document.getElementById('noPhoneStartBtn');
   const np = document.getElementById('noPhonePauseBtn');
   const nr = document.getElementById('noPhoneResetBtn');
-  if (ns) ns.addEventListener('click', () => startNoPhoneTimer(goals));
-  if (np) np.addEventListener('click', pauseNoPhoneTimer);
+  if (ns) ns.addEventListener('click', () => { startNoPhoneTimer(goals); soundClick(); });
+  if (np) np.addEventListener('click', () => { pauseNoPhoneTimer(); soundClick(); });
   if (nr) nr.addEventListener('click', () => {
     pauseNoPhoneTimer();
     day.noPhoneSeconds = goals.noPhone;
@@ -679,18 +1177,34 @@ function bindTaskEvents() {
 
   const bt = document.getElementById('bedtimeInput');
   const wk = document.getElementById('wakeupInput');
-  if (bt) bt.addEventListener('change', e => {
-    appData.sleepSchedule.bedtime = e.target.value;
-    saveAppData();
-  });
-  if (wk) wk.addEventListener('change', e => {
-    appData.sleepSchedule.wakeup = e.target.value;
-    saveAppData();
-  });
+  if (bt) bt.addEventListener('change', e => { appData.sleepSchedule.bedtime = e.target.value; saveAppData(); });
+  if (wk) wk.addEventListener('change', e => { appData.sleepSchedule.wakeup = e.target.value; saveAppData(); });
 }
 
 /* ======================================================
-   TIMER DE ESTUDO
+   XP / COINS
+====================================================== */
+function addXP(amount) {
+  appData.xp = (appData.xp || 0) + amount;
+  const needed = xpNeededForLevel(appData.level);
+  while (appData.xp >= needed && appData.level < MAX_LEVEL) {
+    appData.xp -= xpNeededForLevel(appData.level);
+    // XP extra não sobe de nível sozinho, só quando a semana fechar
+    break;
+  }
+  if (appData.xp > xpNeededForLevel(appData.level)) {
+    appData.xp = xpNeededForLevel(appData.level);
+  }
+  updateLevelUI();
+}
+
+function addCoins(amount) {
+  appData.coins = (appData.coins || 0) + amount;
+  updateLevelUI();
+}
+
+/* ======================================================
+   TIMERS
 ====================================================== */
 function startStudyTimer(goals) {
   const day = appData.days[currentDayIndex];
@@ -708,11 +1222,17 @@ function startStudyTimer(goals) {
     } else {
       clearInterval(timerInterval); timerInterval = null;
       day.timerRunning = false;
-      day.tasks[4] = true;
+      if (!day.tasks[4]) {
+        day.tasks[4] = true;
+        addXP(RARITY.rare.xp);
+        addCoins(RARITY.rare.coins);
+      }
       saveAppData();
       loadDayData(currentDayIndex);
       renderDaysNav();
-      alert('🎉 Parabéns! Você concluiu seus minutos de estudo!');
+      launchConfetti(15, ['🎉','📚','✨']);
+      vibrate([50,30,50]);
+      setTimeout(() => alert('🎉 Estudo concluído! +' + RARITY.rare.xp + ' XP'), 300);
     }
   }, 1000);
 }
@@ -726,9 +1246,6 @@ function updateTimerDisplay() {
   if (el) el.textContent = formatTime(appData.days[currentDayIndex].timerSeconds ?? getLevelGoals(appData.level).study);
 }
 
-/* ======================================================
-   TIMER SEM CELULAR
-====================================================== */
 function startNoPhoneTimer(goals) {
   const day = appData.days[currentDayIndex];
   if (day.noPhoneSeconds === undefined || day.noPhoneSeconds === null) day.noPhoneSeconds = goals.noPhone;
@@ -745,11 +1262,17 @@ function startNoPhoneTimer(goals) {
     } else {
       clearInterval(noPhoneInterval); noPhoneInterval = null;
       day.noPhoneRunning = false;
-      day.tasks[8] = true;
+      if (!day.tasks[8]) {
+        day.tasks[8] = true;
+        addXP(RARITY.epic.xp);
+        addCoins(RARITY.epic.coins);
+      }
       saveAppData();
       loadDayData(currentDayIndex);
       renderDaysNav();
-      alert('🔥 Você ficou o tempo necessário sem celular!');
+      launchConfetti(20, ['🔥','📵','✨','💪']);
+      vibrate([50,30,50,30,80]);
+      setTimeout(() => alert('🔥 Sem celular concluído! +' + RARITY.epic.xp + ' XP'), 300);
     }
   }, 1000);
 }
@@ -765,6 +1288,18 @@ function updateNoPhoneDisplay() {
 
 function pauseAllTimers() { pauseStudyTimer(); pauseNoPhoneTimer(); }
 
+function updateWaterUI() {
+  const goals = getLevelGoals(appData.level);
+  const day = appData.days[currentDayIndex];
+  const el = document.getElementById('waterMlText');
+  const bar = document.getElementById('waterProgressBar');
+  if (el) el.textContent = `${day.water || 0}/${goals.water}ml`;
+  if (bar) {
+    const pct = Math.min(100, Math.round(((day.water || 0) / goals.water) * 100));
+    bar.style.width = pct + '%';
+  }
+}
+
 /* ======================================================
    PROGRESSO
 ====================================================== */
@@ -774,7 +1309,7 @@ function updateProgress() {
   const pct = Math.round((completed / TOTAL_TASKS) * 100);
 
   document.getElementById('progressBar').style.width = pct + '%';
-  document.getElementById('progressText').textContent = `${completed} de ${TOTAL_TASKS} tarefas concluídas`;
+  document.getElementById('progressText').textContent = `${completed} de ${TOTAL_TASKS} tarefas`;
   document.getElementById('progressPercent').textContent = pct + '%';
   document.getElementById('totalTasksBanner').textContent = TOTAL_TASKS;
 
@@ -795,7 +1330,7 @@ function updateWeekProgress() {
   document.getElementById('weekProgressBar').style.width = pct + '%';
   document.getElementById('weekProgressText').textContent = `${perfectDays}/7 dias perfeitos`;
 
-  if (perfectDays === 7) triggerLevelUp();
+  if (perfectDays === 7 && !isProcessingLevelUp) triggerLevelUp();
 }
 
 /* ======================================================
@@ -818,10 +1353,12 @@ function triggerLevelUp() {
     isPrestige = true;
   }
 
+  // Streak sobe
+  appData.streak = (appData.streak || 0) + 1;
+
   const newGoals = getLevelGoals(appData.level);
   const rank = getRank(appData.prestiges || 0);
 
-  // Configurar modal
   const card = document.getElementById('levelUpCard');
   const modalEmoji = document.getElementById('modalEmoji');
   const modalTitle = document.getElementById('modalTitle');
@@ -832,31 +1369,30 @@ function triggerLevelUp() {
   void card.offsetWidth;
 
   if (isPrestige) {
-    // PRESTÍGIO
     card.classList.add('animate-prestige');
     modalEmoji.textContent = '👑';
     modalTitle.textContent = '⭐ PRESTÍGIO!';
-    modalTitle.className = 'text-3xl font-black mb-2 tracking-tight bg-gradient-to-r from-yellow-300 to-orange-400 bg-clip-text text-transparent';
+    modalTitle.className = 'text-3xl font-black mb-1 tracking-tight drop-shadow-lg bg-gradient-to-r from-yellow-300 to-orange-400 bg-clip-text text-transparent';
     modalSubtitle.innerHTML = `Você evoluiu para uma nova patente!`;
     badgeBox.classList.remove('hidden');
     document.getElementById('prestigeBadgeEmoji').textContent = rank.emoji;
     document.getElementById('prestigeBadgeName').textContent = rank.name.toUpperCase();
     document.getElementById('prestigeBadgeName').style.color = rank.color;
     document.getElementById('newLevelText').textContent = 'Nível 0';
-
-    // Confete especial
-    launchConfetti(60, ['👑', '⭐', '🏆', '✨', '🎉', '🥇']);
+    soundPrestige();
+    vibrate([100,50,100,50,200]);
+    launchConfetti(80, ['👑','⭐','🏆','✨','🎉','🥇','💎','🔥']);
   } else {
-    // LEVEL UP NORMAL
     card.classList.add('animate-levelup');
     modalEmoji.textContent = '🏆';
     modalTitle.textContent = 'LEVEL UP!';
-    modalTitle.className = 'text-3xl font-black mb-2 tracking-tight';
+    modalTitle.className = 'text-3xl font-black mb-1 tracking-tight drop-shadow-lg';
     modalSubtitle.innerHTML = `Você subiu para o <span class="font-black">Nível ${appData.level}</span>!`;
     badgeBox.classList.add('hidden');
     document.getElementById('newLevelText').textContent = 'Nível ' + appData.level;
-
-    launchConfetti(30, ['🎉', '✨', '🔥', '⭐', '💪']);
+    soundLevelUp();
+    vibrate([80,40,80,40,120]);
+    launchConfetti(50, ['🎉','✨','🔥','⭐','💪','🏆']);
   }
 
   document.getElementById('newVideos').textContent = newGoals.videos;
@@ -867,7 +1403,7 @@ function triggerLevelUp() {
 
   document.getElementById('levelUpModal').classList.remove('hidden');
 
-  // Resetar semana
+  // Reset semanal
   DAYS.forEach(d => {
     appData.days[d.id] = {
       tasks: new Array(TOTAL_TASKS).fill(false),
@@ -879,10 +1415,10 @@ function triggerLevelUp() {
       sleepOk: false
     };
   });
+  appData.xp = 0;
   saveAppData();
   updateLevelUI();
 
-  // Animar badge de patente
   setTimeout(() => {
     const badge = document.getElementById('rankBadge');
     badge.classList.add('badge-glow');
@@ -891,29 +1427,17 @@ function triggerLevelUp() {
 }
 
 /* ======================================================
-   CONFETES
-====================================================== */
-function launchConfetti(qty, emojis) {
-  const container = document.body;
-  for (let i = 0; i < qty; i++) {
-    const piece = document.createElement('div');
-    piece.className = 'confetti-piece';
-    piece.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-    piece.style.left = Math.random() * 100 + 'vw';
-    piece.style.animationDelay = Math.random() * 1.5 + 's';
-    piece.style.animationDuration = (2.5 + Math.random() * 1.5) + 's';
-    piece.style.fontSize = (16 + Math.random() * 20) + 'px';
-    container.appendChild(piece);
-    setTimeout(() => piece.remove(), 5000);
-  }
-}
-
-/* ======================================================
    UI DO NÍVEL / PATENTE
 ====================================================== */
 function updateLevelUI() {
   document.getElementById('levelBadge').textContent = appData.level;
-  document.getElementById('levelHeader').textContent = appData.level;
+  document.getElementById('streakDisplay').textContent = '🔥 ' + (appData.streak || 0);
+  document.getElementById('coinsDisplay').textContent = '🪙 ' + (appData.coins || 0);
+
+  const needed = xpNeededForLevel(appData.level);
+  const xpPct = Math.min(100, Math.round(((appData.xp || 0) / needed) * 100));
+  document.getElementById('xpBarFill').style.width = xpPct + '%';
+  document.getElementById('xpText').textContent = `${appData.xp || 0} / ${needed}`;
 
   const rank = getRank(appData.prestiges || 0);
   const rankBadge = document.getElementById('rankBadge');
@@ -924,8 +1448,7 @@ function updateLevelUI() {
   rankName.textContent = rank.name;
   rankName.style.color = rank.color;
 
-  // Aplica cor ao badge conforme a patente
-  if (rank.tier > 0 || (appData.prestiges || 0) > 0) {
+  if ((appData.prestiges || 0) > 0) {
     rankBadge.style.borderColor = rank.color + '99';
     rankBadge.style.background = rank.color + '22';
     rankBadge.style.color = rank.color;
@@ -934,6 +1457,14 @@ function updateLevelUI() {
     rankBadge.style.background = '';
     rankBadge.style.color = '';
   }
+
+  // Cor de fundo por tier
+  document.body.classList.remove('level-tier-0','level-tier-1','level-tier-2','level-tier-3','level-tier-4');
+  if (appData.level >= 12) document.body.classList.add('level-tier-4');
+  else if (appData.level >= 8) document.body.classList.add('level-tier-3');
+  else if (appData.level >= 4) document.body.classList.add('level-tier-2');
+  else if (appData.level >= 1) document.body.classList.add('level-tier-1');
+  else document.body.classList.add('level-tier-0');
 }
 
 document.getElementById('levelUpCloseBtn').addEventListener('click', () => {
@@ -942,6 +1473,7 @@ document.getElementById('levelUpCloseBtn').addEventListener('click', () => {
   renderDaysNav();
   loadDayData(currentDayIndex);
   updateWeekProgress();
+  soundClick();
 });
 
 /* ======================================================
@@ -966,7 +1498,7 @@ document.getElementById('resetDayBtn').addEventListener('click', () => {
 });
 
 document.getElementById('resetWeekBtn').addEventListener('click', () => {
-  if (!confirm('ATENÇÃO: Resetar TODA a semana? Todo o progresso será apagado.')) return;
+  if (!confirm('ATENÇÃO: Resetar TODA a semana?')) return;
   const goals = getLevelGoals(appData.level);
   pauseAllTimers();
   DAYS.forEach(d => {
@@ -992,14 +1524,30 @@ document.getElementById('newQuoteBtn').addEventListener('click', () => {
   appData.quoteIndex = (appData.quoteIndex + 1) % QUOTES.length;
   document.getElementById('quoteText').textContent = `"${QUOTES[appData.quoteIndex]}"`;
   saveAppData();
+  soundClick();
 });
 
 /* ======================================================
-   INICIALIZAÇÃO
+   AVATAR (clique troca emoji)
+====================================================== */
+const AVATAR_OPTIONS = ['⚡','🚀','🔥','💪','🎯','👑','🐺','🦁','🐉','🌟','⚔️','🎮','🏆','💎'];
+document.getElementById('avatarInner').addEventListener('click', () => {
+  const idx = AVATAR_OPTIONS.indexOf(appData.avatar || '⚡');
+  appData.avatar = AVATAR_OPTIONS[(idx + 1) % AVATAR_OPTIONS.length];
+  document.getElementById('avatarInner').textContent = appData.avatar;
+  saveAppData();
+  soundClick();
+  vibrate(20);
+});
+
+/* ======================================================
+   INIT
 ====================================================== */
 function init() {
+  spawnBgParticles();
   initTheme();
   updateLevelUI();
+  document.getElementById('avatarInner').textContent = appData.avatar || '⚡';
   renderDaysNav();
   loadDayData(currentDayIndex);
   if (QUOTES[appData.quoteIndex]) {
@@ -1036,4 +1584,4 @@ window.addEventListener('appinstalled', () => {
 });
 </script>
 </body>
-</html>
+          </html>
