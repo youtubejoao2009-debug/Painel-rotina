@@ -39,7 +39,6 @@ body::after {
   -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
 }
 
-/* TEMAS */
 body.theme-purple::before { background: radial-gradient(circle at 15% 20%, rgba(168,85,247,0.22), transparent 45%), radial-gradient(circle at 85% 80%, rgba(236,72,153,0.18), transparent 45%); }
 body.theme-green::before { background: radial-gradient(circle at 15% 20%, rgba(34,197,94,0.22), transparent 45%), radial-gradient(circle at 85% 80%, rgba(6,182,212,0.18), transparent 45%); }
 body.theme-red::before { background: radial-gradient(circle at 15% 20%, rgba(239,68,68,0.22), transparent 45%), radial-gradient(circle at 85% 80%, rgba(245,158,11,0.18), transparent 45%); }
@@ -132,47 +131,11 @@ body.light-bg .avatar-inner { background: #eef2ff; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(100,116,139,0.4); border-radius: 4px; }
 
-/* ====== PIN SCREEN ====== */
-#pinScreen {
-  position: fixed; inset: 0; z-index: 200;
-  background: linear-gradient(135deg, #0a0f1e 0%, #1e1b4b 50%, #0a0f1e 100%);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 20px;
-} 
-  #pinScreen.hidden { display: none !important; }
-.pin-dot {
-  width: 14px; height: 14px; border-radius: 50%;
-  background: transparent; border: 2px solid #475569;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.pin-dot.filled { background: #3b82f6; border-color: #3b82f6; box-shadow: 0 0 15px #3b82f6; transform: scale(1.15); }
-.keypad-btn {
-  width: 70px; height: 70px; border-radius: 50%;
-  background: rgba(30,41,59,0.8); border: 1px solid rgba(100,116,139,0.3);
-  color: white; font-size: 26px; font-weight: 700;
-  display: grid; place-content: center;
-  transition: all 0.15s;
-  cursor: pointer;
-  user-select: none;
-}
-.keypad-btn:active { transform: scale(0.9); background: rgba(59,130,246,0.3); }
-.keypad-btn.action { font-size: 18px; }
-@keyframes pinShake { 0%,100% { transform: translateX(0); } 20%,60% { transform: translateX(-12px); } 40%,80% { transform: translateX(12px); } }
-.pin-shake { animation: pinShake 0.4s; }
-
-/* ====== LOJA ====== */
-.store-item {
-  transition: all 0.25s;
-  cursor: pointer;
-}
+.store-item { transition: all 0.25s; cursor: pointer; }
 .store-item:active { transform: scale(0.96); }
 .store-item.owned { opacity: 0.85; }
 .store-item.current { border-color: #22c55e !important; box-shadow: 0 0 15px rgba(34,197,94,0.4); }
-
-.theme-preview {
-  width: 60px; height: 60px; border-radius: 50%;
-  border: 3px solid rgba(255,255,255,0.2);
-}
+.theme-preview { width: 60px; height: 60px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.2); }
 .theme-preview.t-default { background: linear-gradient(135deg, #1e3a8a, #3b82f6, #06b6d4); }
 .theme-preview.t-purple { background: linear-gradient(135deg, #581c87, #a855f7, #ec4899); }
 .theme-preview.t-green { background: linear-gradient(135deg, #14532d, #22c55e, #06b6d4); }
@@ -181,14 +144,12 @@ body.light-bg .avatar-inner { background: #eef2ff; }
 .theme-preview.t-pink { background: linear-gradient(135deg, #831843, #ec4899, #a855f7); }
 .theme-preview.t-rainbow { background: conic-gradient(from 0deg, #ef4444, #f59e0b, #22c55e, #06b6d4, #3b82f6, #a855f7, #ef4444); }
 
-/* ====== BAÚ ====== */
 @keyframes chestShake {
   0%, 100% { transform: translateY(0) rotate(0deg); }
   25% { transform: translateY(-3px) rotate(-3deg); }
   75% { transform: translateY(-3px) rotate(3deg); }
 }
 .chest-shake { animation: chestShake 0.5s infinite; }
-
 @keyframes chestOpen {
   0% { transform: scale(1) rotate(0deg); }
   50% { transform: scale(1.4) rotate(15deg); }
@@ -196,44 +157,12 @@ body.light-bg .avatar-inner { background: #eef2ff; }
 }
 .chest-open { animation: chestOpen 0.6s ease-out; }
 
-/* ====== STORE TAB ====== */
 .store-tab { transition: all 0.2s; }
 .store-tab.active { background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; box-shadow: 0 4px 15px rgba(59,130,246,0.4); }
 </style>
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col">
 
-<!-- ==================== TELA DE PIN ==================== -->
-<div id="pinScreen" class="hidden">
-  <div class="text-center mb-6">
-    <div class="text-6xl mb-3">🔐</div>
-    <h1 id="pinTitle" class="text-2xl font-black text-white mb-1">Digite seu PIN</h1>
-    <p id="pinSubtitle" class="text-sm text-slate-400">Desbloqueie para continuar</p>
-  </div>
-
-  <div id="pinDots" class="flex gap-3 mb-8 h-5"></div>
-
-  <div id="pinError" class="hidden mb-4 px-4 py-2 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-300 text-sm font-bold"></div>
-
-  <div class="grid grid-cols-3 gap-3 max-w-xs">
-    <button class="keypad-btn" data-key="1">1</button>
-    <button class="keypad-btn" data-key="2">2</button>
-    <button class="keypad-btn" data-key="3">3</button>
-    <button class="keypad-btn" data-key="4">4</button>
-    <button class="keypad-btn" data-key="5">5</button>
-    <button class="keypad-btn" data-key="6">6</button>
-    <button class="keypad-btn" data-key="7">7</button>
-    <button class="keypad-btn" data-key="8">8</button>
-    <button class="keypad-btn" data-key="9">9</button>
-    <button class="keypad-btn action" id="pinForgotBtn" style="font-size:12px;">ESQUECI</button>
-    <button class="keypad-btn" data-key="0">0</button>
-    <button class="keypad-btn action" id="pinBackspaceBtn">⌫</button>
-  </div>
-
-  <button id="pinConfirmBtn" class="hidden mt-6 px-8 py-3 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-black text-sm shadow-2xl">✓ CONFIRMAR</button>
-</div>
-
-<!-- ==================== HEADER ==================== -->
 <header class="sticky top-0 z-40 glass border-b border-slate-800/80 shadow-lg">
   <div class="max-w-7xl mx-auto px-3 py-3 sm:px-6">
     <div class="flex items-center justify-between gap-2 mb-3">
@@ -253,7 +182,6 @@ body.light-bg .avatar-inner { background: #eef2ff; }
           <span id="rankEmoji">🌱</span><span id="rankName" class="hidden sm:inline">Iniciante</span>
         </div>
         <button id="storeBtn" title="Loja" class="btn-action p-2 rounded-xl bg-amber-500/15 text-amber-400 border border-amber-500/30 hover:bg-amber-500/25 transition-all">🛒</button>
-        <button id="settingsBtn" title="Configurações" class="btn-action p-2 rounded-xl bg-slate-800 hover:bg-slate-700 transition-all">⚙️</button>
         <button id="themeToggleBtn" title="Tema claro/escuro" class="btn-action p-2 rounded-xl bg-slate-800 hover:bg-slate-700 transition-all"><span id="themeIcon">🌙</span></button>
       </div>
     </div>
@@ -388,21 +316,6 @@ body.light-bg .avatar-inner { background: #eef2ff; }
   </div>
 </div>
 
-<!-- MODAL CONFIG -->
-<div id="settingsModal" class="hidden fixed inset-0 z-[70] modal-overlay flex items-center justify-center p-4">
-  <div class="rounded-3xl p-6 max-w-sm w-full bg-slate-900 border border-slate-700 shadow-2xl">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="text-xl font-black text-white">⚙️ Configurações</h2>
-      <button id="settingsCloseBtn" class="btn-action p-2 rounded-xl bg-slate-800 text-slate-300 text-sm">✕</button>
-    </div>
-    <div class="space-y-2">
-      <button id="changePinBtn" class="btn-action w-full py-3 rounded-xl bg-blue-500/15 text-blue-300 border border-blue-500/30 font-bold text-sm text-left px-4">🔐 Alterar PIN</button>
-      <button id="lockNowBtn" class="btn-action w-full py-3 rounded-xl bg-purple-500/15 text-purple-300 border border-purple-500/30 font-bold text-sm text-left px-4">🔒 Bloquear Agora</button>
-      <button id="removePinBtn" class="btn-action w-full py-3 rounded-xl bg-rose-500/15 text-rose-300 border border-rose-500/30 font-bold text-sm text-left px-4">🗑️ Remover PIN</button>
-    </div>
-  </div>
-</div>
-
 <!-- MODAL RESULTADO BAÚ -->
 <div id="chestResultModal" class="hidden fixed inset-0 z-[80] modal-overlay flex items-center justify-center p-4">
   <div class="rounded-3xl p-8 max-w-sm w-full bg-gradient-to-br from-amber-600 via-yellow-600 to-orange-600 border-2 border-yellow-400 shadow-2xl text-center text-white relative overflow-hidden">
@@ -419,9 +332,6 @@ body.light-bg .avatar-inner { background: #eef2ff; }
 <button id="installAppBtn" class="hidden fixed bottom-5 right-5 z-50 bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-4 py-3 rounded-2xl shadow-2xl font-bold text-sm flex items-center gap-2 active:scale-95 transition-all">⬇️ Instalar App</button>
 
 <script>
-/* ======================================================
-   CONSTANTES
-====================================================== */
 const DAYS = [
   { id: 0, name: 'Domingo', short: 'Dom' }, { id: 1, name: 'Segunda', short: 'Seg' },
   { id: 2, name: 'Terça', short: 'Ter' }, { id: 3, name: 'Quarta', short: 'Qua' },
@@ -453,26 +363,16 @@ const QUOTES = [
   "Disciplina é escolher entre o que você quer agora e o que você mais quer."
 ];
 
-// LOJA
 const AVATARS_SHOP = [
-  { emoji: '⚡', price: 0, name: 'Raio' },
-  { emoji: '🚀', price: 0, name: 'Foguete' },
-  { emoji: '🔥', price: 0, name: 'Fogo' },
-  { emoji: '💪', price: 0, name: 'Força' },
-  { emoji: '🎯', price: 50, name: 'Alvo' },
-  { emoji: '🐺', price: 50, name: 'Lobo' },
-  { emoji: '🦊', price: 75, name: 'Raposa' },
-  { emoji: '👑', price: 100, name: 'Coroa' },
-  { emoji: '🦁', price: 100, name: 'Leão' },
-  { emoji: '🌟', price: 150, name: 'Estrela' },
-  { emoji: '🐉', price: 200, name: 'Dragão' },
-  { emoji: '⚔️', price: 200, name: 'Espadas' },
-  { emoji: '🎮', price: 250, name: 'Gamer' },
-  { emoji: '🏆', price: 300, name: 'Troféu' },
-  { emoji: '🧙', price: 400, name: 'Mago' },
-  { emoji: '🦅', price: 500, name: 'Águia' },
-  { emoji: '👽', price: 600, name: 'Alien' },
-  { emoji: '💎', price: 800, name: 'Diamante' }
+  { emoji: '⚡', price: 0, name: 'Raio' }, { emoji: '🚀', price: 0, name: 'Foguete' },
+  { emoji: '🔥', price: 0, name: 'Fogo' }, { emoji: '💪', price: 0, name: 'Força' },
+  { emoji: '🎯', price: 50, name: 'Alvo' }, { emoji: '🐺', price: 50, name: 'Lobo' },
+  { emoji: '🦊', price: 75, name: 'Raposa' }, { emoji: '👑', price: 100, name: 'Coroa' },
+  { emoji: '🦁', price: 100, name: 'Leão' }, { emoji: '🌟', price: 150, name: 'Estrela' },
+  { emoji: '🐉', price: 200, name: 'Dragão' }, { emoji: '⚔️', price: 200, name: 'Espadas' },
+  { emoji: '🎮', price: 250, name: 'Gamer' }, { emoji: '🏆', price: 300, name: 'Troféu' },
+  { emoji: '🧙', price: 400, name: 'Mago' }, { emoji: '🦅', price: 500, name: 'Águia' },
+  { emoji: '👽', price: 600, name: 'Alien' }, { emoji: '💎', price: 800, name: 'Diamante' }
 ];
 
 const THEMES_SHOP = [
@@ -494,9 +394,6 @@ const CHEST_REWARDS = [
   { type: 'jackpot', weight: 5 }
 ];
 
-/* ======================================================
-   HELPERS
-====================================================== */
 function getLevelGoals(level) {
   return { videos: 3 + Math.floor(level / 4), water: 2000, study: 1800 + level * 120, diaryPages: 1 + Math.floor(level / 4), noPhone: 3600 + level * 240 };
 }
@@ -508,13 +405,7 @@ function getRank(p) {
   const base = RANKS[idx];
   return { name: base.name + (cycle > 0 ? ' ' + toRoman(cycle + 1) : ''), emoji: base.emoji, color: base.color, tier: cycle };
 }
-function hashPin(pin) {
-  let h = 0;
-  for (let i = 0; i < pin.length; i++) { h = ((h << 5) - h) + pin.charCodeAt(i); h |= 0; }
-  return 'p' + Math.abs(h).toString(36) + '_' + pin.length;
-}
 
-/* ÁUDIO */
 let audioCtx = null;
 function getAudioCtx() {
   if (!audioCtx) { try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { return null; } }
@@ -534,7 +425,6 @@ function soundLevelUp() { playTone(523.25, 0.15, 'triangle', 0.15, 0); playTone(
 function soundPrestige() { playTone(523.25, 0.2, 'sine', 0.15, 0); playTone(659.25, 0.2, 'sine', 0.15, 0.15); playTone(783.99, 0.2, 'sine', 0.15, 0.3); playTone(1046.5, 0.2, 'sine', 0.18, 0.45); playTone(1318.5, 0.6, 'sine', 0.22, 0.6); }
 function soundWater() { playTone(1200, 0.05, 'sine', 0.1); playTone(900, 0.08, 'sine', 0.08, 0.04); }
 function soundClick() { playTone(600, 0.04, 'square', 0.05); }
-function soundPin() { playTone(800, 0.03, 'sine', 0.08); }
 function soundError() { playTone(200, 0.15, 'square', 0.15); playTone(150, 0.2, 'square', 0.12, 0.1); }
 function soundBuy() { playTone(880, 0.08, 'triangle', 0.12); playTone(1174.66, 0.08, 'triangle', 0.12, 0.06); playTone(1567.98, 0.15, 'triangle', 0.15, 0.12); }
 function soundChest() { playTone(440, 0.1, 'sine', 0.12); playTone(554, 0.1, 'sine', 0.12, 0.08); playTone(659, 0.1, 'sine', 0.12, 0.16); playTone(880, 0.3, 'sine', 0.18, 0.24); }
@@ -555,9 +445,6 @@ function spawnBgParticles() {
   }
 }
 
-/* ======================================================
-   ESTADO
-====================================================== */
 let currentDayIndex = new Date().getDay();
 let appData = loadAppData();
 let timerInterval = null;
@@ -577,7 +464,7 @@ function newDayData(studySecs, noPhoneSecs) {
 function loadAppData() {
   const def = {
     theme: 'dark', quoteIndex: 0, level: 0, prestiges: 0, xp: 0, coins: 0, streak: 0,
-    avatar: '⚡', themeStyle: 'default', pin: null,
+    avatar: '⚡', themeStyle: 'default',
     unlockedAvatars: ['⚡','🚀','🔥','💪'],
     unlockedThemes: ['default'],
     sleepSchedule: { bedtime: '22:00', wakeup: '06:00' }, days: {}
@@ -613,7 +500,6 @@ function loadAppData() {
       if (!parsed.themeStyle) parsed.themeStyle = 'default';
       if (!parsed.unlockedAvatars) parsed.unlockedAvatars = ['⚡','🚀','🔥','💪'];
       if (!parsed.unlockedThemes) parsed.unlockedThemes = ['default'];
-      if (parsed.pin === undefined) parsed.pin = null;
       return parsed;
     }
   } catch(e) {}
@@ -622,194 +508,6 @@ function loadAppData() {
 
 function saveAppData() { try { localStorage.setItem('rotina_criador_v2', JSON.stringify(appData)); } catch(e) {} }
 
-/* ======================================================
-   PIN
-====================================================== */
-let pinBuffer = '';
-let pinMode = 'unlock'; // unlock | setup-create | setup-confirm | change-old | change-new | change-confirm
-let pinTemp = '';
-let pinFailedAttempts = 0;
-let pinLockUntil = 0;
-
-const pinScreen = document.getElementById('pinScreen');
-const pinDots = document.getElementById('pinDots');
-const pinTitle = document.getElementById('pinTitle');
-const pinSubtitle = document.getElementById('pinSubtitle');
-const pinError = document.getElementById('pinError');
-const pinConfirmBtn = document.getElementById('pinConfirmBtn');
-const pinForgotBtn = document.getElementById('pinForgotBtn');
-
-function renderPinDots() {
-  pinDots.innerHTML = '';
-  const count = Math.max(4, pinBuffer.length || 4);
-  const showCount = pinMode === 'setup-create' || pinMode === 'setup-confirm' || pinMode === 'change-new' || pinMode === 'change-confirm' ? Math.max(4, pinBuffer.length || 4) : (appData.pin ? parseInt(appData.pin.split('_')[1]) : 4);
-  for (let i = 0; i < showCount; i++) {
-    const d = document.createElement('div');
-    d.className = 'pin-dot' + (i < pinBuffer.length ? ' filled' : '');
-    pinDots.appendChild(d);
-  }
-}
-
-function showPinScreen(mode) {
-  pinMode = mode;
-  pinBuffer = '';
-  pinError.classList.add('hidden');
-  pinScreen.classList.remove('hidden');
-
-  if (mode === 'unlock') {
-    pinTitle.textContent = 'Digite seu PIN';
-    pinSubtitle.textContent = 'Desbloqueie para continuar';
-    pinConfirmBtn.classList.add('hidden');
-    pinForgotBtn.style.opacity = '1';
-    pinForgotBtn.disabled = false;
-  } else if (mode === 'setup-create') {
-    pinTitle.textContent = '🔐 Crie seu PIN';
-    pinSubtitle.textContent = 'Digite de 4 a 6 dígitos';
-    pinConfirmBtn.classList.remove('hidden');
-    pinForgotBtn.style.opacity = '0.3';
-    pinForgotBtn.disabled = true;
-  } else if (mode === 'setup-confirm') {
-    pinTitle.textContent = '✓ Confirme seu PIN';
-    pinSubtitle.textContent = 'Digite novamente';
-    pinConfirmBtn.classList.remove('hidden');
-    pinForgotBtn.style.opacity = '0.3';
-    pinForgotBtn.disabled = true;
-  } else if (mode === 'change-old') {
-    pinTitle.textContent = '🔐 PIN Atual';
-    pinSubtitle.textContent = 'Digite seu PIN atual';
-    pinConfirmBtn.classList.add('hidden');
-    pinForgotBtn.style.opacity = '0.3';
-    pinForgotBtn.disabled = true;
-  } else if (mode === 'change-new') {
-    pinTitle.textContent = '🔐 Novo PIN';
-    pinSubtitle.textContent = 'Digite o novo PIN (4-6 dígitos)';
-    pinConfirmBtn.classList.remove('hidden');
-    pinForgotBtn.style.opacity = '0.3';
-    pinForgotBtn.disabled = true;
-  } else if (mode === 'change-confirm') {
-    pinTitle.textContent = '✓ Confirme';
-    pinSubtitle.textContent = 'Digite o novo PIN novamente';
-    pinConfirmBtn.classList.remove('hidden');
-    pinForgotBtn.style.opacity = '0.3';
-    pinForgotBtn.disabled = true;
-  }
-  renderPinDots();
-}
-
-function hidePinScreen() {
-  pinScreen.classList.add('hidden');
-  pinBuffer = '';
-}
-
-function pinNumber(num) {
-  if (pinBuffer.length >= 6) return;
-  if (pinLockUntil > Date.now()) return;
-  pinBuffer += num;
-  soundPin();
-  vibrate(10);
-  renderPinDots();
-
-  if (pinMode === 'unlock') {
-    const neededLen = appData.pin ? parseInt(appData.pin.split('_')[1]) : 4;
-    if (pinBuffer.length === neededLen) {
-      setTimeout(verifyPin, 150);
-    }
-  }
-}
-
-function pinBackspace() {
-  if (pinBuffer.length === 0) return;
-  pinBuffer = pinBuffer.slice(0, -1);
-  soundClick();
-  renderPinDots();
-}
-
-function shake() {
-  pinScreen.classList.remove('pin-shake');
-  void pinScreen.offsetWidth;
-  pinScreen.classList.add('pin-shake');
-  vibrate([50,30,50]);
-  soundError();
-}
-
-function showPinError(msg) {
-  pinError.textContent = msg;
-  pinError.classList.remove('hidden');
-  shake();
-}
-
-function verifyPin() {
-  const hashed = hashPin(pinBuffer);
-  if (hashed === appData.pin) {
-    pinFailedAttempts = 0;
-    hidePinScreen();
-    soundCheck();
-    vibrate([30,20,30]);
-  } else {
-    pinFailedAttempts++;
-    if (pinFailedAttempts >= 3) {
-      pinLockUntil = Date.now() + 30000;
-      showPinError('⛔ Muitas tentativas. Espere 30s.');
-      pinSubtitle.textContent = 'Bloqueado por 30 segundos...';
-      setTimeout(() => {
-        pinFailedAttempts = 0;
-        pinSubtitle.textContent = 'Desbloqueie para continuar';
-        pinError.classList.add('hidden');
-      }, 30000);
-    } else {
-      showPinError(`PIN incorreto (${pinFailedAttempts}/3)`);
-    }
-    pinBuffer = '';
-    renderPinDots();
-  }
-}
-
-document.querySelectorAll('.keypad-btn[data-key]').forEach(btn => {
-  btn.addEventListener('click', () => pinNumber(btn.getAttribute('data-key')));
-});
-document.getElementById('pinBackspaceBtn').addEventListener('click', pinBackspace);
-
-pinConfirmBtn.addEventListener('click', () => {
-  if (pinMode === 'setup-create' || pinMode === 'change-new') {
-    if (pinBuffer.length < 4) { showPinError('Mínimo 4 dígitos'); return; }
-    pinTemp = pinBuffer;
-    pinBuffer = '';
-    showPinScreen(pinMode === 'setup-create' ? 'setup-confirm' : 'change-confirm');
-  } else if (pinMode === 'setup-confirm' || pinMode === 'change-confirm') {
-    if (pinBuffer !== pinTemp) {
-      showPinError('Os PINs não coincidem');
-      pinBuffer = '';
-      renderPinDots();
-      return;
-    }
-    appData.pin = hashPin(pinBuffer);
-    saveAppData();
-    soundBuy();
-    vibrate([50,30,50,30,80]);
-    launchConfetti(30, ['🔐','✅','✨','🎉']);
-    hidePinScreen();
-    // Se for change, volta pro app normal (já está aberto)
-    if (pinMode === 'change-confirm') {
-      document.getElementById('settingsModal').classList.add('hidden');
-    }
-  }
-});
-
-pinForgotBtn.addEventListener('click', () => {
-  showConfirm('⚠️', 'Esqueceu o PIN?', 'A única forma é resetar TUDO (perde progresso, XP, moedas e nível). Continuar?', () => {
-    appData.pin = null;
-    appData.level = 0; appData.prestiges = 0; appData.xp = 0; appData.coins = 0; appData.streak = 0;
-    DAYS.forEach(d => { appData.days[d.id] = newDayData(1800, 3600); });
-    saveAppData();
-    hidePinScreen();
-    initTheme(); updateLevelUI(); renderDaysNav(); loadDayData(currentDayIndex); updateWeekProgress();
-    launchConfetti(20, ['💥','🔄']);
-  });
-});
-
-/* ======================================================
-   TEMA
-====================================================== */
 function applyThemeStyle() {
   ['theme-purple','theme-green','theme-red','theme-gold','theme-pink','theme-rainbow'].forEach(c => document.body.classList.remove(c));
   if (appData.themeStyle && appData.themeStyle !== 'default') {
@@ -836,9 +534,6 @@ document.getElementById('themeToggleBtn').addEventListener('click', () => {
   initTheme(); saveAppData(); soundClick();
 });
 
-/* ======================================================
-   NAVEGAÇÃO
-====================================================== */
 function renderDaysNav() {
   const c = document.getElementById('daysNavContainer');
   c.innerHTML = '';
@@ -878,9 +573,6 @@ function loadDayData(dayId) {
   updateNoPhoneDisplay();
 }
 
-/* ======================================================
-   RENDER TAREFAS
-====================================================== */
 function renderTasks(dd, goals) {
   const grid = document.getElementById('tasksGrid');
   grid.innerHTML = '';
@@ -988,7 +680,6 @@ function renderTasks(dd, goals) {
 }
 function formatTime(s) { const m = Math.floor(s / 60), sec = s % 60; return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`; }
 
-/* EFEITOS */
 function burstParticles(x, y, color) {
   for (let i = 0; i < 8; i++) {
     const p = document.createElement('div');
@@ -1049,7 +740,6 @@ function setTaskState(i, newState, rar, rect) {
   }
 }
 
-/* EVENTOS TAREFAS */
 function bindTaskEvents() {
   const dd = appData.days[currentDayIndex];
   const goals = getLevelGoals(appData.level);
@@ -1131,13 +821,11 @@ function bindTaskEvents() {
   if (wk) wk.addEventListener('change', e => { appData.sleepSchedule.wakeup = e.target.value; saveAppData(); });
 }
 
-/* XP/COINS */
 function addXP(a) { appData.xp = (appData.xp || 0) + a; const n = xpNeededForLevel(appData.level); if (appData.xp > n) appData.xp = n; updateLevelUI(); }
 function removeXP(a) { appData.xp = Math.max(0, (appData.xp || 0) - a); updateLevelUI(); }
 function addCoins(a) { appData.coins = (appData.coins || 0) + a; updateLevelUI(); }
 function removeCoins(a) { appData.coins = Math.max(0, (appData.coins || 0) - a); updateLevelUI(); }
 
-/* TIMERS */
 function startStudyTimer(goals) {
   const dd = appData.days[currentDayIndex];
   if (dd.timerSeconds === undefined || dd.timerSeconds === null) dd.timerSeconds = goals.study;
@@ -1185,7 +873,6 @@ function pauseNoPhoneTimer() { if (noPhoneInterval) { clearInterval(noPhoneInter
 function updateNoPhoneDisplay() { const el = document.getElementById('noPhoneDisplay'); if (el) el.textContent = formatTime(appData.days[currentDayIndex].noPhoneSeconds ?? getLevelGoals(appData.level).noPhone); }
 function pauseAllTimers() { pauseStudyTimer(); pauseNoPhoneTimer(); }
 
-/* PROGRESSO */
 function updateProgress() {
   const dd = appData.days[currentDayIndex];
   const completed = dd.tasks.filter(Boolean).length;
@@ -1206,7 +893,6 @@ function updateWeekProgress() {
   if (perfect === 7 && !isProcessingLevelUp) triggerLevelUp();
 }
 
-/* LEVEL UP */
 function triggerLevelUp() {
   if (isProcessingLevelUp) return;
   isProcessingLevelUp = true;
@@ -1271,7 +957,6 @@ document.getElementById('levelUpCloseBtn').addEventListener('click', () => {
   renderDaysNav(); loadDayData(currentDayIndex); updateWeekProgress(); soundClick();
 });
 
-/* UI */
 function updateLevelUI() {
   document.getElementById('levelBadge').textContent = appData.level;
   document.getElementById('streakDisplay').textContent = '🔥 ' + (appData.streak || 0);
@@ -1299,7 +984,6 @@ function updateLevelUI() {
   }
 }
 
-/* CONFIRM */
 let confirmCallback = null;
 function showConfirm(emoji, title, msg, cb) {
   document.getElementById('confirmEmoji').textContent = emoji;
@@ -1318,7 +1002,6 @@ document.getElementById('confirmOkBtn').addEventListener('click', () => {
   confirmCallback = null;
 });
 
-/* RESET */
 document.getElementById('resetDayBtn').addEventListener('click', () => {
   showConfirm('🔄', 'Resetar Dia?', 'Todas as tarefas deste dia serão apagadas.', () => {
     const g = getLevelGoals(appData.level);
@@ -1336,16 +1019,12 @@ document.getElementById('resetWeekBtn').addEventListener('click', () => {
   });
 });
 
-/* FRASES */
 document.getElementById('newQuoteBtn').addEventListener('click', () => {
   appData.quoteIndex = (appData.quoteIndex + 1) % QUOTES.length;
   document.getElementById('quoteText').textContent = `"${QUOTES[appData.quoteIndex]}"`;
   saveAppData(); soundClick();
 });
 
-/* ======================================================
-   LOJA
-====================================================== */
 let currentStoreTab = 'avatars';
 const storeModal = document.getElementById('storeModal');
 const storeContent = document.getElementById('storeContent');
@@ -1507,7 +1186,6 @@ function renderChestTab() {
 }
 
 function openChest() {
-  // Sorteia recompensa
   const totalWeight = CHEST_REWARDS.reduce((a, r) => a + r.weight, 0);
   let roll = Math.random() * totalWeight;
   let reward = CHEST_REWARDS[0];
@@ -1554,7 +1232,6 @@ function openChest() {
       emoji = '🪙'; text = `Já tem todos! +${amount} moedas.`;
     }
   } else {
-    // JACKPOT
     const amount = 500;
     appData.coins += amount;
     emoji = '💎'; title = '🎉 JACKPOT!'; text = `+${amount} moedas!!!`;
@@ -1566,7 +1243,6 @@ function openChest() {
   vibrate([50,30,50,30,100]);
   launchConfetti(60, confettiEmojis);
 
-  // Mostra resultado
   document.getElementById('chestResultEmoji').textContent = emoji;
   document.getElementById('chestResultTitle').textContent = title;
   document.getElementById('chestResultText').textContent = text;
@@ -1579,86 +1255,16 @@ document.getElementById('chestResultCloseBtn').addEventListener('click', () => {
   renderChestTab();
 });
 
-/* ======================================================
-   CONFIGURAÇÕES
-====================================================== */
-document.getElementById('settingsBtn').addEventListener('click', () => {
-  document.getElementById('settingsModal').classList.remove('hidden');
-  soundClick();
-});
-document.getElementById('settingsCloseBtn').addEventListener('click', () => {
-  document.getElementById('settingsModal').classList.add('hidden');
-  soundClick();
-});
-document.getElementById('changePinBtn').addEventListener('click', () => {
-  document.getElementById('settingsModal').classList.add('hidden');
-  showPinScreen('change-old');
-  // Mudar comportamento do verify para change
-  pinMode = 'change-old';
-  // Redefinir handlers: vai verificar o PIN e depois ir pra change-new
-});
-document.getElementById('lockNowBtn').addEventListener('click', () => {
-  document.getElementById('settingsModal').classList.add('hidden');
-  if (!appData.pin) {
-    showPinScreen('setup-create');
-  } else {
-    showPinScreen('unlock');
-  }
-});
-document.getElementById('removePinBtn').addEventListener('click', () => {
-  document.getElementById('settingsModal').classList.add('hidden');
-  if (!appData.pin) { soundError(); return; }
-  showPinScreen('change-old');
-  pinMode = 'remove-old';
-});
-
-// Ajusta verifyPin para outros modos
-const originalVerify = verifyPin;
-verifyPin = function() {
-  if (pinMode === 'unlock') {
-    const hashed = hashPin(pinBuffer);
-    if (hashed === appData.pin) {
-      pinFailedAttempts = 0;
-      hidePinScreen();
-      soundCheck();
-      vibrate([30,20,30]);
-    } else {
-      pinFailedAttempts++;
-      if (pinFailedAttempts >= 3) {
-        pinLockUntil = Date.now() + 30000;
-        showPinError('⛔ Muitas tentativas. Espere 30s.');
-        pinSubtitle.textContent = 'Bloqueado por 30 segundos...';
-        setTimeout(() => {
-          pinFailedAttempts = 0;
-          pinSubtitle.textContent = 'Desbloqueie para continuar';
-          pinError.classList.add('hidden');
-        }, 30000);
-      } else {
-        showPinError(`PIN incorreto (${pinFailedAttempts}/3)`);
-      }
-      pinBuffer = '';
-      renderPinDots();
-    }
-  } else if (pinMode === 'change-old' || pinMode === 'remove-old') {
-    const hashed = hashPin(pinBuffer);
-    if (hashed === appData.pin) {
-      pinBuffer = '';
-      if (pinMode === 'remove-old') {
-        appData.pin = null;
-        saveAppData();
-        hidePinScreen();
-        soundCheck();
-        launchConfetti(20, ['🔓','✨']);
-      } else {
-        showPinScreen('change-new');
-      }
-    } else {
-      showPinError('PIN incorreto');
-      pinBuffer = '';
-      renderPinDots();
-    }
-  }
-};
+function initApp() {
+  spawnBgParticles();
+  initTheme();
+  updateLevelUI();
+  document.getElementById('avatarInner').textContent = appData.avatar || '⚡';
+  renderDaysNav();
+  loadDayData(currentDayIndex);
+  if (QUOTES[appData.quoteIndex]) document.getElementById('quoteText').textContent = `"${QUOTES[appData.quoteIndex]}"`;
+}
+document.addEventListener('DOMContentLoaded', initApp);
 </script>
 
 <script>
@@ -1680,27 +1286,6 @@ installAppBtn.addEventListener('click', async () => {
   installAppBtn.classList.add('hidden');
 });
 window.addEventListener('appinstalled', () => { installAppBtn.classList.add('hidden'); deferredPrompt = null; });
-
-/* ======================================================
-   INIT FINAL
-====================================================== */
-function initApp() {
-  spawnBgParticles();
-  initTheme();
-  updateLevelUI();
-  document.getElementById('avatarInner').textContent = appData.avatar || '⚡';
-  renderDaysNav();
-  loadDayData(currentDayIndex);
-  if (QUOTES[appData.quoteIndex]) document.getElementById('quoteText').textContent = `"${QUOTES[appData.quoteIndex]}"`;
-
-  // Tela de PIN
-  if (!appData.pin) {
-    showPinScreen('setup-create');
-  } else {
-    showPinScreen('unlock');
-  }
-}
-document.addEventListener('DOMContentLoaded', initApp);
 </script>
 </body>
 </html>
