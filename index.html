@@ -181,6 +181,13 @@ body.light-bg .avatar-inner{background:#eef2ff}
 .toggle-switch.on{background:linear-gradient(135deg,#22c55e,#16a34a);border-color:#22c55e;box-shadow:0 0 15px rgba(34,197,94,.5)}
 .toggle-knob{position:absolute;top:2px;left:2px;width:24px;height:24px;border-radius:50%;background:#fff;transition:all .3s;box-shadow:0 2px 6px rgba(0,0,0,.3)}
 .toggle-switch.on .toggle-knob{left:30px}
+#dailyMissionModal .dm-panel{background:linear-gradient(180deg,rgba(10,20,40,.98),rgba(5,10,25,.98));border:2px solid rgba(251,191,36,.6);box-shadow:0 0 60px rgba(251,191,36,.5),inset 0 0 40px rgba(251,191,36,.1)}
+#dailyMissionModal .dm-title{color:#fbbf24;text-shadow:0 0 15px rgba(251,191,36,.9),0 0 30px rgba(251,191,36,.5);letter-spacing:4px}
+#dailyMissionModal .dm-line{height:1px;background:linear-gradient(90deg,transparent,#fbbf24,transparent);box-shadow:0 0 10px #fbbf24}
+@keyframes dmPop{0%{transform:scale(.5) translateY(30px);opacity:0}60%{transform:scale(1.05) translateY(-5px);opacity:1}100%{transform:scale(1) translateY(0);opacity:1}}
+.dm-pop{animation:dmPop .6s cubic-bezier(.34,1.56,.64,1) forwards}
+@keyframes dmShine{0%{background-position:-200% center}100%{background-position:200% center}}
+.dm-shine{background:linear-gradient(90deg,#fbbf24,#fef3c7,#fbbf24,#f59e0b,#fbbf24);background-size:300% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:dmShine 3s linear infinite}
 </style>
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col">
@@ -426,6 +433,33 @@ body.light-bg .avatar-inner{background:#eef2ff}
   </div>
 </div>
 
+<div id="dailyMissionModal" class="hidden fixed inset-0 z-[90] modal-overlay flex items-center justify-center p-3 overflow-y-auto" style="display:none">
+  <div class="dm-panel dm-pop rounded-3xl p-6 max-w-sm w-full my-auto relative overflow-hidden">
+    <div class="absolute -top-20 -right-20 w-40 h-40 rounded-full pointer-events-none" style="background:radial-gradient(circle,rgba(251,191,36,.4),transparent 70%)"></div>
+    <div class="absolute -bottom-20 -left-20 w-40 h-40 rounded-full pointer-events-none" style="background:radial-gradient(circle,rgba(251,191,36,.3),transparent 70%)"></div>
+    <div class="relative z-10">
+      <div class="text-center mb-4">
+        <div class="text-[10px] text-yellow-400/70 font-black tracking-[4px] mb-1">⚔️ SISTEMA ⚔️</div>
+        <h2 class="dm-title text-xl font-black tracking-widest mb-1">MISSÃO DO DIA</h2>
+        <div class="dm-line my-2"></div>
+        <p class="text-[10px] text-slate-400 italic">Uma nova missão apareceu para você</p>
+      </div>
+      <div class="text-center my-5">
+        <div id="dmEmoji" class="text-7xl mb-3 drop-shadow-2xl">💧</div>
+        <h3 id="dmTitle" class="dm-shine text-2xl font-black mb-2">Hidrate-se agora</h3>
+        <p id="dmDesc" class="text-xs text-slate-300 leading-relaxed px-2">Beba 500ml de água em até 30 minutos</p>
+      </div>
+      <div class="bg-black/40 rounded-2xl p-3 mb-4 border border-yellow-500/30 text-center">
+        <div class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Recompensa</div>
+        <div class="text-yellow-400 font-black text-sm" id="dmReward">+30 XP · +15 🪙</div>
+      </div>
+      <button id="dmCompleteBtn" type="button" class="w-full py-4 rounded-2xl bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-black text-sm shadow-xl mb-2 tracking-wider">✓ COMPLETAR MISSÃO</button>
+      <button id="dmDismissBtn" type="button" class="w-full py-3 rounded-2xl bg-slate-800 text-slate-300 font-bold text-xs border border-slate-700">Deixar para depois</button>
+      <div class="text-[10px] text-slate-500 text-center italic mt-3">Se fechar, a missão volta quando abrir o app</div>
+    </div>
+  </div>
+</div>
+
 <div id="levelUpModal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
   <div id="levelUpCard" class="relative rounded-3xl p-6 sm:p-8 max-w-md w-full text-white text-center shadow-2xl overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-br from-blue-700 via-indigo-700 to-purple-800"></div>
@@ -464,10 +498,11 @@ const AVATARS_SHOP=[{emoji:'⚡',price:0,name:'Raio'},{emoji:'🚀',price:0,name
 const THEMES_SHOP=[{id:'default',name:'Azul Padrão',price:0},{id:'purple',name:'Roxo Místico',price:100},{id:'green',name:'Verde Selva',price:100},{id:'pink',name:'Rosa Neon',price:150},{id:'red',name:'Vermelho Fogo',price:200},{id:'gold',name:'Dourado Real',price:300},{id:'rainbow',name:'Arco-Íris',price:500}];
 const CHEST_PRICE=100;
 const CHEST_REWARDS=[{type:'coins',weight:35,min:30,max:150},{type:'xp',weight:20,min:20,max:80},{type:'avatar',weight:25},{type:'theme',weight:15},{type:'jackpot',weight:5}];
-const ACHIEVEMENTS=[{id:'first_task',emoji:'✅',name:'Primeira Tarefa',desc:'Complete 1 tarefa',check:s=>s.tasksTotal>=1,reward:20},{id:'ten_tasks',emoji:'🔟',name:'Aquecendo',desc:'Complete 10 tarefas',check:s=>s.tasksTotal>=10,reward:30},{id:'fifty_tasks',emoji:'💪',name:'Guerreiro',desc:'Complete 50 tarefas',check:s=>s.tasksTotal>=50,reward:80},{id:'hundred_tasks',emoji:'⚔️',name:'Veterano',desc:'Complete 100 tarefas',check:s=>s.tasksTotal>=100,reward:150},{id:'first_perfect',emoji:'⭐',name:'Dia Perfeito',desc:'1 dia 100%',check:s=>s.perfectDays>=1,reward:50},{id:'week_perfect',emoji:'🏆',name:'Semana Perfeita',desc:'7 dias perfeitos',check:s=>s.perfectDays>=7,reward:200},{id:'month_perfect',emoji:'👑',name:'Mês Perfeito',desc:'30 dias perfeitos',check:s=>s.perfectDays>=30,reward:500},{id:'first_level',emoji:'🎮',name:'Subindo',desc:'Nível 1',check:s=>s.maxLevel>=1,reward:30},{id:'level_5',emoji:'🚀',name:'Decolando',desc:'Nível 5',check:s=>s.maxLevel>=5,reward:100},{id:'level_10',emoji:'🌟',name:'Estrela',desc:'Nível 10',check:s=>s.maxLevel>=10,reward:250},{id:'first_prestige',emoji:'🥉',name:'Prestígio',desc:'Prestígio 1',check:s=>s.prestiges>=1,reward:300},{id:'rich',emoji:'💰',name:'Rico',desc:'500 moedas',check:s=>s.coinsTotal>=500,reward:100},{id:'streak_3',emoji:'🔥',name:'Em Chamas',desc:'Streak 3',check:s=>s.bestStreak>=3,reward:150},{id:'streak_10',emoji:'🌋',name:'Imparável',desc:'Streak 10',check:s=>s.bestStreak>=10,reward:500},{id:'xp_1000',emoji:'⚡',name:'Energizado',desc:'1000 XP',check:s=>s.xpTotal>=1000,reward:100},{id:'spinner',emoji:'🎰',name:'Sortudo',desc:'Gire 10x',check:s=>s.spinsTotal>=10,reward:100},{id:'pomodoro_1',emoji:'🍅',name:'Focado',desc:'1 pomodoro',check:s=>(s.pomoTotal||0)>=1,reward:30},{id:'pomodoro_25',emoji:'🧠',name:'Mente Afiada',desc:'25 pomodoros',check:s=>(s.pomoTotal||0)>=25,reward:200},{id:'pet_evo',emoji:'🐣',name:'Papai Coruja',desc:'Pet evoluiu',check:s=>(s.petMaxStage||0)>=1,reward:50},{id:'pet_dragon',emoji:'🐉',name:'Domador',desc:'Pet virou Dragão',check:s=>(s.petMaxStage||0)>=4,reward:500},{id:'boss_first',emoji:'👹',name:'Caçador',desc:'1 boss',check:s=>(s.bossWins||0)>=1,reward:100},{id:'boss_5',emoji:'⚔️',name:'Matador',desc:'5 bosses',check:s=>(s.bossWins||0)>=5,reward:400},{id:'combo_10',emoji:'⚡',name:'Combo Master',desc:'Combo 10 em um dia',check:s=>(s.maxCombo||0)>=10,reward:200}];
+const ACHIEVEMENTS=[{id:'first_task',emoji:'✅',name:'Primeira Tarefa',desc:'Complete 1 tarefa',check:s=>s.tasksTotal>=1,reward:20},{id:'ten_tasks',emoji:'🔟',name:'Aquecendo',desc:'Complete 10 tarefas',check:s=>s.tasksTotal>=10,reward:30},{id:'fifty_tasks',emoji:'💪',name:'Guerreiro',desc:'Complete 50 tarefas',check:s=>s.tasksTotal>=50,reward:80},{id:'hundred_tasks',emoji:'⚔️',name:'Veterano',desc:'Complete 100 tarefas',check:s=>s.tasksTotal>=100,reward:150},{id:'first_perfect',emoji:'⭐',name:'Dia Perfeito',desc:'1 dia 100%',check:s=>s.perfectDays>=1,reward:50},{id:'week_perfect',emoji:'🏆',name:'Semana Perfeita',desc:'7 dias perfeitos',check:s=>s.perfectDays>=7,reward:200},{id:'month_perfect',emoji:'👑',name:'Mês Perfeito',desc:'30 dias perfeitos',check:s=>s.perfectDays>=30,reward:500},{id:'first_level',emoji:'🎮',name:'Subindo',desc:'Nível 1',check:s=>s.maxLevel>=1,reward:30},{id:'level_5',emoji:'🚀',name:'Decolando',desc:'Nível 5',check:s=>s.maxLevel>=5,reward:100},{id:'level_10',emoji:'🌟',name:'Estrela',desc:'Nível 10',check:s=>s.maxLevel>=10,reward:250},{id:'first_prestige',emoji:'🥉',name:'Prestígio',desc:'Prestígio 1',check:s=>s.prestiges>=1,reward:300},{id:'rich',emoji:'💰',name:'Rico',desc:'500 moedas',check:s=>s.coinsTotal>=500,reward:100},{id:'streak_3',emoji:'🔥',name:'Em Chamas',desc:'Streak 3',check:s=>s.bestStreak>=3,reward:150},{id:'streak_10',emoji:'🌋',name:'Imparável',desc:'Streak 10',check:s=>s.bestStreak>=10,reward:500},{id:'xp_1000',emoji:'⚡',name:'Energizado',desc:'1000 XP',check:s=>s.xpTotal>=1000,reward:100},{id:'spinner',emoji:'🎰',name:'Sortudo',desc:'Gire 10x',check:s=>s.spinsTotal>=10,reward:100},{id:'pomodoro_1',emoji:'🍅',name:'Focado',desc:'1 pomodoro',check:s=>(s.pomoTotal||0)>=1,reward:30},{id:'pomodoro_25',emoji:'🧠',name:'Mente Afiada',desc:'25 pomodoros',check:s=>(s.pomoTotal||0)>=25,reward:200},{id:'pet_evo',emoji:'🐣',name:'Papai Coruja',desc:'Pet evoluiu',check:s=>(s.petMaxStage||0)>=1,reward:50},{id:'pet_dragon',emoji:'🐉',name:'Domador',desc:'Pet virou Dragão',check:s=>(s.petMaxStage||0)>=4,reward:500},{id:'boss_first',emoji:'👹',name:'Caçador',desc:'1 boss',check:s=>(s.bossWins||0)>=1,reward:100},{id:'boss_5',emoji:'⚔️',name:'Matador',desc:'5 bosses',check:s=>(s.bossWins||0)>=5,reward:400},{id:'combo_10',emoji:'⚡',name:'Combo Master',desc:'Combo 10 num dia',check:s=>(s.maxCombo||0)>=10,reward:200}];
 const ROULETTE_REWARDS=[{emoji:'🪙',text:'+30 moedas',type:'coins',value:30},{emoji:'⭐',text:'+20 XP',type:'xp',value:20},{emoji:'🪙',text:'+50 moedas',type:'coins',value:50},{emoji:'💫',text:'+40 XP',type:'xp',value:40},{emoji:'💰',text:'+100 moedas',type:'coins',value:100},{emoji:'⚡',text:'+75 XP',type:'xp',value:75},{emoji:'🎁',text:'Baú grátis!',type:'chest',value:0},{emoji:'🪙',text:'+75 moedas',type:'coins',value:75},{emoji:'👑',text:'Avatar raro!',type:'avatar',value:0},{emoji:'💎',text:'+150 moedas',type:'coins',value:150},{emoji:'🎨',text:'Tema aleatório!',type:'theme',value:0},{emoji:'🌟',text:'+200 XP',type:'xp',value:200}];
 const PET_STAGES=[{min:0,emoji:'🥚',name:'Ovo Misterioso',color:'#94a3b8'},{min:100,emoji:'🐣',name:'Filhote',color:'#fbbf24'},{min:300,emoji:'🦊',name:'Jovem Astuto',color:'#f97316'},{min:700,emoji:'🐺',name:'Lobo Feroz',color:'#22c55e'},{min:1500,emoji:'🐉',name:'Dragão',color:'#a855f7'},{min:3000,emoji:'🔥',name:'Lendário',color:'#ef4444'}];
 const WEEKLY_POOL=[{id:'tasks',desc:'Complete 25 tarefas',target:25,reward:150,emoji:'✅'},{id:'perfect',desc:'Tenha 4 dias perfeitos',target:4,reward:250,emoji:'⭐'},{id:'pomodoro',desc:'Complete 5 pomodoros',target:5,reward:200,emoji:'🍅'},{id:'water',desc:'Tome 10L de água na semana',target:10,reward:150,emoji:'💧'}];
+const DAILY_MISSIONS=[{emoji:'💧',title:'Hidrate-se agora',desc:'Beba 500ml de água em até 30 minutos',xp:30,coins:15},{emoji:'📵',title:'Desconecte um pouco',desc:'Fique 15 minutos sem o celular',xp:40,coins:20},{emoji:'📚',title:'Leia 5 páginas',desc:'Escolha um livro e leia 5 páginas',xp:30,coins:15},{emoji:'✍️',title:'Gratidão',desc:'Escreva 3 coisas pelas quais é grato hoje',xp:50,coins:25},{emoji:'🚶',title:'Caminhe um pouco',desc:'Dê uma caminhada de 10 minutos',xp:35,coins:18},{emoji:'🎯',title:'Foco profundo',desc:'Fique 20 minutos focado em uma tarefa só',xp:60,coins:30},{emoji:'🧘',title:'Respire',desc:'Faça 5 minutos de respiração profunda',xp:25,coins:12},{emoji:'💪',title:'Movimente-se',desc:'Faça 10 flexões ou 20 agachamentos',xp:40,coins:20},{emoji:'🙏',title:'Elogie alguém',desc:'Mande uma mensagem elogiando alguém',xp:30,coins:15},{emoji:'📝',title:'Planeje o amanhã',desc:'Escreva 3 metas para amanhã',xp:35,coins:18},{emoji:'🎨',title:'Crie algo',desc:'Desenhe, escreva ou crie algo por 10 min',xp:45,coins:22},{emoji:'☀️',title:'Tome sol',desc:'Fique 10 minutos ao sol',xp:30,coins:15},{emoji:'🥗',title:'Coma saudável',desc:'Coma uma fruta ou vegetal agora',xp:25,coins:12},{emoji:'🧹',title:'Organize',desc:'Organize uma gaveta ou mesa',xp:30,coins:15},{emoji:'📞',title:'Ligue para alguém',desc:'Ligue para um amigo ou família',xp:40,coins:20},{emoji:'🚿',title:'Banho gelado',desc:'Termine o banho com água fria',xp:50,coins:25},{emoji:'🎵',title:'Ouça uma música',desc:'Ouça uma música que te anima',xp:20,coins:10},{emoji:'💤',title:'Descanse',desc:'Tire 10 minutos de descanso consciente',xp:25,coins:12},{emoji:'🌟',title:'Meta do dia',desc:'Defina UMA meta importante para hoje',xp:35,coins:18},{emoji:'🏃',title:'Se mova',desc:'Faça algum exercício por 10 minutos',xp:45,coins:22}];
 const BOSSES=[{emoji:'👹',name:'GOBLIN SOMBRIO'},{emoji:'👺',name:'DUENDE MALIGNO'},{emoji:'🐗',name:'JAVALI FERAL'},{emoji:'🐻',name:'URSO DAS SOMBRAS'},{emoji:'🦁',name:'LEÃO ANCESTRAL'},{emoji:'🐲',name:'SERPENTE DRACÔNICA'},{emoji:'👾',name:'ENTIDADE CÓSMICA'},{emoji:'😈',name:'DEMÔNIO SUPREMO'}];
 const DEFAULT_TASK_LIST=[
 {id:'mine',type:'checkbox',emoji:'🎬',title:'Minerar vídeos bons',desc:'Busque referências e ideias.',rarity:'common',fixed:false,enabled:true},
@@ -535,7 +570,7 @@ let editModeOn=false,taskEditId=null;
 
 function newDayData(){return{taskState:{},subvideos:[false,false,false],water:0,instagramNotes:'',readingText:'',diaryText:'',timerSeconds:1800,timerRunning:false,noPhoneSeconds:3600,noPhoneRunning:false};}
 function makeDefaultData(){
-  const def={theme:'dark',autoTheme:false,quoteIndex:0,level:0,prestiges:0,xp:0,coins:0,streak:0,avatar:'⚡',themeStyle:'default',unlockedAvatars:['⚡','🚀','🔥','💪'],unlockedThemes:['default'],unlockedAchievements:[],basicTasks:{},basicDate:'',lastFreeSpin:'',lofiOn:false,stats:{xpTotal:0,coinsTotal:0,tasksTotal:0,perfectDays:0,bestStreak:0,maxLevel:0,prestiges:0,spinsTotal:0,pomoTotal:0,petMaxStage:0,bossWins:0,maxCombo:0},pet:{xp:0,hunger:100,happiness:100,lastUpdate:getTodayKey()},pomodoro:{today:0,date:getTodayKey(),mode:'focus',seconds:1500,running:false},weekly:{weekKey:getMondayKey(),missions:[],progress:{},claimed:{}},boss:newBoss(0,0),sleepSchedule:{bedtime:'22:00',wakeup:'06:00'},taskList:JSON.parse(JSON.stringify(DEFAULT_TASK_LIST)),history:{},combo:0,comboDate:getTodayKey(),comboMult:1,days:{}};
+  const def={theme:'dark',autoTheme:false,quoteIndex:0,level:0,prestiges:0,xp:0,coins:0,streak:0,avatar:'⚡',themeStyle:'default',unlockedAvatars:['⚡','🚀','🔥','💪'],unlockedThemes:['default'],unlockedAchievements:[],basicTasks:{},basicDate:'',lastFreeSpin:'',lofiOn:false,stats:{xpTotal:0,coinsTotal:0,tasksTotal:0,perfectDays:0,bestStreak:0,maxLevel:0,prestiges:0,spinsTotal:0,pomoTotal:0,petMaxStage:0,bossWins:0,maxCombo:0},pet:{xp:0,hunger:100,happiness:100,lastUpdate:getTodayKey()},pomodoro:{today:0,date:getTodayKey(),mode:'focus',seconds:1500,running:false},weekly:{weekKey:getMondayKey(),missions:[],progress:{},claimed:{}},boss:newBoss(0,0),sleepSchedule:{bedtime:'22:00',wakeup:'06:00'},taskList:JSON.parse(JSON.stringify(DEFAULT_TASK_LIST)),history:{},combo:0,comboDate:getTodayKey(),comboMult:1,dailyMission:null,days:{}};
   DAYS.forEach(d=>{def.days[d.id]=newDayData();});
   return def;
 }
@@ -593,6 +628,7 @@ function loadAppData(){
       if(parsed.combo===undefined)parsed.combo=0;
       if(!parsed.comboDate)parsed.comboDate=getTodayKey();
       if(parsed.comboMult===undefined)parsed.comboMult=1;
+      if(parsed.dailyMission===undefined)parsed.dailyMission=null;
       if(!parsed.boss||parsed.boss.weekKey!==getMondayKey())parsed.boss=newBoss(parsed.level||0,parsed.prestiges||0);
       else parsed.boss.maxHp=getBossMaxHp(parsed.level||0,parsed.prestiges||0);
       return parsed;
@@ -618,6 +654,13 @@ function resetAllData(){
 }
 
 function checkAutoTheme(){if(!appData.autoTheme)return;const h=new Date().getHours();const shouldBeDark=h<6||h>=19;const newTheme=shouldBeDark?'dark':'light';if(appData.theme!==newTheme){appData.theme=newTheme;initTheme();saveAppData();}}
+
+function getDailyMissionForToday(){const key=getTodayKey();let hash=0;for(let i=0;i<key.length;i++)hash=((hash<<5)-hash)+key.charCodeAt(i);return Math.abs(hash)%DAILY_MISSIONS.length;}
+function checkDailyMission(){const today=getTodayKey();if(!appData.dailyMission||appData.dailyMission.date!==today){appData.dailyMission={date:today,idx:getDailyMissionForToday(),completed:false};saveAppData();}if(appData.dailyMission.completed)return;setTimeout(()=>showDailyMissionPopup(),900);}
+function showDailyMissionPopup(){if(!appData.dailyMission||appData.dailyMission.completed)return;const m=DAILY_MISSIONS[appData.dailyMission.idx];if(!m)return;document.getElementById('dmEmoji').textContent=m.emoji;document.getElementById('dmTitle').textContent=m.title;document.getElementById('dmDesc').textContent=m.desc;document.getElementById('dmReward').textContent='+'+m.xp+' XP · +'+m.coins+' 🪙';const modal=document.getElementById('dailyMissionModal');modal.classList.remove('hidden');modal.style.display='flex';soundSystem();vibrate([30,20,30]);}
+function completeDailyMission(){if(!appData.dailyMission||appData.dailyMission.completed)return;const m=DAILY_MISSIONS[appData.dailyMission.idx];if(!m)return;appData.dailyMission.completed=true;appData.coins=(appData.coins||0)+m.coins;appData.stats.coinsTotal=(appData.stats.coinsTotal||0)+m.coins;appData.stats.xpTotal=(appData.stats.xpTotal||0)+m.xp;addXP(m.xp);saveAppData();updateLevelUI();soundLevelUp();vibrate([50,30,50,30,100]);launchConfetti(50,['⭐','✨','🎉','🏆','💰']);showAchievementToast({emoji:m.emoji,name:m.title+' ✓',reward:m.coins});closeDailyMissionModal();}
+function dismissDailyMission(){closeDailyMissionModal();soundClick();}
+function closeDailyMissionModal(){const modal=document.getElementById('dailyMissionModal');modal.classList.add('hidden');modal.style.display='none';}
 
 function updateComboUI(){const el=document.getElementById('comboDisplay');if(el){const c=appData.combo||0;el.textContent='⚡ '+c;if(c>=15)el.style.color='#ef4444';else if(c>=10)el.style.color='#f59e0b';else if(c>=5)el.style.color='#fbbf24';else if(c>=3)el.style.color='#22d3ee';else el.style.color='';}}
 function checkComboReset(){const today=getTodayKey();if(appData.comboDate!==today){appData.combo=0;appData.comboDate=today;appData.comboMult=1;saveAppData();}}
@@ -896,7 +939,7 @@ function restoreDefaults(){showConfirm('🔄','Restaurar Padrão?','Vai apagar s
 
 function initApp(){
   appData=loadAppData();
-  ensureBasicTasksToday();updatePetDecay();ensureWeeklyMissions();checkComboReset();
+  ensureBasicTasksToday();updatePetDecay();ensureWeeklyMissions();checkComboReset();checkDailyMission();
   if(!appData.boss||appData.boss.weekKey!==getMondayKey())appData.boss=newBoss(appData.level,appData.prestiges);
   else appData.boss.maxHp=getBossMaxHp(appData.level,appData.prestiges);
   saveTodayHistory();
@@ -933,6 +976,8 @@ function initApp(){
   document.getElementById('restoreDefaultsBtn').addEventListener('click',restoreDefaults);
   document.getElementById('taskEditCancelBtn').addEventListener('click',closeTaskEdit);
   document.getElementById('taskEditSaveBtn').addEventListener('click',saveTaskEdit);
+  document.getElementById('dmCompleteBtn').addEventListener('click',completeDailyMission);
+  document.getElementById('dmDismissBtn').addEventListener('click',dismissDailyMission);
 
   document.getElementById('resetAllBtn').addEventListener('click',()=>{
     showConfirm('💥','RESETAR TUDO?','Vai apagar nível, XP, moedas, conquistas, pet, boss e todo o progresso. Não tem volta!',()=>resetAllData());
@@ -1001,7 +1046,7 @@ function initApp(){
   });
 
   checkAchievements();checkWeeklyMissions();
-  console.log('✅ Modo Monstro v9 inicializado!');
+  console.log('✅ Modo Monstro v10 inicializado!');
 }
 document.addEventListener('DOMContentLoaded',initApp);
 </script>
