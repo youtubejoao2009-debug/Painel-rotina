@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rotina-criador-v25';
+const CACHE_NAME = 'rotina-criador-v26';
 const ASSETS_TO_CACHE = [
   './index.html',
   './manifest.json',
